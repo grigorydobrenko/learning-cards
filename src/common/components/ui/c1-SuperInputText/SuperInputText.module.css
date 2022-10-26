@@ -1,0 +1,27 @@
+.input:focus {
+    outline: none;
+    border: grey solid 2px;
+}
+
+
+
+.superInput {
+    margin: 10px;
+
+    background: yellowgreen;
+    color: darkgreen;
+}
+
+.errorInput {
+    margin: 10px;
+    border: 2px solid darkred;
+    background: red;
+}
+
+.error {
+    color: darkred;
+    height: 20px;
+    font-weight: 700;
+}
+
+

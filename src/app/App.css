@@ -1,0 +1,11 @@
+.App {
+    width: 900px;
+    margin: 0 auto;
+}
+
+.routes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+}
