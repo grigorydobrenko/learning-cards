@@ -1,87 +1,94 @@
 @keyframes blink {
-    0% {
-        left: -130%;
-    }
-    100% {
-        left: 130%;
-    }
+  0% {
+    left: -130%;
+  }
+  100% {
+    left: 130%;
+  }
 }
 
-
 .default {
-    color: darkblue;
-    background: cornflowerblue;
-    outline: none;
+  color: darkblue;
+
+  background: cornflowerblue;
+  outline: none;
 }
 
 .red {
-    background: red;
+  background: red;
 }
 
 .button {
-    position: relative;
-    margin: 10px;
-    overflow: hidden;
-    cursor: pointer;
-    border: grey solid 1px;
+  cursor: pointer;
+
+  position: relative;
+
+  overflow: hidden;
+
+  margin: 10px;
+
+  border: grey solid 1px;
 }
 
 .button::after {
-    display: block;
-    content: '';
-    position: absolute;
+  content: '';
 
-    left: -130%;
-    top: 0;
-    height: 100%;
-    width: 20%;
+  position: absolute;
+  z-index: 15;
+  top: 0;
+  left: -130%;
+  transform: skew(45deg);
 
-    transform: skew(45deg);
+  display: block;
 
-    background-color: white;
-    opacity: 0.7;
-    z-index: 15;
+  width: 20%;
+  height: 100%;
+
+  opacity: 0.7;
+  background-color: white;
 }
 
 .button:hover::after {
-    animation: blink 0.5s ease;
+  animation: blink 0.5s ease;
 }
 
 .button:hover::before {
-    display: block;
-    content: '';
-    position: absolute;
+  content: '';
 
-    left: -100vw;
-    top: 0;
-    height: 100vh;
-    width: 300vw;
+  position: absolute;
+  z-index: 7;
+  top: 0;
+  left: -100vw;
 
-    background-color: white;
-    opacity: 0.2;
-    z-index: 7;
+  display: block;
+
+  width: 300vw;
+  height: 100vh;
+
+  opacity: 0.2;
+  background-color: white;
 }
 
-
 .button:focus {
-    outline: goldenrod solid 1px;
+  outline: goldenrod solid 1px;
 }
 
 .button:active {
-    background: goldenrod;
+  background: goldenrod;
 }
 
 .button:disabled:active {
-    background-color: cornflowerblue;
+  background-color: cornflowerblue;
 }
 
 .button:disabled {
-    color: grey;
-    cursor: auto;
+  cursor: auto;
+
+  color: grey;
 }
 .button:disabled::after {
-    z-index: -1;
+  z-index: -1;
 }
 .button:disabled::before {
-    z-index: -1;
+  z-index: -1;
 }
