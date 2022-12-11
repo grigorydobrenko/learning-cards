@@ -17,6 +17,8 @@ import {
   Typography,
 } from '@mui/material'
 
+import styles from './Register.module.css'
+
 const Copyright = (props: any) => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -41,7 +43,7 @@ export const Register = () => {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
