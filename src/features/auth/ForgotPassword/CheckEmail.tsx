@@ -1,5 +1,5 @@
 import React from 'react'
 
 export const CheckEmail = () => {
-  return <div></div>
+  return <div>Check email</div>
 }
