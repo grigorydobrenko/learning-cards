@@ -27,8 +27,8 @@ export const AppRoutes = () => {
       <Route path={PATH.REGISTER} element={<Register />} />
       <Route path={PATH.LOGIN} element={<Login />} />
       <Route path={PATH.PROFILE} element={<Profile />} />
-      <Route path={PATH.MAIN} element={<ForgotPassword />} />
-      <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
+      <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
+      <Route path={PATH.MAIN} element={<CheckEmail />} />
       <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
       <Route path={PATH.NOT_FOUND} element={<NotFound />} />
       <Route path={'*'} element={<Navigate to="/404" />} />

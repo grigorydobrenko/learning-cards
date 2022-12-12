@@ -57,6 +57,8 @@ export const Register = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              backgroundColor: '#f9f9fa',
+              borderRadius: '10px',
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>

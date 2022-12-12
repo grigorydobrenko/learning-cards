@@ -53,6 +53,8 @@ export const ForgotPassword = () => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              backgroundColor: '#f9f9fa',
+              borderRadius: '10px',
             }}
           >
             <Typography component="h1" variant="h5">
