@@ -12,7 +12,6 @@ import {
   InputAdornment,
   InputLabel,
   Paper,
-  TextField,
 } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
@@ -25,6 +24,8 @@ import styles from '../../Header/Header.module.css'
 import loginStyles from './Login.module.css'
 
 export const Login = () => {
+  const [isShownPassword, setIsShownPassword] = React.useState(false)
+
   const validate = (values: any) => {
     const errors: any = {}
 
@@ -40,6 +41,14 @@ export const Login = () => {
     }
 
     return errors
+  }
+
+  const handleClickShowPassword = () => {
+    setIsShownPassword(!isShownPassword)
+  }
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
   }
 
   const formik = useFormik({
@@ -81,20 +90,16 @@ export const Login = () => {
                   </InputLabel>
                   <Input
                     id="standard-adornment-password"
-                    // type={showPassword ? 'text' : 'password'}
-                    type={'password'}
-                    // value={values.password}
-                    // onChange={handleChange('password')}
+                    type={isShownPassword ? 'text' : 'password'}
                     {...formik.getFieldProps('password')}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
                           aria-label="toggle password visibility"
-                          // onClick={handleClickShowPassword}
-                          // onMouseDown={handleMouseDownPassword}
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
                         >
-                          {/*{values.showPassword ? <VisibilityOff /> : <Visibility />}*/}
-                          {<Visibility />}
+                          {isShownPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
                     }
