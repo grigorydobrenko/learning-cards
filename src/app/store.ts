@@ -1,5 +1,5 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux'
-import thunk from 'redux-thunk'
+import { AnyAction, applyMiddleware, combineReducers, createStore } from 'redux'
+import thunk, { ThunkDispatch } from 'redux-thunk'
 
 import { appReducer } from './app-reducer'
 
@@ -12,3 +12,4 @@ const store = createStore(rootReducer, applyMiddleware(thunk))
 export default store
 
 export type AppRootState = ReturnType<typeof rootReducer>
+export type AppThunkDispatch = ThunkDispatch<AppRootState, any, AnyAction>

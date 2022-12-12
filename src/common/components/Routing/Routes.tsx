@@ -23,6 +23,7 @@ export const PATH = {
 export const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/" element={<Profile />} />
       <Route path={PATH.REGISTER} element={<Register />} />
       <Route path={PATH.LOGIN} element={<Login />} />
       <Route path={PATH.PROFILE} element={<Profile />} />
