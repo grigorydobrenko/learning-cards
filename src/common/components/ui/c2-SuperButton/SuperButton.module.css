@@ -24,10 +24,6 @@
   position: relative;
 
   overflow: hidden;
-
-  margin: 10px;
-
-  border: grey solid 1px;
 }
 
 .button::after {
@@ -70,11 +66,11 @@
 }
 
 .button:focus {
-  outline: goldenrod solid 1px;
+  outline: rgb(32, 63, 218) solid 1px;
 }
 
 .button:active {
-  background: goldenrod;
+  background: rgb(32, 63, 218);
 }
 
 .button:disabled:active {
