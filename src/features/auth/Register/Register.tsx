@@ -24,7 +24,7 @@ const Copyright = (props: any) => {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Friday Project
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -39,7 +39,11 @@ export const Register = () => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
 
-    console.log({ email: data.get('email'), password: data.get('password') })
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+      confirmPassword: data.get('confirmPassword'),
+    })
   }
 
   return (
@@ -102,6 +106,17 @@ export const Register = () => {
                     label="Password"
                     type="password"
                     id="password"
+                    autoComplete="new-password"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="confirmPassword"
+                    label="Confirm password"
+                    type="password"
+                    id="confirmPassword"
                     autoComplete="new-password"
                   />
                 </Grid>
