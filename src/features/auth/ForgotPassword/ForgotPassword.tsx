@@ -1,22 +1,19 @@
 import React from 'react'
 
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import {
-  Avatar,
   Box,
   Button,
-  Checkbox,
   Container,
   createTheme,
   CssBaseline,
-  FormControlLabel,
-  FormLabel,
   Grid,
   Link,
+  Paper,
   TextField,
   ThemeProvider,
   Typography,
 } from '@mui/material'
+
 const Copyright = (props: any) => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -43,17 +40,19 @@ export const ForgotPassword = () => {
   }
 
   return (
-    <div>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Paper elevation={3}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 5,
+              marginBottom: 5,
+              marginLeft: 5,
+              marginRight: 5,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              backgroundColor: '#f9f9fa',
               borderRadius: '10px',
             }}
           >
@@ -91,9 +90,9 @@ export const ForgotPassword = () => {
               </Grid>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 5 }} />
+          <Copyright sx={{ mt: 5, mb: 2 }} />
         </Container>
-      </ThemeProvider>
-    </div>
+      </Paper>
+    </ThemeProvider>
   )
 }
