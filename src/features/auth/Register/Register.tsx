@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Grid,
   Link,
+  Paper,
   TextField,
   ThemeProvider,
   Typography,
@@ -23,7 +24,7 @@ const Copyright = (props: any) => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="#">
         Friday Project
       </Link>{' '}
       {new Date().getFullYear()}
@@ -47,17 +48,17 @@ export const Register = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Paper elevation={3} sx={{ mt: 45 }}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 6,
+              marginBottom: 5,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              backgroundColor: '#f9f9fa',
               borderRadius: '10px',
             }}
           >
@@ -141,9 +142,9 @@ export const Register = () => {
               </Grid>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 5 }} />
+          <Copyright sx={{ mt: 5, mb: 2 }} />
         </Container>
-      </ThemeProvider>
-    </div>
+      </Paper>
+    </ThemeProvider>
   )
 }

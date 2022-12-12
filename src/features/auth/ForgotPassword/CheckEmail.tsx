@@ -22,6 +22,7 @@ export const CheckEmail = () => {
     <ThemeProvider theme={theme}>
       <Paper elevation={3}>
         <Container component="main" maxWidth="xs">
+          <CssBaseline />
           <Box
             sx={{
               marginTop: 5,
