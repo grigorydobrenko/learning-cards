@@ -8,31 +8,43 @@ import {
   createTheme,
   CssBaseline,
   Grid,
+  Paper,
   ThemeProvider,
   Typography,
 } from '@mui/material'
+
+import styles from './CheckEmail.module.css'
 
 const theme = createTheme()
 
 export const CheckEmail = () => {
   return (
-    <div>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <Paper elevation={3}>
         <Container component="main" maxWidth="xs">
-          <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
+              marginTop: 5,
+              marginBottom: 5,
+              marginLeft: 5,
+              marginRight: 5,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              backgroundColor: '#f9f9fa',
               borderRadius: '10px',
             }}
           >
-            <Typography component="h1" variant="h5">
-              Check Email
-            </Typography>
+            <Box
+              sx={{
+                width: 168,
+                height: 32,
+              }}
+            >
+              <Typography align="center" component="h2" variant="h5">
+                Check Email
+              </Typography>
+            </Box>
+
             <EmailIcon fontSize="large" />
             <Box component="form" noValidate sx={{ mt: 3 }}>
               <Grid container spacing={2}>
@@ -51,7 +63,7 @@ export const CheckEmail = () => {
             </Box>
           </Box>
         </Container>
-      </ThemeProvider>
-    </div>
+      </Paper>
+    </ThemeProvider>
   )
 }
