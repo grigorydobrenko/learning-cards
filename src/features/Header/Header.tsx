@@ -44,11 +44,9 @@ export const Header = () => {
               <Avatar alt="user photo" src={userPhoto} />
             </Box>
           ) : (
-            <SuperButton className={style.headerButton}>
-              <NavLink className={style.loginLink} to={PATH.LOGIN}>
-                Sign in
-              </NavLink>
-            </SuperButton>
+            <NavLink className={style.headerButton} to={PATH.LOGIN}>
+              Sign in
+            </NavLink>
           )}
         </Container>
       </Toolbar>

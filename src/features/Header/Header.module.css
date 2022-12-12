@@ -5,16 +5,16 @@
   border-radius: 30px;
   color: white;
   padding: 8px 28px;
+  font-family: 'Montserrat';
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
-  letter-spacing: 1.2px;
-}
-.loginLink {
+  letter-spacing: 1.7px;
   color: white;
   text-decoration: none;
 }
+
 .profileLink {
   color: black;
   border-bottom: 1px dashed #000000;
