@@ -1,0 +1,16 @@
+.paper {
+    position: absolute;
+    width: 413px;
+    height: 408px;
+    left: 434px;
+    top: 120px;
+}
+
+.mainBox {
+    margin-top: 8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f9f9fa;
+    border-radius: 10px;
+}
