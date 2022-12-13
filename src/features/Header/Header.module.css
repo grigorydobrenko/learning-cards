@@ -1,14 +1,22 @@
-.header {
-  color: forestgreen;
-}
-
-.header .link {
-  padding: 10px;
-
-  color: #282c34;
+.headerButton {
+  background: #366eff;
+  box-shadow: 0px 4px 18px rgba(54, 110, 255, 0.35), inset 0px 1px 0px rgba(255, 255, 255, 0.3);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  padding: 8px 28px;
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 1.7px;
+  color: white;
   text-decoration: none;
 }
 
-/*.link {*/
-/*    */
-/*}*/
+.profileLink {
+  color: black;
+  border-bottom: 1px dashed #000000;
+  text-decoration: none;
+}
