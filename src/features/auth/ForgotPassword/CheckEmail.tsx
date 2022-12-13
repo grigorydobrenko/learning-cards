@@ -14,8 +14,6 @@ import {
 
 import { PATH } from '../../../common/components/Routing/Routes'
 
-const theme = createTheme()
-
 export const CheckEmail = () => {
   return (
     <Grid container justifyContent="center">
