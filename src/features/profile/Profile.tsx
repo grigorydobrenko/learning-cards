@@ -1,5 +1,75 @@
-import React from 'react'
+import { Container } from '@mui/system'
+import React, { useCallback } from 'react'
+import { Link, NavLink } from 'react-router-dom'
+import { PATH } from '../../common/components/Routing/Routes'
+import style from './Profile.module.css'
+
+import arrowIcon from '../../assets/img/icons/arrow-left.svg'
+import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
+import Avatar from '@mui/material/Avatar'
+
+import logoutIcon from '../../assets/img/icons/logout-icon.svg'
+import photoIcon from '../../assets/img/icons/photo-icon.svg'
+import userPhoto from '../../assets/img/user-photo.png'
+import CardActions from '@mui/material/CardActions'
+import Box from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
 
 export const Profile = () => {
-  return <div>profile</div>
+  const changeUserName = useCallback((title: string) => {
+    alert(`new name is ${title}`)
+  }, [])
+  return (
+    <>
+      <Container
+        maxWidth="lg"
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: '40px' }}
+      >
+        <Link className={style.profileLink} to={PATH.NOT_FOUND}>
+          <img src={arrowIcon} alt="arrow icon" />
+          <span>Back to pack list</span>
+        </Link>
+
+        <Card className={style.profileWrapper} variant="outlined">
+          <CardContent className={style.profileContent}>
+            <Typography variant="h6" component="h2" sx={{ fontWeight: '600' }} gutterBottom>
+              Personal information
+            </Typography>
+            <Box sx={{ position: 'relative' }}>
+              <Avatar alt="user photo" src={userPhoto} sx={{ width: '96px', height: '96px' }} />
+              <IconButton
+                size="small"
+                sx={{
+                  backgroundColor: '#808080',
+                  position: 'absolute',
+                  bottom: '0',
+                  right: '0',
+                  border: '1px solid #FFFFFF',
+                }}
+                onClick={() => {
+                  alert('upload new photo')
+                }}
+              >
+                <img src={photoIcon} alt="" />
+              </IconButton>
+            </Box>
+
+            <EditableSpan value={'Andrey'} onChange={changeUserName} />
+            <Typography variant="subtitle2" component="p" sx={{ opacity: '0.5' }}>
+              andreykulish89@gmail.com
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <NavLink className={style.profileButton} to={PATH.LOGIN}>
+              <img src={logoutIcon} />
+              <span>Log out</span>
+            </NavLink>
+          </CardActions>
+        </Card>
+      </Container>
+    </>
+  )
 }
