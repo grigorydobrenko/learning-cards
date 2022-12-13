@@ -7,7 +7,6 @@ import {
   Button,
   Checkbox,
   FormControlLabel,
-  FormHelperText,
   Grid,
   Link,
   Paper,
