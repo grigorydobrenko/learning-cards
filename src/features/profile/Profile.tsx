@@ -1,27 +1,29 @@
-import { Container } from '@mui/system'
 import React, { useCallback } from 'react'
+
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import { Container } from '@mui/system'
 import { Link, NavLink } from 'react-router-dom'
-import { PATH } from '../../common/components/Routing/Routes'
-import style from './Profile.module.css'
 
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
-import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import Typography from '@mui/material/Typography'
-import Avatar from '@mui/material/Avatar'
-
 import logoutIcon from '../../assets/img/icons/logout-icon.svg'
 import photoIcon from '../../assets/img/icons/photo-icon.svg'
 import userPhoto from '../../assets/img/user-photo.png'
-import CardActions from '@mui/material/CardActions'
-import Box from '@mui/material/Box'
-import IconButton from '@mui/material/IconButton'
+import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
+import { PATH } from '../../common/components/Routing/Routes'
+
+import style from './Profile.module.css'
 
 export const Profile = () => {
   const changeUserName = useCallback((title: string) => {
     alert(`new name is ${title}`)
   }, [])
+
   return (
     <>
       <Container
