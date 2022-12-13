@@ -12,8 +12,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { useFormik } from 'formik'
 
 import { PATH } from '../../../common/components/Routing/Routes'
+import { validate } from '../../../common/utils/validation'
 
 const Copyright = (props: any) => {
   return (
@@ -28,9 +30,16 @@ const Copyright = (props: any) => {
   )
 }
 
-const theme = createTheme()
-
 export const ForgotPassword = () => {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+    },
+    onSubmit: values => {
+      console.log(JSON.stringify(values))
+    },
+    validate,
+  })
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -57,17 +66,17 @@ export const ForgotPassword = () => {
               <Typography component="h1" variant="h5">
                 Forgot your password?
               </Typography>
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address or Username"
-                      name="email"
                       autoComplete="email"
+                      fullWidth
+                      error={!!formik.errors.email}
+                      id={formik.errors.email ? 'filled-error' : 'email'}
+                      label={formik.errors.email ? formik.errors.email : 'Email Address'}
                       variant="standard"
+                      {...formik.getFieldProps('email')}
                     />
                   </Grid>
                   <Grid item xs={12}>
