@@ -4,17 +4,28 @@ import {
   Box,
   Button,
   Container,
-  createTheme,
   CssBaseline,
   Grid,
   Paper,
   TextField,
   Typography,
 } from '@mui/material'
+import { useFormik } from 'formik'
 
-const theme = createTheme()
+import { validate } from '../../../common/utils/validation'
 
 export const CreateNewPassword = () => {
+  const formik = useFormik({
+    initialValues: {
+      password: '',
+      confirmPassword: '',
+    },
+    onSubmit: values => {
+      console.log(JSON.stringify(values))
+    },
+    validate,
+  })
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const data = new FormData(event.currentTarget)
@@ -48,17 +59,34 @@ export const CreateNewPassword = () => {
                   Create new password
                 </Typography>
               </Box>
-              <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+              <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      required
+                      autoComplete="new-password"
                       fullWidth
-                      name="newPassword"
-                      label="New password"
+                      error={!!formik.errors.password}
+                      id={formik.errors.password ? 'filled-error' : 'password'}
+                      label={formik.errors.password ? formik.errors.password : 'New password'}
                       type="password"
-                      id="newPassword"
                       variant="standard"
+                      {...formik.getFieldProps('password')}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      autoComplete="new-password"
+                      fullWidth
+                      error={!!formik.errors.confirmPassword}
+                      id={formik.errors.confirmPassword ? 'filled-error' : 'confirmPassword'}
+                      label={
+                        formik.errors.confirmPassword
+                          ? formik.errors.confirmPassword
+                          : 'Confirm new password'
+                      }
+                      type="password"
+                      variant="standard"
+                      {...formik.getFieldProps('confirmPassword')}
                     />
                   </Grid>
                 </Grid>
