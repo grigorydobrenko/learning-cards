@@ -72,7 +72,7 @@ export const CreateNewPassword = () => {
                 </Grid>
               </Grid>
               <Grid container justifyContent="flex-start" sx={{ mt: 3 }}>
-                <Typography component="h3">
+                <Typography color="text.secondary" variant="body2">
                   Create new password and we will send you further instructions to email.
                 </Typography>
               </Grid>
