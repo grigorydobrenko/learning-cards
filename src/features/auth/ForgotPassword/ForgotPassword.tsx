@@ -69,6 +69,7 @@ export const ForgotPassword = () => {
                     label="Email Address or Username"
                     name="email"
                     autoComplete="email"
+                    variant="standard"
                   />
                 </Grid>
                 <Grid item xs={12}>

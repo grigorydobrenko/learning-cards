@@ -79,6 +79,7 @@ export const Register = () => {
                     id="firstName"
                     label="First Name"
                     autoFocus
+                    variant="standard"
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -89,6 +90,7 @@ export const Register = () => {
                     label="Last Name"
                     name="lastName"
                     autoComplete="family-name"
+                    variant="standard"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -99,6 +101,7 @@ export const Register = () => {
                     label="Email Address"
                     name="email"
                     autoComplete="email"
+                    variant="standard"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -110,6 +113,7 @@ export const Register = () => {
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    variant="standard"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -121,6 +125,7 @@ export const Register = () => {
                     type="password"
                     id="confirmPassword"
                     autoComplete="new-password"
+                    variant="standard"
                   />
                 </Grid>
                 <Grid item xs={12}>
