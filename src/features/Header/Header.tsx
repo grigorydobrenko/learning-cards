@@ -1,21 +1,22 @@
 import * as React from 'react'
+
 import AppBar from '@mui/material/AppBar'
+import Avatar from '@mui/material/Avatar'
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
+import { NavLink } from 'react-router-dom'
 
 import logo from '../../assets/img/incubator-logo.svg'
 import userPhoto from '../../assets/img/user-photo.png'
-import Container from '@mui/material/Container'
-import SuperButton from '../../common/components/ui/c2-SuperButton/SuperButton'
+import { PATH } from '../../common/components/Routing/Routes'
 
 import style from './Header.module.css'
-import { Link, NavLink, redirect } from 'react-router-dom'
-import { PATH } from '../../common/components/Routing/Routes'
-import Avatar from '@mui/material/Avatar'
-import Box from '@mui/material/Box'
 
 export const Header = () => {
-  const [isLoggined, setIsLoggined] = React.useState(false)
+  const [isLoggined, setIsLoggined] = React.useState(true)
+
   return (
     <AppBar position="static" sx={{ boxShadow: 6, backgroundColor: '#FCFCFC' }}>
       <Toolbar disableGutters>
