@@ -44,6 +44,7 @@ export const Register = () => {
       email: data.get('email'),
       password: data.get('password'),
       confirmPassword: data.get('confirmPassword'),
+      allowExtraEmails: data.get('allowExtraEmails'),
     })
   }
 

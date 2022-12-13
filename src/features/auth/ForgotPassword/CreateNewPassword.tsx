@@ -1,16 +1,12 @@
 import React from 'react'
 
-import EmailIcon from '@mui/icons-material/Email'
 import {
   Box,
   Button,
-  Checkbox,
   Container,
   createTheme,
   CssBaseline,
-  FormControlLabel,
   Grid,
-  Link,
   Paper,
   TextField,
   ThemeProvider,
