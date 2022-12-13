@@ -16,18 +16,36 @@ import {
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import styles from '../../Header/Header.module.css'
+import { loginTC } from '../auth-reducer'
 
 import loginStyles from './Login.module.css'
+
+type FormikErrorType = {
+  email?: string
+  password?: string
+}
+
+export type LoginPayloadType = {
+  email: string
+  password: string
+  rememberMe: boolean
+}
 
 export const Login = () => {
   const [isShownPassword, setIsShownPassword] = React.useState(false)
 
-  const validate = (values: any) => {
-    const errors: any = {}
+  const navigate = useNavigate()
+
+  const dispatch = useAppDispatch()
+  const isLoggedIn = useAppSelector(state => state.authReducer.isLoggedIn)
+
+  const validate = (values: LoginPayloadType) => {
+    const errors: FormikErrorType = {}
 
     if (!values.email) {
       errors.email = 'Required'
@@ -58,11 +76,18 @@ export const Login = () => {
       rememberMe: false,
     },
     validate,
-    onSubmit: (values: any) => {
-      alert(values)
+    onSubmit: (values: LoginPayloadType) => {
+      dispatch(loginTC(values))
       formik.resetForm()
     },
   })
+
+  if (isLoggedIn) {
+    navigate('/profile')
+  }
+
+  //nya-admin@nya.nya
+  //1qazxcvBG
 
   return (
     <Grid container justifyContent="center">
