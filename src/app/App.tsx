@@ -1,9 +1,10 @@
 import React from 'react'
 
 import './App.css'
+import LinearProgress from '@mui/material/LinearProgress'
+
 import { AppRoutes } from '../common/components/Routing/Routes'
 import { Header } from '../features/Header/Header'
-import LinearProgress from '@mui/material/LinearProgress'
 
 function App() {
   return (
