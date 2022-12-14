@@ -94,7 +94,7 @@ export const Register = () => {
                       <TextField
                         autoComplete="given-name"
                         fullWidth
-                        error={formik.touched.fistName && formik.touched.fistName}
+                        error={!!formik.errors.fistName && formik.touched.fistName}
                         id={formik.errors.fistName ? 'filled-error' : 'fistName'}
                         label={
                           formik.errors.fistName && formik.touched.fistName
