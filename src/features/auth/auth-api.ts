@@ -6,7 +6,7 @@ export const instance = axios.create({
   //   process.env.NODE_ENV === 'development'
   //     ? 'http://localhost:7542/2.0/'
   //     : 'https://neko-back.herokuapp.com/2.0/',
-  // withCredentials: true,
+  withCredentials: true,
 })
 
 // export const authAPI = {
@@ -28,7 +28,7 @@ export const registrationAPI = {
     return instance.post('/auth/register', data)
   },
   forgotPassword(data: ForgotPasswordType) {
-    return instance.post('/auth/forgot', data)
+    return axios.post('https://neko-back.herokuapp.com/2.0/auth/forgot', data)
   },
   setNewPassword(data: SetNewPasswordType) {
     return instance.post('/auth/set-new-password', data)
