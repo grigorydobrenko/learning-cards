@@ -85,9 +85,6 @@ export const Register = () => {
     <Grid container justifyContent="center">
       <Grid item xs={6}>
         <Paper style={{ padding: '35px' }}>
-          <Box sx={{}}>
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}></Avatar>
-          </Box>
           <Typography align="center" component="h1" variant="h5">
             Sign up
           </Typography>
