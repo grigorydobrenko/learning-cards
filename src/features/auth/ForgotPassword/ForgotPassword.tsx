@@ -15,6 +15,8 @@ import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
 
 import { PATH } from '../../../common/components/Routing/Routes'
+import { useAppDispatch } from '../../../common/hooks/customHooks'
+import { sendEmailToSetNewPasswordTC } from '../auth-reducer'
 
 const Copyright = (props: any) => {
   return (
@@ -30,13 +32,15 @@ const Copyright = (props: any) => {
 }
 
 export const ForgotPassword = () => {
+  const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {
       email: '',
     },
     onSubmit: values => {
       console.log(JSON.stringify(values))
-      formik.resetForm()
+      dispatch(sendEmailToSetNewPasswordTC(values))
+      //formik.resetForm()
     },
     validate: values => {
       const errors: any = {}
