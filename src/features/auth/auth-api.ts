@@ -22,3 +22,31 @@ export const instance = axios.create({
 //             >("auth/me");
 //     },
 // };
+
+export const registrationAPI = {
+  registration(data: RegistrationDataType) {
+    return instance.post('/auth/register', data)
+  },
+  forgotPassword(data: ForgotPasswordType) {
+    return instance.post('/auth/forgot', data)
+  },
+  setNewPassword(data: SetNewPasswordType) {
+    return instance.post('/auth/set-new-password', data)
+  },
+}
+
+//TYPES
+export type RegistrationDataType = {
+  email: string
+  password: string
+}
+
+export type ForgotPasswordType = {
+  email: string
+  from: string
+  message: string
+}
+export type SetNewPasswordType = {
+  password: string
+  resetPasswordToken: string
+}
