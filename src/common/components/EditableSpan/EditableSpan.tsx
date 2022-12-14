@@ -5,6 +5,9 @@ import IconButton from '@mui/material/IconButton'
 import editIcon from '../../../assets/img/icons/edit-icon.svg'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
+import InputAdornment from '@mui/material/InputAdornment'
+import { AccountCircle } from '@mui/icons-material'
+import Button from '@mui/material/Button'
 
 type EditableSpanPropsType = {
   value: string
@@ -28,7 +31,22 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
   }
 
   return editMode ? (
-    <TextField value={title} onChange={changeTitle} autoFocus onBlur={activateViewMode} />
+    <TextField
+      variant="standard"
+      label="Nickname"
+      value={title}
+      onChange={changeTitle}
+      autoFocus
+      fullWidth
+      InputProps={{
+        endAdornment: (
+          <Button variant="contained" size="small" sx={{ mb: '4px' }}>
+            SAVE
+          </Button>
+        ),
+      }}
+      onBlur={activateViewMode}
+    />
   ) : (
     <Box sx={{ position: 'relative' }}>
       <Typography variant="subtitle1" component="p">
