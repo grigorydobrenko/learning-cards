@@ -17,6 +17,8 @@ import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
 
 import { PATH } from '../../../common/components/Routing/Routes'
+import { useAppDispatch } from '../../../common/hooks/customHooks'
+import { registrationTC } from '../auth-reducer'
 
 const Copyright = (props: any) => {
   return (
@@ -32,6 +34,8 @@ const Copyright = (props: any) => {
 }
 
 export const Register = () => {
+  const dispatch = useAppDispatch()
+
   const formik = useFormik({
     initialValues: {
       fistName: '',
@@ -43,6 +47,7 @@ export const Register = () => {
     },
     onSubmit: values => {
       console.log(JSON.stringify(values))
+      dispatch(registrationTC(values))
       formik.resetForm()
     },
     validate: values => {
