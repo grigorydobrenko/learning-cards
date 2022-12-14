@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { useState } from 'react'
 
 import {
   Avatar,
@@ -18,7 +17,6 @@ import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
 
 import { PATH } from '../../../common/components/Routing/Routes'
-import { validate } from '../../../common/utils/validation'
 
 const Copyright = (props: any) => {
   return (
@@ -34,8 +32,6 @@ const Copyright = (props: any) => {
 }
 
 export const Register = () => {
-  const [password, setPassword] = useState(null)
-
   const formik = useFormik({
     initialValues: {
       fistName: '',
@@ -48,20 +44,36 @@ export const Register = () => {
     onSubmit: values => {
       console.log(JSON.stringify(values))
     },
-    validate,
-  })
+    validate: values => {
+      const errors: any = {}
 
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault()
-  //   const data = new FormData(event.currentTarget)
-  //
-  //   console.log({
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //     confirmPassword: data.get('confirmPassword'),
-  //     allowExtraEmails: data.get('allowExtraEmails'),
-  //   })
-  // }
+      if (!values.fistName) {
+        errors.fistName = 'Required'
+      } else if (!/^[A-Z0-9._%+-]{3,20}$/i.test(values.fistName)) {
+        errors.fistName = 'Incorrect first name'
+      }
+      if (!values.lastName) {
+        errors.lastName = 'Required'
+      } else if (!/^[A-Z0-9._%+-]{3,20}$/i.test(values.lastName)) {
+        errors.lastName = 'Incorrect last name'
+      }
+      if (!values.email) {
+        errors.email = 'Required'
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address'
+      }
+      if (!values.password) {
+        errors.password = 'Required'
+      } else if (values.password.length < 3) {
+        errors.password = 'Too short password'
+      }
+      if (values.confirmPassword !== values.password) {
+        errors.confirmPassword = 'Passwords must be the same'
+      }
+
+      return errors
+    },
+  })
 
   return (
     <Grid container justifyContent="center">
@@ -76,15 +88,19 @@ export const Register = () => {
           <form onSubmit={formik.handleSubmit}>
             <FormGroup>
               <FormControl>
-                <Box component="form" noValidate sx={{ mt: 3 }}>
+                <Box sx={{ mt: 3 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         autoComplete="given-name"
                         fullWidth
-                        error={!!formik.errors.fistName}
+                        error={formik.touched.fistName && formik.touched.fistName}
                         id={formik.errors.fistName ? 'filled-error' : 'fistName'}
-                        label={formik.errors.fistName ? formik.errors.fistName : 'First Name'}
+                        label={
+                          formik.errors.fistName && formik.touched.fistName
+                            ? formik.errors.fistName
+                            : 'First Name'
+                        }
                         variant="standard"
                         {...formik.getFieldProps('fistName')}
                       />
@@ -93,9 +109,13 @@ export const Register = () => {
                       <TextField
                         autoComplete="family-name"
                         fullWidth
-                        error={!!formik.errors.lastName}
+                        error={!!formik.errors.lastName && formik.touched.lastName}
                         id={formik.errors.lastName ? 'filled-error' : 'lastName'}
-                        label={formik.errors.lastName ? formik.errors.lastName : 'Last Name'}
+                        label={
+                          formik.errors.lastName && formik.touched.lastName
+                            ? formik.errors.lastName
+                            : 'Last Name'
+                        }
                         variant="standard"
                         {...formik.getFieldProps('lastName')}
                       />
@@ -104,9 +124,14 @@ export const Register = () => {
                       <TextField
                         autoComplete="email"
                         fullWidth
-                        error={!!formik.errors.email}
+                        required
+                        error={!!formik.errors.email && formik.touched.email}
                         id={formik.errors.email ? 'filled-error' : 'email'}
-                        label={formik.errors.email ? formik.errors.email : 'Email Address'}
+                        label={
+                          formik.errors.email && formik.touched.email
+                            ? formik.errors.email
+                            : 'Email Address'
+                        }
                         variant="standard"
                         {...formik.getFieldProps('email')}
                       />
@@ -115,9 +140,14 @@ export const Register = () => {
                       <TextField
                         autoComplete="new-password"
                         fullWidth
-                        error={!!formik.errors.password}
+                        required
+                        error={!!formik.errors.password && formik.touched.password}
                         id={formik.errors.password ? 'filled-error' : 'password'}
-                        label={formik.errors.password ? formik.errors.password : 'Password'}
+                        label={
+                          formik.errors.password && formik.touched.password
+                            ? formik.errors.password
+                            : 'Password'
+                        }
                         type="password"
                         variant="standard"
                         {...formik.getFieldProps('password')}
@@ -125,7 +155,6 @@ export const Register = () => {
                     </Grid>
                     <Grid item xs={12}>
                       <TextField
-                        autoComplete="new-password"
                         fullWidth
                         error={!!formik.errors.confirmPassword}
                         id={formik.errors.confirmPassword ? 'filled-error' : 'confirmPassword'}
@@ -166,6 +195,7 @@ export const Register = () => {
               </FormControl>
             </FormGroup>
           </form>
+          <Copyright sx={{ mt: 3 }} />
         </Paper>
       </Grid>
     </Grid>

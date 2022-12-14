@@ -74,6 +74,7 @@ export const ForgotPassword = () => {
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
                         <TextField
+                          autoFocus={true}
                           autoComplete="email"
                           fullWidth
                           error={formik.touched && !!formik.errors.email}
