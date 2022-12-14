@@ -69,6 +69,7 @@ export const CreateNewPassword = () => {
                       <TextField
                         autoComplete="new-password"
                         fullWidth
+                        required
                         error={!!formik.errors.password && formik.touched.password}
                         id={formik.errors.password ? 'filled-error' : 'password'}
                         label={

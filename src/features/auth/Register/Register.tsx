@@ -95,6 +95,7 @@ export const Register = () => {
                       <TextField
                         autoComplete="given-name"
                         fullWidth
+                        required
                         error={!!formik.errors.fistName && formik.touched.fistName}
                         id={formik.errors.fistName ? 'filled-error' : 'fistName'}
                         label={
@@ -110,6 +111,7 @@ export const Register = () => {
                       <TextField
                         autoComplete="family-name"
                         fullWidth
+                        required
                         error={!!formik.errors.lastName && formik.touched.lastName}
                         id={formik.errors.lastName ? 'filled-error' : 'lastName'}
                         label={

@@ -76,6 +76,7 @@ export const ForgotPassword = () => {
                         <TextField
                           autoComplete="email"
                           fullWidth
+                          required
                           error={formik.touched.email && !!formik.errors.email}
                           id={formik.errors.email ? 'filled-error' : 'email'}
                           label={
