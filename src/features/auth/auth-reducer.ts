@@ -1,7 +1,7 @@
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
-import { setAppErrorAC } from '../../app/app-reducer'
 import { AppThunk } from '../../app/store'
+import { errorUtils } from '../../common/utils/error-utils'
 
 import { authAPI, LoginPayloadType } from './auth-api'
 
@@ -34,11 +34,7 @@ export const loginTC =
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
 
-      if (axios.isAxiosError(err)) {
-        const error = err.response?.data ? err.response.data.error : err.message
-
-        dispatch(setAppErrorAC(error))
-      }
+      errorUtils(err, dispatch)
     }
   }
 
@@ -47,5 +43,3 @@ export const setIsLoggedInAC = (isLoggedIn: boolean) => ({
   type: 'login/SET-IS-LOGGED-IN',
   isLoggedIn,
 })
-
-//НЕ понядобятся: isAdmin,verified, __v, token, tokenDeathTime,
