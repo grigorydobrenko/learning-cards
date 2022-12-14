@@ -1,9 +1,9 @@
 import axios, { AxiosError } from 'axios'
 
+import { setAppErrorAC } from '../../app/app-reducer'
 import { AppThunk } from '../../app/store'
 
-import { authAPI } from './auth-api'
-import { LoginPayloadType } from './Login/Login'
+import { authAPI, LoginPayloadType } from './auth-api'
 
 const initialState = {
   isLoggedIn: false,
@@ -28,30 +28,17 @@ export const loginTC =
   async dispatch => {
     // dispatch(setAppStatusAC('loading'))
     try {
-      const res = await authAPI.login(data)
+      await authAPI.login(data)
 
       dispatch(setIsLoggedInAC(true))
-      // dispatch(setAppStatusAC('succeeded'))
-      // } else {
-      //   handleServerAppError(dispatch, res.data)
-      // }
     } catch (e) {
-      const err = e as Error | AxiosError
+      const err = e as Error | AxiosError<{ error: string }>
 
       if (axios.isAxiosError(err)) {
-        const error = err.response
-          ? err.response.data.error
-          : err.message + ', more details in the console'
+        const error = err.response?.data ? err.response.data.error : err.message
 
-        throw new Error(error)
+        dispatch(setAppErrorAC(error))
       }
-
-      // const err = e as Error | AxiosError
-      //
-      // if (axios.isAxiosError(err)) {
-      //   handleServerNetWorkError(dispatch, err)
-      // }
-      // const error = e.response ? e.response.data.error : e.message + ', more details in the console'
     }
   }
 

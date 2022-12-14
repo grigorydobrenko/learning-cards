@@ -21,6 +21,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { PATH } from '../../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import styles from '../../Header/Header.module.css'
+import { LoginPayloadType } from '../auth-api'
 import { loginTC } from '../auth-reducer'
 
 import loginStyles from './Login.module.css'
@@ -28,12 +29,6 @@ import loginStyles from './Login.module.css'
 type FormikErrorType = {
   email?: string
   password?: string
-}
-
-export type LoginPayloadType = {
-  email: string
-  password: string
-  rememberMe: boolean
 }
 
 export const Login = () => {

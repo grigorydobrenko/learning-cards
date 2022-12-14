@@ -1,21 +1,27 @@
-export type initStateType = {}
+export type initStateType = {
+  error: null | string
+}
 
-const initState: initStateType = {}
+const initState: initStateType = {
+  error: null as null | string,
+}
 
-export const appReducer = (state = initState, action: initACType): initStateType => {
+export const appReducer = (state = initState, action: appReducerActionsType): initStateType => {
   switch (action.type) {
-    case 'INIT': {
-      return state
+    case 'APP/SET-ERROR': {
+      return { ...state, error: action.error }
     }
     default:
       return state
   }
 }
 
-type initACType = ReturnType<typeof loadingAC>
-
-export const loadingAC = () => {
+export const setAppErrorAC = (error: null | string) => {
   return {
-    type: 'INIT',
+    type: 'APP/SET-ERROR',
+    error,
   }
 }
+
+type appReducerActionsType = setAppErrorACType
+export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
