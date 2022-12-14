@@ -12,8 +12,6 @@ import {
 } from '@mui/material'
 import { useFormik } from 'formik'
 
-import { validate } from '../../../common/utils/validation'
-
 export const CreateNewPassword = () => {
   const formik = useFormik({
     initialValues: {
@@ -23,17 +21,21 @@ export const CreateNewPassword = () => {
     onSubmit: values => {
       console.log(JSON.stringify(values))
     },
-    validate,
+    validate: values => {
+      const errors: any = {}
+
+      if (!values.password) {
+        errors.password = 'Required'
+      } else if (values.password.length < 3) {
+        errors.password = 'Too short password'
+      }
+      if (values.confirmPassword !== values.password) {
+        errors.confirmPassword = 'Passwords must be the same'
+      }
+
+      return errors
+    },
   })
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-
-    console.log({
-      password: data.get('newPassword'),
-    })
-  }
 
   return (
     <Grid container justifyContent="center">
@@ -59,46 +61,48 @@ export const CreateNewPassword = () => {
                   Create new password
                 </Typography>
               </Box>
-              <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="new-password"
-                      fullWidth
-                      error={!!formik.errors.password}
-                      id={formik.errors.password ? 'filled-error' : 'password'}
-                      label={formik.errors.password ? formik.errors.password : 'New password'}
-                      type="password"
-                      variant="standard"
-                      {...formik.getFieldProps('password')}
-                    />
+              <form onSubmit={formik.handleSubmit}>
+                <Box sx={{ mt: 3 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        autoComplete="new-password"
+                        fullWidth
+                        error={!!formik.errors.password}
+                        id={formik.errors.password ? 'filled-error' : 'password'}
+                        label={formik.errors.password ? formik.errors.password : 'New password'}
+                        type="password"
+                        variant="standard"
+                        {...formik.getFieldProps('password')}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        autoComplete="new-password"
+                        fullWidth
+                        error={!!formik.errors.confirmPassword}
+                        id={formik.errors.confirmPassword ? 'filled-error' : 'confirmPassword'}
+                        label={
+                          formik.errors.confirmPassword
+                            ? formik.errors.confirmPassword
+                            : 'Confirm new password'
+                        }
+                        type="password"
+                        variant="standard"
+                        {...formik.getFieldProps('confirmPassword')}
+                      />
+                    </Grid>
                   </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="new-password"
-                      fullWidth
-                      error={!!formik.errors.confirmPassword}
-                      id={formik.errors.confirmPassword ? 'filled-error' : 'confirmPassword'}
-                      label={
-                        formik.errors.confirmPassword
-                          ? formik.errors.confirmPassword
-                          : 'Confirm new password'
-                      }
-                      type="password"
-                      variant="standard"
-                      {...formik.getFieldProps('confirmPassword')}
-                    />
+                  <Grid container justifyContent="flex-start" sx={{ mt: 3 }}>
+                    <Typography color="text.secondary" variant="body2">
+                      Create new password and we will send you further instructions to email.
+                    </Typography>
                   </Grid>
-                </Grid>
-                <Grid container justifyContent="flex-start" sx={{ mt: 3 }}>
-                  <Typography color="text.secondary" variant="body2">
-                    Create new password and we will send you further instructions to email.
-                  </Typography>
-                </Grid>
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                  Create new password
-                </Button>
-              </Box>
+                  <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    Create new password
+                  </Button>
+                </Box>
+              </form>
             </Box>
           </Container>
         </Paper>
