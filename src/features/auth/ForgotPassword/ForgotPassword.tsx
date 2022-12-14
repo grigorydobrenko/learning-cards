@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Container,
-  createTheme,
   CssBaseline,
   Grid,
   Link,
@@ -12,10 +11,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
 
 import { PATH } from '../../../common/components/Routing/Routes'
-import { validate } from '../../../common/utils/validation'
 
 const Copyright = (props: any) => {
   return (
@@ -37,17 +36,20 @@ export const ForgotPassword = () => {
     },
     onSubmit: values => {
       console.log(JSON.stringify(values))
+      formik.resetForm()
     },
-    validate,
-  })
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
+    validate: values => {
+      const errors: any = {}
 
-    console.log({
-      email: data.get('email'),
-    })
-  }
+      if (!values.email) {
+        errors.email = 'Required'
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address'
+      }
+
+      return errors
+    },
+  })
 
   return (
     <Grid container justifyContent="center">
@@ -66,37 +68,41 @@ export const ForgotPassword = () => {
               <Typography component="h1" variant="h5">
                 Forgot your password?
               </Typography>
-              <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      autoComplete="email"
-                      fullWidth
-                      error={!!formik.errors.email}
-                      id={formik.errors.email ? 'filled-error' : 'email'}
-                      label={formik.errors.email ? formik.errors.email : 'Email Address'}
-                      variant="standard"
-                      {...formik.getFieldProps('email')}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography color="text.secondary" variant="body2">
-                      Lost your password? Please enter your username or email address. You will
-                      receive a link to create a new password via email.
-                    </Typography>
-                  </Grid>
-                </Grid>
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                  Reset password
-                </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Link href={PATH.LOGIN} variant="body2">
-                      Did you remember your password?
-                    </Link>
-                  </Grid>
-                </Grid>
-              </Box>
+              <form onSubmit={formik.handleSubmit}>
+                <FormGroup>
+                  <Box sx={{ mt: 3 }}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={12}>
+                        <TextField
+                          autoComplete="email"
+                          fullWidth
+                          error={formik.touched && !!formik.errors.email}
+                          id={formik.errors.email ? 'filled-error' : 'email'}
+                          label={formik.errors.email ? formik.errors.email : 'Email Address'}
+                          variant="standard"
+                          {...formik.getFieldProps('email')}
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Typography color="text.secondary" variant="body2">
+                          Lost your password? Please enter your username or email address. You will
+                          receive a link to create a new password via email.
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                      Reset password
+                    </Button>
+                    <Grid container justifyContent="flex-end">
+                      <Grid item>
+                        <Link href={PATH.LOGIN} variant="body2">
+                          Did you remember your password?
+                        </Link>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </FormGroup>
+              </form>
             </Box>
             <Copyright sx={{ mt: 5, mb: 2 }} />
           </Container>
