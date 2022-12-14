@@ -1,7 +1,6 @@
 import * as React from 'react'
 
 import {
-  Avatar,
   Box,
   Button,
   Checkbox,
@@ -15,9 +14,10 @@ import {
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
+import { Navigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
-import { useAppDispatch } from '../../../common/hooks/customHooks'
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { registrationTC } from '../auth-reducer'
 
 const Copyright = (props: any) => {
@@ -35,7 +35,7 @@ const Copyright = (props: any) => {
 
 export const Register = () => {
   const dispatch = useAppDispatch()
-
+  const isRegistered = useAppSelector(state => state.auth.isRegisteredIn)
   const formik = useFormik({
     initialValues: {
       fistName: '',
@@ -48,7 +48,7 @@ export const Register = () => {
     onSubmit: values => {
       console.log(JSON.stringify(values))
       dispatch(registrationTC(values))
-      formik.resetForm()
+      // formik.resetForm()
     },
     validate: values => {
       const errors: any = {}
@@ -80,6 +80,10 @@ export const Register = () => {
       return errors
     },
   })
+
+  if (isRegistered) {
+    return <Navigate to={PATH.LOGIN} />
+  }
 
   return (
     <Grid container justifyContent="center">
