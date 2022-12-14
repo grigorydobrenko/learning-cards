@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 
-import { setAppStatusAC } from '../../app/app-reducer'
+import { setAppStatusAC, setUserDataAC } from '../../app/app-reducer'
 import { AppThunk } from '../../app/store'
 import { errorUtils } from '../../common/utils/error-utils'
 
@@ -29,9 +29,11 @@ export const loginTC =
   async dispatch => {
     dispatch(setAppStatusAC('loading'))
     try {
-      await authAPI.login(data)
+      const response = await authAPI.login(data)
 
       dispatch(setIsLoggedInAC(true))
+      dispatch(setUserDataAC(response.data))
+
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
