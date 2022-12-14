@@ -27,7 +27,7 @@ export const CreateNewPassword = () => {
 
       if (!values.password) {
         errors.password = 'Required'
-      } else if (values.password.length < 3) {
+      } else if (values.password.length < 8) {
         errors.password = 'Too short password'
       }
       if (values.confirmPassword !== values.password) {
