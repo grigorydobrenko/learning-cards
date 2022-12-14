@@ -67,11 +67,14 @@ export const CreateNewPassword = () => {
                     <Grid item xs={12}>
                       <TextField
                         autoComplete="new-password"
-                        autoFocus={true}
                         fullWidth
-                        error={!!formik.errors.password}
+                        error={!!formik.errors.password && formik.touched.password}
                         id={formik.errors.password ? 'filled-error' : 'password'}
-                        label={formik.errors.password ? formik.errors.password : 'New password'}
+                        label={
+                          formik.errors.password && formik.touched.password
+                            ? formik.errors.password
+                            : 'New password'
+                        }
                         type="password"
                         variant="standard"
                         {...formik.getFieldProps('password')}
