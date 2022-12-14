@@ -28,7 +28,7 @@ export const registrationAPI = {
     return instance.post('/auth/register', data)
   },
   forgotPassword(data: ForgotPasswordType) {
-    return axios.post('https://neko-back.herokuapp.com/2.0/auth/forgot', data)
+    return instance.post('/auth/forgot', data)
   },
   setNewPassword(data: SetNewPasswordType) {
     return instance.post('/auth/set-new-password', data)
