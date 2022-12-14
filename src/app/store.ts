@@ -1,10 +1,13 @@
 import { AnyAction, applyMiddleware, combineReducers, createStore } from 'redux'
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
+import { authReducer } from '../features/auth/auth-reducer'
+
 import { appReducer } from './app-reducer'
 
 const rootReducer = combineReducers({
   appReducer: appReducer,
+  auth: authReducer,
 })
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
