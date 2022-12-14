@@ -20,6 +20,7 @@ export const CreateNewPassword = () => {
     },
     onSubmit: values => {
       console.log(JSON.stringify(values))
+      formik.resetForm()
     },
     validate: values => {
       const errors: any = {}

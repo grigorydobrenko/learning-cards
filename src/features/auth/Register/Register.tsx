@@ -43,6 +43,7 @@ export const Register = () => {
     },
     onSubmit: values => {
       console.log(JSON.stringify(values))
+      formik.resetForm()
     },
     validate: values => {
       const errors: any = {}
