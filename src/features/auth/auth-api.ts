@@ -27,8 +27,6 @@ export const authAPI = {
   },
 }
 
-
-
 export const registrationAPI = {
   registration(data: RegistrationDataType) {
     return instance.post('/auth/register', data)

@@ -1,14 +1,13 @@
 import React, { ChangeEvent, useState } from 'react'
-import TextField from '@mui/material/TextField'
-import IconButton from '@mui/material/IconButton'
 
-import editIcon from '../../../assets/img/icons/edit-icon.svg'
+import styled from '@emotion/styled'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import IconButton from '@mui/material/IconButton'
+import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 
-import Button from '@mui/material/Button'
-import styled from '@emotion/styled'
-
+import editIcon from '../../../assets/img/icons/edit-icon.svg'
 
 type EditableSpanPropsType = {
   value: string

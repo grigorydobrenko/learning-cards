@@ -11,9 +11,9 @@ import { NavLink } from 'react-router-dom'
 import logo from '../../assets/img/incubator-logo.svg'
 import userPhoto from '../../assets/img/user-photo.png'
 import { PATH } from '../../common/components/Routing/Routes'
+import { useAppSelector } from '../../common/hooks/customHooks'
 
 import style from './Header.module.css'
-import { useAppSelector } from '../../common/hooks/customHooks'
 
 export const Header = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
