@@ -18,12 +18,10 @@ function App() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (!user) {
-      dispatch(initializeAppTC())
-    }
-  }, [dispatch])
+    dispatch(initializeAppTC())
+  }, [])
   if (!isInitialized) {
-    return <CircularProgress />
+    return <CircularProgress size="30px" className="circularProgress" />
   }
 
   return (

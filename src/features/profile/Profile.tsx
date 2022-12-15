@@ -23,14 +23,16 @@ import style from './Profile.module.css'
 
 export const Profile = () => {
   const user = useAppSelector(state => state.app.userData)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const dispatch = useAppDispatch()
-  const changeUserName = useCallback((title: string) => {
+  const changeUserName = (title: string) => {
     dispatch(updateUserDataTC({ name: title }))
-  }, [])
-  const logOutHandler = () => {
+  }
+  const logOutHandler = (e: any) => {
+    e.preventDefault()
     dispatch(logoutTC())
   }
-  if (!user) {
+  if (!isLoggedIn) {
     return <Navigate to={PATH.LOGIN} />
   }
 
@@ -51,7 +53,11 @@ export const Profile = () => {
               Personal information
             </Typography>
             <Box sx={{ position: 'relative' }}>
-              <Avatar alt="user photo" src={userPhoto} sx={{ width: '96px', height: '96px' }} />
+              <Avatar
+                alt="user photo"
+                src={user?.avatar || userPhoto}
+                sx={{ width: '96px', height: '96px' }}
+              />
               <IconButton
                 size="small"
                 sx={{
@@ -69,9 +75,9 @@ export const Profile = () => {
               </IconButton>
             </Box>
 
-            <EditableSpan value={user.name} onChange={changeUserName} />
+            <EditableSpan value={user?.name || ''} onChange={changeUserName} />
             <Typography variant="subtitle2" component="p" sx={{ opacity: '0.5' }}>
-              andreykulish89@gmail.com
+              {user?.email}
             </Typography>
           </CardContent>
           <CardActions>

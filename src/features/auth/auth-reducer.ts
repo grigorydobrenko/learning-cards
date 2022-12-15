@@ -53,7 +53,7 @@ export const loginTC =
     }
   }
 export const updateUserDataTC =
-  (data: { name?: string; avatar?: string }) =>
+  (data: { name?: string; avatar?: string }): AppThunkType =>
   (dispatch: AppThunkDispatch, getState: () => AppRootState) => {
     dispatch(setAppStatusAC('loading'))
     const state = getState()
@@ -75,10 +75,13 @@ export const updateUserDataTC =
         dispatch(setAppStatusAC('succeeded'))
       })
       .catch(e => {
-        console.log(e)
+        const err = e as Error | AxiosError<{ error: string }>
+
+        errorUtils(err, dispatch)
+        dispatch(setAppStatusAC('failed'))
       })
   }
-export const logoutTC = () => (dispatch: AppThunkDispatch) => {
+export const logoutTC = (): AppThunkType => (dispatch: AppThunkDispatch) => {
   dispatch(setAppStatusAC('loading'))
   authAPI
     .logout()
@@ -86,8 +89,11 @@ export const logoutTC = () => (dispatch: AppThunkDispatch) => {
       dispatch(setIsLoggedInAC(false))
       dispatch(setAppStatusAC('succeeded'))
     })
-    .catch(error => {
-      // handleServerNetworkAppError(error, dispatch);
+    .catch(e => {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
     })
 }
 

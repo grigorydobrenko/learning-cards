@@ -3,7 +3,8 @@ import { AxiosError } from 'axios'
 
 import { LoginResponseType, authAPI } from '../features/auth/auth-api'
 
-import { AppThunkDispatch } from './store'
+import { AppThunkDispatch, AppThunkType } from './store'
+import { errorUtils } from '../common/utils/error-utils'
 
 const initState: initStateType = {
   status: 'idle',
@@ -42,20 +43,21 @@ export const setAppInitializedAC = (value: boolean) =>
   ({ type: 'APP/SET-APP-INITIALIZED', isInitialized: value } as const)
 //  thunks==============================================================
 
-export const initializeAppTC = () => (dispatch: AppThunkDispatch) => {
+export const initializeAppTC = (): AppThunkType => (dispatch: AppThunkDispatch) => {
   authAPI
     .me()
     .then(res => {
-      dispatch(setAppInitializedAC(true))
       dispatch(setUserDataAC(res.data))
       dispatch(setIsLoggedInAC(true))
     })
     .catch(e => {
       const err = e as Error | AxiosError<{ error: string }>
 
-      dispatch(setAppInitializedAC(true))
-      // errorUtils(err, dispatch)
+      errorUtils(err, dispatch)
       dispatch(setAppStatusAC('failed'))
+    })
+    .finally(() => {
+      dispatch(setAppInitializedAC(true))
     })
 }
 

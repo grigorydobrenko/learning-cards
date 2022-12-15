@@ -17,3 +17,8 @@ body {
   font-family: 'Montserrat';
   font-size: 14px;
 }
+.circularProgress {
+  position: absolute;
+  top: 49%;
+  left: 49%;
+}

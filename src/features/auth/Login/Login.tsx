@@ -16,7 +16,7 @@ import {
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
@@ -78,6 +78,7 @@ export const Login = () => {
   })
 
   if (isLoggedIn) {
+    return <Navigate to={'/profile'} />
     navigate('/profile')
   }
 
