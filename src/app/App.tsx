@@ -4,6 +4,7 @@ import './App.css'
 import { CircularProgress, Container } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
 
+import { CustomizedSnackbars } from '../common/components/ErrorSnackBar/ErrorSnackBar'
 import { AppRoutes } from '../common/components/Routing/Routes'
 import { Header } from '../features/Header/Header'
 import { useAppDispatch, useAppSelector } from '../common/hooks/customHooks'
@@ -33,6 +34,7 @@ function App() {
       <Container fixed sx={{ pt: 4 }}>
         <AppRoutes />
       </Container>
+      <CustomizedSnackbars />
     </div>
   )
 }

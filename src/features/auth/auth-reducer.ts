@@ -3,7 +3,7 @@ import { AxiosError } from 'axios'
 
 import { setAppStatusAC, setUserDataAC } from '../../app/app-reducer'
 import { AppThunkDispatch } from '../../app/store'
-// import { errorUtils } from '../../common/utils/error-utils'
+import { errorUtils } from '../../common/utils/error-utils'
 
 import { authAPI, LoginPayloadType } from './auth-api'
 
@@ -17,11 +17,11 @@ const InitialState: InitialStateType = {
 
 export const authReducer = (
   state: InitialStateType = InitialState,
-  action: any
+  action: authActionType
 ): InitialStateType => {
   switch (action.type) {
     case 'login/SET-IS-LOGGED-IN':
-      return { ...state, isLoggedIn: action.value }
+      return { ...state, isLoggedIn: action.isLoggedIn }
     case 'login/SET-IS-REGISTERED-IN':
       return { ...state, isRegisteredIn: action.value }
     default:
@@ -32,7 +32,7 @@ export const authReducer = (
 export const setIsLoggedInAC = (isLoggedIn: boolean) => ({
   type: 'login/SET-IS-LOGGED-IN',
   isLoggedIn,
-})
+} as const)
 
 export const setIsRegisteredInAC = (value: boolean) =>
     ({ type: 'login/SET-IS-REGISTERED-IN', value } as const)
@@ -53,7 +53,7 @@ export const loginTC =
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
 
-      // errorUtils(err, dispatch)
+      errorUtils(err, dispatch)
       dispatch(setAppStatusAC('failed'))
     }
   }
@@ -133,7 +133,6 @@ link</a>
   }
 
 //TYPES
-export type RegisteredActionType = ReturnType<typeof setIsRegisteredInAC>
 type dataFromForgotPasswordType = {
   email: string
 }
@@ -150,4 +149,7 @@ type InitialStateType = {
   isLoggedIn: boolean
 }
 
+
+export type authActionType = setIsLoggedInACType | setIsRegisteredInACType
 type setIsLoggedInACType = ReturnType<typeof setIsLoggedInAC>
+type setIsRegisteredInACType = ReturnType<typeof setIsRegisteredInAC>
