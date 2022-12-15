@@ -13,9 +13,10 @@ import userPhoto from '../../assets/img/user-photo.png'
 import { PATH } from '../../common/components/Routing/Routes'
 
 import style from './Header.module.css'
+import { useAppSelector } from '../../common/hooks/customHooks'
 
 export const Header = () => {
-  const [isLoggined, setIsLoggined] = React.useState(true)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
   return (
     <AppBar position="static" sx={{ boxShadow: 6, backgroundColor: '#FCFCFC' }}>
@@ -37,7 +38,7 @@ export const Header = () => {
           >
             <img src={logo} alt="logo of app" />
           </Typography>
-          {isLoggined ? (
+          {isLoggedIn ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <NavLink className={style.profileLink} to={PATH.PROFILE}>
                 user name

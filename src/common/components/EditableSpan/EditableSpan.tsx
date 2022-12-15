@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography'
 import InputAdornment from '@mui/material/InputAdornment'
 import { AccountCircle } from '@mui/icons-material'
 import Button from '@mui/material/Button'
+import styled from '@emotion/styled'
 
 type EditableSpanPropsType = {
   value: string
@@ -17,6 +18,16 @@ type EditableSpanPropsType = {
 export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
   let [editMode, setEditMode] = useState(false)
   let [title, setTitle] = useState(props.value)
+  const CssTextField = styled(TextField)({
+    '& label.Mui-focused': {
+      color: 'black',
+      opacity: '0.5',
+    },
+    '& .MuiInput-underline:after': {
+      borderBottomColor: 'black',
+      opacity: '0.5',
+    },
+  })
 
   const activateEditMode = () => {
     setEditMode(true)
@@ -31,7 +42,7 @@ export const EditableSpan = React.memo(function (props: EditableSpanPropsType) {
   }
 
   return editMode ? (
-    <TextField
+    <CssTextField
       variant="standard"
       label="Nickname"
       value={title}

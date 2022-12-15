@@ -1,6 +1,6 @@
 import { Container } from '@mui/system'
 import React, { useCallback } from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, Navigate, NavLink } from 'react-router-dom'
 import { PATH } from '../../common/components/Routing/Routes'
 import style from './Profile.module.css'
 
@@ -17,11 +17,18 @@ import userPhoto from '../../assets/img/user-photo.png'
 import CardActions from '@mui/material/CardActions'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
+import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
+import { updateUserDataTC } from '../auth/auth-reducer'
 
 export const Profile = () => {
+  const user = useAppSelector(state => state.app.userData)
+  const dispatch = useAppDispatch()
   const changeUserName = useCallback((title: string) => {
-    alert(`new name is ${title}`)
+    dispatch(updateUserDataTC({ name: title }))
   }, [])
+  if (!user) {
+    return <Navigate to={PATH.LOGIN} />
+  }
   return (
     <>
       <Container
