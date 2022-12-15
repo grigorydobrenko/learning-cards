@@ -17,7 +17,7 @@ import userPhoto from '../../assets/img/user-photo.png'
 import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
-import { updateUserDataTC } from '../auth/auth-reducer'
+import { logoutTC, updateUserDataTC } from '../auth/auth-reducer'
 
 import style from './Profile.module.css'
 
@@ -27,7 +27,9 @@ export const Profile = () => {
   const changeUserName = useCallback((title: string) => {
     dispatch(updateUserDataTC({ name: title }))
   }, [])
-
+  const logOutHandler = () => {
+    dispatch(logoutTC())
+  }
   if (!user) {
     return <Navigate to={PATH.LOGIN} />
   }
@@ -67,13 +69,13 @@ export const Profile = () => {
               </IconButton>
             </Box>
 
-            <EditableSpan value={'Andrey'} onChange={changeUserName} />
+            <EditableSpan value={user.name} onChange={changeUserName} />
             <Typography variant="subtitle2" component="p" sx={{ opacity: '0.5' }}>
               andreykulish89@gmail.com
             </Typography>
           </CardContent>
           <CardActions>
-            <NavLink className={style.profileButton} to={PATH.LOGIN}>
+            <NavLink className={style.profileButton} to={PATH.LOGIN} onClick={logOutHandler}>
               <img src={logoutIcon} />
               <span>Log out</span>
             </NavLink>

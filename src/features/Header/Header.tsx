@@ -16,6 +16,7 @@ import style from './Header.module.css'
 import { useAppSelector } from '../../common/hooks/customHooks'
 
 export const Header = () => {
+  const user = useAppSelector(sttae => sttae.app.userData)
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
   return (
@@ -41,7 +42,7 @@ export const Header = () => {
           {isLoggedIn ? (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
               <NavLink className={style.profileLink} to={PATH.PROFILE}>
-                user name
+                {user?.name || 'user name'}
               </NavLink>
               <Avatar alt="user photo" src={userPhoto} />
             </Box>
