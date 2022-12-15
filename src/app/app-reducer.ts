@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios'
-import { LoginResponseType } from '../features/auth/auth-api'
 
-import { authAPI } from '../features/auth/auth-api'
+import { LoginResponseType, authAPI } from '../features/auth/auth-api'
+
 import { AppThunkDispatch } from './store'
 
 const initState: initStateType = {

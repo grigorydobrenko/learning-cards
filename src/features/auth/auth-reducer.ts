@@ -1,14 +1,10 @@
-import {AppRootState, AppThunkType} from './../../app/store'
-import { AxiosError } from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import { setAppStatusAC, setUserDataAC } from '../../app/app-reducer'
-import { AppThunkDispatch } from '../../app/store'
+import { AppThunkDispatch, AppRootState, AppThunkType } from '../../app/store'
 import { errorUtils } from '../../common/utils/error-utils'
 
-import { authAPI, LoginPayloadType } from './auth-api'
-
-import axios from 'axios'
-
+import { authAPI, ForgotPasswordType, LoginPayloadType, registrationAPI } from './auth-api'
 
 const InitialState: InitialStateType = {
   isLoggedIn: false,
@@ -29,15 +25,14 @@ export const authReducer = (
   }
 }
 
-export const setIsLoggedInAC = (isLoggedIn: boolean) => ({
-  type: 'login/SET-IS-LOGGED-IN',
-  isLoggedIn,
-} as const)
+export const setIsLoggedInAC = (isLoggedIn: boolean) =>
+  ({
+    type: 'login/SET-IS-LOGGED-IN',
+    isLoggedIn,
+  } as const)
 
 export const setIsRegisteredInAC = (value: boolean) =>
-    ({ type: 'login/SET-IS-REGISTERED-IN', value } as const)
-
-
+  ({ type: 'login/SET-IS-REGISTERED-IN', value } as const)
 
 export const loginTC =
   (data: LoginPayloadType): AppThunkType =>
@@ -63,6 +58,7 @@ export const updateUserDataTC =
     dispatch(setAppStatusAC('loading'))
     const state = getState()
     const user = state.app.userData
+
     if (!user) {
       throw new Error('user not found')
     }
@@ -71,6 +67,7 @@ export const updateUserDataTC =
       avatar: user.avatar,
       ...data,
     }
+
     authAPI
       .updateUserData(dataToUpdate)
       .then(res => {
@@ -93,7 +90,6 @@ export const logoutTC = () => (dispatch: AppThunkDispatch) => {
       // handleServerNetworkAppError(error, dispatch);
     })
 }
-
 
 export const registrationTC =
   (data: ValuesFromRegistrationType): AppThunkType =>
@@ -126,6 +122,7 @@ password recovery link:
 link</a>
 </div>`,
     }
+
     axios
       .post('https://neko-back.herokuapp.com/2.0/auth/forgot', dataToChangePassword)
       .then(response => console.log(response))
@@ -148,7 +145,6 @@ type InitialStateType = {
   isRegisteredIn: boolean
   isLoggedIn: boolean
 }
-
 
 export type authActionType = setIsLoggedInACType | setIsRegisteredInACType
 type setIsLoggedInACType = ReturnType<typeof setIsLoggedInAC>

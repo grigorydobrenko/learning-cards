@@ -12,7 +12,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props,
 })
 
 export const CustomizedSnackbars = () => {
-  const error = useAppSelector<string | null>(state => state.appReducer.error)
+  const error = useAppSelector<string | null>(state => state.app.error)
   const dispatch = useAppDispatch()
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {

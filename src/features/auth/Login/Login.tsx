@@ -37,7 +37,7 @@ export const Login = () => {
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(state => state.authReducer.isLoggedIn)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
   const validate = (values: LoginPayloadType) => {
     const errors: FormikErrorType = {}
