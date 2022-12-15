@@ -1,8 +1,8 @@
-import { setIsLoggedInAC } from './../features/auth/auth-reducer'
 import { AxiosError } from 'axios'
 
 import { LoginResponseType, authAPI } from '../features/auth/auth-api'
 
+import { setIsLoggedInAC } from './../features/auth/auth-reducer'
 import { AppThunkDispatch } from './store'
 
 const initState: initStateType = {
