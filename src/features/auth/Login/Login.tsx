@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import {
@@ -76,14 +76,13 @@ export const Login = () => {
       formik.resetForm()
     },
   })
-
-  if (isLoggedIn) {
-    return <Navigate to={'/profile'} />
-    navigate('/profile')
-  }
-
   //nya-admin@nya.nya
   //1qazxcvBG
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate('/profile')
+    }
+  }, [isLoggedIn])
 
   return (
     <Grid container justifyContent="center">
@@ -133,7 +132,6 @@ export const Login = () => {
                 </FormControl>
 
                 <FormControlLabel
-                  // label={'Remember me'}
                   label={<div className={loginStyles.rememberMe}>Remember me</div>}
                   control={
                     <Checkbox

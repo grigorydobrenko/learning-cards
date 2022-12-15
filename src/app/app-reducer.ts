@@ -1,10 +1,10 @@
-import { setIsLoggedInAC } from './../features/auth/auth-reducer'
 import { AxiosError } from 'axios'
 
 import { LoginResponseType, authAPI } from '../features/auth/auth-api'
 
 import { AppThunkDispatch, AppThunkType } from './store'
 import { errorUtils } from '../common/utils/error-utils'
+import { setIsLoggedInAC } from './../features/auth/auth-reducer'
 
 const initState: initStateType = {
   status: 'idle',
