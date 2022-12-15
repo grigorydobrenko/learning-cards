@@ -1,3 +1,4 @@
+import { setIsLoggedInAC } from './../features/auth/auth-reducer'
 import { AxiosError } from 'axios'
 
 import { LoginResponseType, authAPI } from '../features/auth/auth-api'
@@ -46,7 +47,8 @@ export const initializeAppTC = () => (dispatch: AppThunkDispatch) => {
     .me()
     .then(res => {
       dispatch(setAppInitializedAC(true))
-      console.log(res.data)
+      dispatch(setUserDataAC(res.data))
+      dispatch(setIsLoggedInAC(true))
     })
     .catch(e => {
       const err = e as Error | AxiosError<{ error: string }>
