@@ -11,8 +11,16 @@ import {
   Typography,
 } from '@mui/material'
 import { useFormik } from 'formik'
+import { Navigate, useParams } from 'react-router-dom'
+
+import { PATH } from '../../../common/components/Routing/Routes'
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
+import { setNewPasswordTC } from '../auth-reducer'
 
 export const CreateNewPassword = () => {
+  let { token } = useParams()
+  const isNewPasswordSet = useAppSelector(state => state.auth.isNewPasswordSet)
+  const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {
       password: '',
@@ -20,6 +28,16 @@ export const CreateNewPassword = () => {
     },
     onSubmit: values => {
       console.log(JSON.stringify(values))
+      console.log(token)
+      if (!token) {
+        token = ''
+      }
+      let data = {
+        password: values.password,
+        resetPasswordToken: token,
+      }
+
+      dispatch(setNewPasswordTC(data))
       formik.resetForm()
     },
     validate: values => {
@@ -37,6 +55,10 @@ export const CreateNewPassword = () => {
       return errors
     },
   })
+
+  if (isNewPasswordSet) {
+    return <Navigate to={PATH.LOGIN} />
+  }
 
   return (
     <Grid container justifyContent="center">
@@ -71,7 +93,11 @@ export const CreateNewPassword = () => {
                         fullWidth
                         required
                         error={!!formik.errors.password && formik.touched.password}
-                        id={formik.errors.password ? 'filled-error' : 'password'}
+                        id={
+                          formik.errors.password && formik.touched.password
+                            ? 'filled-error'
+                            : 'password'
+                        }
                         label={
                           formik.errors.password && formik.touched.password
                             ? formik.errors.password
@@ -86,10 +112,14 @@ export const CreateNewPassword = () => {
                       <TextField
                         autoComplete="new-password"
                         fullWidth
-                        error={!!formik.errors.confirmPassword}
-                        id={formik.errors.confirmPassword ? 'filled-error' : 'confirmPassword'}
+                        error={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
+                        id={
+                          formik.errors.confirmPassword && formik.touched.confirmPassword
+                            ? 'filled-error'
+                            : 'confirmPassword'
+                        }
                         label={
-                          formik.errors.confirmPassword
+                          formik.errors.confirmPassword && formik.touched.confirmPassword
                             ? formik.errors.confirmPassword
                             : 'Confirm new password'
                         }
