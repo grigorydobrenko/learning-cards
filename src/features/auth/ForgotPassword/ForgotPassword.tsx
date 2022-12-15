@@ -40,7 +40,7 @@ export const ForgotPassword = () => {
     onSubmit: values => {
       console.log(JSON.stringify(values))
       dispatch(sendEmailToSetNewPasswordTC(values))
-      //formik.resetForm()
+      formik.resetForm()
     },
     validate: values => {
       const errors: any = {}
