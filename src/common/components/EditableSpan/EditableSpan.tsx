@@ -5,10 +5,10 @@ import IconButton from '@mui/material/IconButton'
 import editIcon from '../../../assets/img/icons/edit-icon.svg'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
-import InputAdornment from '@mui/material/InputAdornment'
-import { AccountCircle } from '@mui/icons-material'
+
 import Button from '@mui/material/Button'
 import styled from '@emotion/styled'
+
 
 type EditableSpanPropsType = {
   value: string

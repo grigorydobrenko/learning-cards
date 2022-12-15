@@ -4,81 +4,115 @@ import {
   Box,
   Button,
   Container,
-  createTheme,
   CssBaseline,
   Grid,
   Paper,
   TextField,
-  ThemeProvider,
   Typography,
 } from '@mui/material'
-
-const theme = createTheme()
+import { useFormik } from 'formik'
 
 export const CreateNewPassword = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
+  const formik = useFormik({
+    initialValues: {
+      password: '',
+      confirmPassword: '',
+    },
+    onSubmit: values => {
+      console.log(JSON.stringify(values))
+      formik.resetForm()
+    },
+    validate: values => {
+      const errors: any = {}
 
-    console.log({
-      password: data.get('newPassword'),
-    })
-  }
+      if (!values.password) {
+        errors.password = 'Required'
+      } else if (values.password.length < 8) {
+        errors.password = 'Too short password'
+      }
+      if (values.confirmPassword !== values.password) {
+        errors.confirmPassword = 'Passwords must be the same'
+      }
+
+      return errors
+    },
+  })
 
   return (
-    <ThemeProvider theme={theme}>
-      <Paper elevation={3}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 5,
-              marginBottom: 5,
-              marginLeft: 5,
-              marginRight: 5,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              borderRadius: '10px',
-            }}
-          >
+    <Grid container justifyContent="center">
+      <Grid item xs={6}>
+        <Paper style={{ padding: '35px' }}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
             <Box
               sx={{
-                width: 289,
-                height: 32,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                borderRadius: '10px',
               }}
             >
-              <Typography align="center" component="h2" variant="h5">
-                Create new password
-              </Typography>
-            </Box>
-
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="newPassword"
-                    label="New password"
-                    type="password"
-                    id="newPassword"
-                    variant="standard"
-                  />
-                </Grid>
-              </Grid>
-              <Grid container justifyContent="flex-start" sx={{ mt: 3 }}>
-                <Typography color="text.secondary" variant="body2">
-                  Create new password and we will send you further instructions to email.
+              <Box
+                sx={{
+                  width: 289,
+                  height: 32,
+                }}
+              >
+                <Typography align="center" component="h2" variant="h5">
+                  Create new password
                 </Typography>
-              </Grid>
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Create new password
-              </Button>
+              </Box>
+              <form onSubmit={formik.handleSubmit}>
+                <Box sx={{ mt: 3 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <TextField
+                        autoComplete="new-password"
+                        fullWidth
+                        required
+                        error={!!formik.errors.password && formik.touched.password}
+                        id={formik.errors.password ? 'filled-error' : 'password'}
+                        label={
+                          formik.errors.password && formik.touched.password
+                            ? formik.errors.password
+                            : 'New password'
+                        }
+                        type="password"
+                        variant="standard"
+                        {...formik.getFieldProps('password')}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        autoComplete="new-password"
+                        fullWidth
+                        error={!!formik.errors.confirmPassword}
+                        id={formik.errors.confirmPassword ? 'filled-error' : 'confirmPassword'}
+                        label={
+                          formik.errors.confirmPassword
+                            ? formik.errors.confirmPassword
+                            : 'Confirm new password'
+                        }
+                        type="password"
+                        variant="standard"
+                        {...formik.getFieldProps('confirmPassword')}
+                      />
+                    </Grid>
+                  </Grid>
+                  <Grid container justifyContent="flex-start" sx={{ mt: 3 }}>
+                    <Typography color="text.secondary" variant="body2">
+                      Create new password and we will send you further instructions to email.
+                    </Typography>
+                  </Grid>
+                  <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                    Create new password
+                  </Button>
+                </Box>
+              </form>
             </Box>
-          </Box>
-        </Container>
-      </Paper>
-    </ThemeProvider>
+          </Container>
+        </Paper>
+      </Grid>
+    </Grid>
   )
 }

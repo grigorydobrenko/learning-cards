@@ -1,4 +1,4 @@
-import { AppRootState } from './../../app/store'
+import {AppRootState, AppThunkType} from './../../app/store'
 import { AxiosError } from 'axios'
 
 import { setAppStatusAC, setUserDataAC } from '../../app/app-reducer'
@@ -7,28 +7,41 @@ import { AppThunkDispatch } from '../../app/store'
 
 import { authAPI, LoginPayloadType } from './auth-api'
 
-const initialState = {
+import axios from 'axios'
+
+
+const InitialState: InitialStateType = {
   isLoggedIn: false,
+  isRegisteredIn: false,
 }
 
 export const authReducer = (
-  state: InitialStateType = initialState,
-  action: setIsLoggedInACType
+  state: InitialStateType = InitialState,
+  action: any
 ): InitialStateType => {
   switch (action.type) {
     case 'login/SET-IS-LOGGED-IN':
-      return { ...state, isLoggedIn: action.isLoggedIn }
+      return { ...state, isLoggedIn: action.value }
+    case 'login/SET-IS-REGISTERED-IN':
+      return { ...state, isRegisteredIn: action.value }
     default:
       return state
   }
 }
 
-type InitialStateType = typeof initialState
+export const setIsLoggedInAC = (isLoggedIn: boolean) => ({
+  type: 'login/SET-IS-LOGGED-IN',
+  isLoggedIn,
+})
+
+export const setIsRegisteredInAC = (value: boolean) =>
+    ({ type: 'login/SET-IS-REGISTERED-IN', value } as const)
+
+
 
 export const loginTC =
-  (data: LoginPayloadType): AppThunkDispatch =>
-  // @ts-ignore
-  async dispatch => {
+  (data: LoginPayloadType): AppThunkType =>
+  async (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
       const response = await authAPI.login(data)
@@ -50,7 +63,9 @@ export const updateUserDataTC =
     dispatch(setAppStatusAC('loading'))
     const state = getState()
     const user = state.app.userData
-    if (!user) throw new Error('user not found')
+    if (!user) {
+      throw new Error('user not found')
+    }
     const dataToUpdate = {
       name: user.name,
       avatar: user.avatar,
@@ -78,8 +93,61 @@ export const logoutTC = () => (dispatch: AppThunkDispatch) => {
       // handleServerNetworkAppError(error, dispatch);
     })
 }
+
+
+export const registrationTC =
+  (data: ValuesFromRegistrationType): AppThunkType =>
+  (dispatch: AppThunkDispatch) => {
+    let dataForServer = {
+      email: data.email,
+      password: data.password,
+    }
+
+    registrationAPI
+      .registration(dataForServer)
+      .then(response => {
+        console.log(response)
+        dispatch(setIsRegisteredInAC(true))
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
+
+export const sendEmailToSetNewPasswordTC =
+  (data: dataFromForgotPasswordType): AppThunkType =>
+  (dispatch: AppThunkDispatch) => {
+    let dataToChangePassword: ForgotPasswordType = {
+      email: data.email,
+      from: 'test-front-admin <seo.spb2015@yandex.ru>',
+      message: `<div style="background-color: lime; padding: 15px">
+password recovery link: 
+<a href='http://localhost:3000/#/forgot-password/$token$'>
+link</a>
+</div>`,
+    }
+    axios
+      .post('https://neko-back.herokuapp.com/2.0/auth/forgot', dataToChangePassword)
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+  }
+
+//TYPES
+export type RegisteredActionType = ReturnType<typeof setIsRegisteredInAC>
+type dataFromForgotPasswordType = {
+  email: string
+}
+export type ValuesFromRegistrationType = {
+  fistName: string
+  lastName: string
+  email: string
+  password: string
+  confirmPassword: string
+  allowExtraEmails: boolean
+}
+type InitialStateType = {
+  isRegisteredIn: boolean
+  isLoggedIn: boolean
+}
+
 type setIsLoggedInACType = ReturnType<typeof setIsLoggedInAC>
-export const setIsLoggedInAC = (isLoggedIn: boolean) => ({
-  type: 'login/SET-IS-LOGGED-IN',
-  isLoggedIn,
-})
