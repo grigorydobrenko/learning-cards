@@ -30,6 +30,7 @@ export const Profile = () => {
   const logOutHandler = () => {
     dispatch(logoutTC())
   }
+
   if (!user) {
     return <Navigate to={PATH.LOGIN} />
   }
