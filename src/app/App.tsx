@@ -5,6 +5,7 @@ import { CircularProgress, Container } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
 
 import { CustomizedSnackbars } from '../common/components/ErrorSnackBar/ErrorSnackBar'
+import { CustomizedFeedbackSnackbars } from '../common/components/FeddbackSnackBar/FeedbackSnackBar'
 import { AppRoutes } from '../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../common/hooks/customHooks'
 import { Header } from '../features/Header/Header'
@@ -37,6 +38,7 @@ function App() {
         <AppRoutes />
       </Container>
       <CustomizedSnackbars />
+      <CustomizedFeedbackSnackbars />
     </div>
   )
 }
