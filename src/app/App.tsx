@@ -5,6 +5,7 @@ import { CircularProgress, Container } from '@mui/material'
 import LinearProgress from '@mui/material/LinearProgress'
 
 import { CustomizedSnackbars } from '../common/components/ErrorSnackBar/ErrorSnackBar'
+import { CustomizedFeedbackSnackbars } from '../common/components/FeddbackSnackBar/FeedbackSnackBar'
 import { AppRoutes } from '../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../common/hooks/customHooks'
 import { Header } from '../features/Header/Header'
@@ -14,7 +15,6 @@ import { initializeAppTC } from './app-reducer'
 function App() {
   const status = useAppSelector(state => state.app.status)
   const isInitialized = useAppSelector(state => state.app.isInitialized)
-  const user = useAppSelector(state => state.app.userData)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -35,6 +35,7 @@ function App() {
         <AppRoutes />
       </Container>
       <CustomizedSnackbars />
+      <CustomizedFeedbackSnackbars />
     </div>
   )
 }

@@ -1,14 +1,15 @@
 import { AxiosError } from 'axios'
 
+import { errorUtils } from '../common/utils/error-utils'
 import { LoginResponseType, authAPI } from '../features/auth/auth-api'
+import { setIsLoggedInAC } from '../features/auth/auth-reducer'
 
 import { AppThunkDispatch, AppThunkType } from './store'
-import { errorUtils } from '../common/utils/error-utils'
-import { setIsLoggedInAC } from './../features/auth/auth-reducer'
 
 const initState: initStateType = {
   status: 'idle',
   error: null,
+  feedBack: null,
   userData: null,
   isInitialized: false,
 }
@@ -17,6 +18,9 @@ export const appReducer = (state = initState, action: appReducerActionsType): in
   switch (action.type) {
     case 'APP/SET-ERROR': {
       return { ...state, error: action.error }
+    }
+    case 'APP/SET-FEEDBACK': {
+      return { ...state, feedBack: action.feedBack }
     }
     case 'APP/SET-STATUS': {
       return { ...state, status: action.status }
@@ -35,6 +39,8 @@ export const appReducer = (state = initState, action: appReducerActionsType): in
 //  actions============================================================
 
 export const setAppErrorAC = (error: null | string) => ({ type: 'APP/SET-ERROR', error } as const)
+export const setAppFeedbackAC = (feedBack: null | string) =>
+  ({ type: 'APP/SET-FEEDBACK', feedBack } as const)
 export const setAppStatusAC = (status: RequestStatusType) =>
   ({ type: 'APP/SET-STATUS', status } as const)
 export const setUserDataAC = (userData: LoginResponseType) =>
@@ -66,6 +72,7 @@ export const initializeAppTC = (): AppThunkType => (dispatch: AppThunkDispatch) 
 export type initStateType = {
   status: RequestStatusType
   error: null | string
+  feedBack: null | string
   userData: null | LoginResponseType
   isInitialized: boolean
 }
@@ -77,7 +84,9 @@ export type appReducerActionsType =
   | setAppStatusACType
   | setUserDataACType
   | setAppInitializedACType
+  | setAppFeedbackACType
 export type setAppInitializedACType = ReturnType<typeof setAppInitializedAC>
 export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
+export type setAppFeedbackACType = ReturnType<typeof setAppFeedbackAC>
 export type setAppStatusACType = ReturnType<typeof setAppStatusAC>
 export type setUserDataACType = ReturnType<typeof setUserDataAC>
