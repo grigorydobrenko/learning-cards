@@ -78,7 +78,7 @@ export const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/profile')
+      navigate(PATH.MAIN)
     }
   }, [isLoggedIn])
 
