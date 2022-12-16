@@ -16,7 +16,7 @@ import {
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
@@ -73,11 +73,9 @@ export const Login = () => {
     validate,
     onSubmit: (values: LoginPayloadType) => {
       dispatch(loginTC(values))
-      formik.resetForm()
     },
   })
-  //nya-admin@nya.nya
-  //1qazxcvBG
+
   useEffect(() => {
     if (isLoggedIn) {
       navigate('/profile')

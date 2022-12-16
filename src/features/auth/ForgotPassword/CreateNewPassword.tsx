@@ -38,7 +38,6 @@ export const CreateNewPassword = () => {
       }
 
       dispatch(setNewPasswordTC(data))
-      formik.resetForm()
     },
     validate: values => {
       const errors: any = {}

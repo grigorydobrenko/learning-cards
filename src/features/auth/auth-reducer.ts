@@ -1,10 +1,10 @@
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
 import { setAppFeedbackAC, setAppStatusAC, setUserDataAC } from '../../app/app-reducer'
 import { AppRootState, AppThunkDispatch, AppThunkType } from '../../app/store'
 import { errorUtils } from '../../common/utils/error-utils'
 
-import { authAPI, ForgotPasswordType, LoginPayloadType } from './auth-api'
+import { authAPI, ForgotPasswordType, LoginPayloadType, registrationAPI } from './auth-api'
 
 const InitialState: InitialStateType = {
   isLoggedIn: false,
@@ -111,10 +111,10 @@ export const registrationTC =
       password: data.password,
     }
 
-    // registrationAPI
-    //   .registration(dataForServer)
-    axios
-      .post('https://neko-back.herokuapp.com/2.0/auth/register', dataForServer)
+    registrationAPI
+      .registration(dataForServer)
+      // axios
+      //   .post('https://neko-back.herokuapp.com/2.0/auth/register', dataForServer)
       .then(response => {
         console.log(response)
         dispatch(setIsRegisteredInAC(true))
@@ -143,8 +143,10 @@ link</a>
 </div>`,
     }
 
-    axios
-      .post('https://neko-back.herokuapp.com/2.0/auth/forgot', dataToChangePassword)
+    registrationAPI
+      .forgotPassword(dataToChangePassword)
+      // axios
+      //   .post('https://neko-back.herokuapp.com/2.0/auth/forgot', dataToChangePassword)
       .then(response => {
         dispatch(setAppStatusAC('succeeded'))
         dispatch(setIsRegisteredInAC(false))
@@ -166,10 +168,10 @@ export const setNewPasswordTC =
   (data: setNewPasswordType): AppThunkType =>
   (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC('loading'))
-    // registrationAPI
-    //   .setNewPassword(data)
-    axios
-      .post('https://neko-back.herokuapp.com/2.0/auth/set-new-password', data)
+    registrationAPI
+      .setNewPassword(data)
+      // axios
+      //   .post('https://neko-back.herokuapp.com/2.0/auth/set-new-password', data)
       .then(response => {
         dispatch(setIsNewPasswordSetAC(true))
         dispatch(setIsRegisteredInAC(false))
