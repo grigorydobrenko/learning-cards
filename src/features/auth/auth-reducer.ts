@@ -133,12 +133,17 @@ export const sendEmailToSetNewPasswordTC =
   (data: dataFromForgotPasswordType): AppThunkType =>
   (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC('loading'))
+    let url =
+      process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : 'https://grigorydobrenko.github.io/learning-cards'
+
     let dataToChangePassword: ForgotPasswordType = {
       email: data.email,
       from: 'test-front-admin <seo.spb2015@yandex.ru>',
       message: `<div style="background-color: lime; padding: 15px">
 password recovery link: 
-<a href='http://localhost:3000/#/create-password/$token$'>
+<a href=${url}/#/create-password/$token$>
 link</a>
 </div>`,
     }
