@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/learning-cards/static/css/main.c3bb3f41.css",
-    "main.js": "/learning-cards/static/js/main.c3941620.js",
+    "main.js": "/learning-cards/static/js/main.304b9726.js",
     "static/js/787.5a03379c.chunk.js": "/learning-cards/static/js/787.5a03379c.chunk.js",
     "static/media/user-photo.png": "/learning-cards/static/media/user-photo.889f8d4487ed566b7dc2.png",
     "static/media/incubator-logo.svg": "/learning-cards/static/media/incubator-logo.3c09153556dc0fef65c4fc532ee16562.svg",
@@ -11,11 +11,11 @@
     "static/media/logout-icon.svg": "/learning-cards/static/media/logout-icon.4631dbd136b384a8118857f16dae43d5.svg",
     "static/media/arrow-left.svg": "/learning-cards/static/media/arrow-left.19c7bd8ee7d32ca8451f1de3f6803354.svg",
     "main.c3bb3f41.css.map": "/learning-cards/static/css/main.c3bb3f41.css.map",
-    "main.c3941620.js.map": "/learning-cards/static/js/main.c3941620.js.map",
+    "main.304b9726.js.map": "/learning-cards/static/js/main.304b9726.js.map",
     "787.5a03379c.chunk.js.map": "/learning-cards/static/js/787.5a03379c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.c3bb3f41.css",
-    "static/js/main.c3941620.js"
+    "static/js/main.304b9726.js"
   ]
 }
