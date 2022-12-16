@@ -6,7 +6,6 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  Link,
   Paper,
   TextField,
   Typography,
@@ -14,17 +13,18 @@ import {
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { registrationTC } from '../auth-reducer'
+import styles from '../authCommonStyle.module.css'
 
 const Copyright = (props: any) => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="#">
+      <Link color="inherit" to="#" className={styles.href}>
         Friday Project
       </Link>{' '}
       {new Date().getFullYear()}
@@ -194,7 +194,7 @@ export const Register = () => {
                   </Button>
                   <Grid container justifyContent="flex-end">
                     <Grid item>
-                      <Link href={PATH.LOGIN} variant="body2">
+                      <Link to={PATH.LOGIN} className={styles.href}>
                         Already have an account? Sign in
                       </Link>
                     </Grid>
