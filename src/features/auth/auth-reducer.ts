@@ -138,7 +138,7 @@ export const sendEmailToSetNewPasswordTC =
       from: 'test-front-admin <seo.spb2015@yandex.ru>',
       message: `<div style="background-color: lime; padding: 15px">
 password recovery link: 
-<a href='https://grigorydobrenko.github.io/#/create-password/$token$'>
+<a href='https://grigorydobrenko.github.io/learning-cards/#/create-password/$token$'>
 link</a>
 </div>`,
     }
