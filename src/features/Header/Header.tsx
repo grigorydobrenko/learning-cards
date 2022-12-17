@@ -14,10 +14,11 @@ import { PATH } from '../../common/components/Routing/Routes'
 import { useAppSelector } from '../../common/hooks/customHooks'
 
 import style from './Header.module.css'
+import { appSelector, authSelector } from '../../common/selectors'
 
 export const Header = () => {
-  const user = useAppSelector(sttae => sttae.app.userData)
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const user = useAppSelector(appSelector.user)
+  const isLoggedIn = useAppSelector(authSelector.isLoggedin)
 
   return (
     <AppBar position="static" sx={{ boxShadow: 6, backgroundColor: '#FCFCFC' }}>

@@ -20,10 +20,11 @@ import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { logoutTC, updateUserDataTC } from '../auth/auth-reducer'
 
 import style from './Profile.module.css'
+import { appSelector, authSelector } from '../../common/selectors'
 
 export const Profile = () => {
-  const user = useAppSelector(state => state.app.userData)
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const user = useAppSelector(appSelector.user)
+  const isLoggedIn = useAppSelector(authSelector.isLoggedin)
   const dispatch = useAppDispatch()
   const changeUserName = (title: string) => {
     dispatch(updateUserDataTC({ name: title }))

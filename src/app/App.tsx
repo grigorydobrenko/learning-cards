@@ -11,10 +11,11 @@ import { useAppDispatch, useAppSelector } from '../common/hooks/customHooks'
 import { Header } from '../features/Header/Header'
 
 import { initializeAppTC } from './app-reducer'
+import { appSelector } from '../common/selectors'
 
 function App() {
-  const status = useAppSelector(state => state.app.status)
-  const isInitialized = useAppSelector(state => state.app.isInitialized)
+  const status = useAppSelector(appSelector.status)
+  const isInitialized = useAppSelector(appSelector.isInitialized)
   const dispatch = useAppDispatch()
 
   useEffect(() => {

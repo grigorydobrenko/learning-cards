@@ -19,6 +19,7 @@ import { PATH } from '../../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { registrationTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
+import { authSelector } from '../../../common/selectors'
 
 const Copyright = (props: any) => {
   return (
@@ -35,7 +36,7 @@ const Copyright = (props: any) => {
 
 export const Register = () => {
   const dispatch = useAppDispatch()
-  const isRegistered = useAppSelector(state => state.auth.isRegisteredIn)
+  const isRegistered = useAppSelector(authSelector.isRegisteredIn)
   const formik = useFormik({
     initialValues: {
       fistName: '',

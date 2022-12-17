@@ -16,10 +16,11 @@ import { Navigate, useParams } from 'react-router-dom'
 import { PATH } from '../../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { setNewPasswordTC } from '../auth-reducer'
+import { authSelector } from '../../../common/selectors'
 
 export const CreateNewPassword = () => {
   let { token } = useParams()
-  const isNewPasswordSet = useAppSelector(state => state.auth.isNewPasswordSet)
+  const isNewPasswordSet = useAppSelector(authSelector.isNewPasswordSet)
   const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {

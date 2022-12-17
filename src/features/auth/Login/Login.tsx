@@ -25,6 +25,7 @@ import { LoginPayloadType } from '../auth-api'
 import { loginTC } from '../auth-reducer'
 
 import loginStyles from './Login.module.css'
+import { authSelector } from '../../../common/selectors'
 
 type FormikErrorType = {
   email?: string
@@ -37,7 +38,7 @@ export const Login = () => {
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
-  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  const isLoggedIn = useAppSelector(authSelector.isLoggedin)
 
   const validate = (values: LoginPayloadType) => {
     const errors: FormikErrorType = {}
