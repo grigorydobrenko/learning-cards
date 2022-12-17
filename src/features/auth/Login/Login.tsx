@@ -73,7 +73,6 @@ export const Login = () => {
     validate,
     onSubmit: (values: LoginPayloadType) => {
       dispatch(loginTC(values))
-      formik.resetForm()
     },
   })
   //nya-admin@nya.nya
