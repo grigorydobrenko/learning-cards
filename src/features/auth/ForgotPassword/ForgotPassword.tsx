@@ -6,23 +6,24 @@ import {
   Container,
   CssBaseline,
   Grid,
-  Link,
   Paper,
   TextField,
   Typography,
 } from '@mui/material'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
+import { Link } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
 import { useAppDispatch } from '../../../common/hooks/customHooks'
 import { sendEmailToSetNewPasswordTC } from '../auth-reducer'
+import styles from '../authCommonStyle.module.css'
 
 const Copyright = (props: any) => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="#">
+      <Link color="inherit" to="#" className={styles.href}>
         Friday Project
       </Link>{' '}
       {new Date().getFullYear()}
@@ -40,7 +41,6 @@ export const ForgotPassword = () => {
     onSubmit: values => {
       console.log(JSON.stringify(values))
       dispatch(sendEmailToSetNewPasswordTC(values))
-      formik.resetForm()
     },
     validate: values => {
       const errors: any = {}
@@ -104,7 +104,7 @@ export const ForgotPassword = () => {
                     </Button>
                     <Grid container justifyContent="flex-end">
                       <Grid item>
-                        <Link href={PATH.LOGIN} variant="body2">
+                        <Link to={PATH.LOGIN} className={styles.href}>
                           Did you remember your password?
                         </Link>
                       </Grid>
