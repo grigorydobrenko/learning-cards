@@ -15,22 +15,10 @@ import { useFormik } from 'formik'
 import { Link, Navigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
+import { Copyright } from '../../../common/components/ui/Copyright/Copyright'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { sendEmailToSetNewPasswordTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
-
-const Copyright = (props: any) => {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" to="#" className={styles.href}>
-        Friday Project
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
 
 export const ForgotPassword = () => {
   const dispatch = useAppDispatch()
