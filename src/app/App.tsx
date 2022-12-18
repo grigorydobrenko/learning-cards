@@ -15,6 +15,7 @@ import { initializeAppTC } from './app-reducer'
 function App() {
   const status = useAppSelector(state => state.app.status)
   const isInitialized = useAppSelector(state => state.app.isInitialized)
+
   const dispatch = useAppDispatch()
 
   useEffect(() => {
