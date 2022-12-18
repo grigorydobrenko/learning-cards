@@ -92,7 +92,7 @@ export const logoutTC = (): AppThunkType => (dispatch: AppThunkDispatch) => {
     .logout()
     .then(res => {
       dispatch(setIsLoggedInAC(false))
-      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setAppStatusAC('idle'))
     })
     .catch(e => {
       const err = e as Error | AxiosError<{ error: string }>
@@ -104,34 +104,36 @@ export const logoutTC = (): AppThunkType => (dispatch: AppThunkDispatch) => {
 
 export const registrationTC =
   (data: ValuesFromRegistrationType): AppThunkType =>
-  (dispatch: AppThunkDispatch) => {
+  async (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC('loading'))
     let dataForServer = {
       email: data.email,
       password: data.password,
     }
 
-    // registrationAPI
-    //   .registration(dataForServer)
-    axios
-      .post('https://neko-back.herokuapp.com/2.0/auth/register', dataForServer)
-      .then(response => {
-        console.log(response)
-        dispatch(setIsRegisteredInAC(true))
-        dispatch(setAppStatusAC('succeeded'))
-        dispatch(setAppFeedbackAC('Congratulations you are registered!'))
-      })
-      .catch(error => {
-        const err = error as Error | AxiosError<{ error: string }>
+    try {
+      // registrationAPI
+      //   .registration(dataForServer)
+      const response = await axios.post(
+        'https://neko-back.herokuapp.com/2.0/auth/register',
+        dataForServer
+      )
 
-        errorUtils(err, dispatch)
-        dispatch(setAppStatusAC('failed'))
-      })
+      console.log(response)
+      dispatch(setIsRegisteredInAC(true))
+      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setAppFeedbackAC('Congratulations you are registered!'))
+    } catch (error) {
+      const err = error as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
   }
 
 export const sendEmailToSetNewPasswordTC =
   (data: dataFromForgotPasswordType): AppThunkType =>
-  (dispatch: AppThunkDispatch) => {
+  async (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC('loading'))
     let url =
       process.env.NODE_ENV === 'development'
@@ -148,45 +150,49 @@ link</a>
 </div>`,
     }
 
-    axios
-      .post('https://neko-back.herokuapp.com/2.0/auth/forgot', dataToChangePassword)
-      .then(response => {
-        dispatch(setAppStatusAC('succeeded'))
-        dispatch(setIsRegisteredInAC(false))
-        dispatch(setIsNewPasswordSetAC(false))
-        dispatch(setAppFeedbackAC(response.data.info))
-        console.log(response)
-      })
-      .catch(error => {
-        const err = error as Error | AxiosError<{ error: string }>
+    try {
+      const response = await axios.post(
+        'https://neko-back.herokuapp.com/2.0/auth/forgot',
+        dataToChangePassword
+      )
 
-        errorUtils(err, dispatch)
-        dispatch(setAppStatusAC('failed'))
+      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setIsRegisteredInAC(false))
+      dispatch(setIsNewPasswordSetAC(false))
+      dispatch(setAppFeedbackAC(response.data.info))
+      console.log(response)
+    } catch (error) {
+      const err = error as Error | AxiosError<{ error: string }>
 
-        console.log(error)
-      })
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+
+      console.log(error)
+    }
   }
 
 export const setNewPasswordTC =
   (data: setNewPasswordType): AppThunkType =>
-  (dispatch: AppThunkDispatch) => {
+  async (dispatch: AppThunkDispatch) => {
     dispatch(setAppStatusAC('loading'))
     // registrationAPI
     //   .setNewPassword(data)
-    axios
-      .post('https://neko-back.herokuapp.com/2.0/auth/set-new-password', data)
-      .then(response => {
-        dispatch(setIsNewPasswordSetAC(true))
-        dispatch(setIsRegisteredInAC(false))
-        dispatch(setAppStatusAC('succeeded'))
-        dispatch(setAppFeedbackAC(response.data.info))
-      })
-      .catch(error => {
-        const err = error as Error | AxiosError<{ error: string }>
+    try {
+      const response = await axios.post(
+        'https://neko-back.herokuapp.com/2.0/auth/set-new-password',
+        data
+      )
 
-        errorUtils(err, dispatch)
-        dispatch(setAppStatusAC('failed'))
-      })
+      dispatch(setIsNewPasswordSetAC(true))
+      dispatch(setIsRegisteredInAC(false))
+      dispatch(setAppStatusAC('idle'))
+      dispatch(setAppFeedbackAC(response.data.info))
+    } catch (error) {
+      const err = error as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
   }
 
 //TYPES

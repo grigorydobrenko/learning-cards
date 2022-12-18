@@ -1,7 +1,4 @@
-import { AxiosError } from 'axios'
-
-import { errorUtils } from '../common/utils/error-utils'
-import { LoginResponseType, authAPI } from '../features/auth/auth-api'
+import { authAPI, LoginResponseType } from '../features/auth/auth-api'
 import { setIsLoggedInAC } from '../features/auth/auth-reducer'
 
 import { AppThunkDispatch, AppThunkType } from './store'
@@ -57,9 +54,6 @@ export const initializeAppTC = (): AppThunkType => (dispatch: AppThunkDispatch) 
       dispatch(setIsLoggedInAC(true))
     })
     .catch(e => {
-      const err = e as Error | AxiosError<{ error: string }>
-
-      errorUtils(err, dispatch)
       dispatch(setAppStatusAC('failed'))
     })
     .finally(() => {

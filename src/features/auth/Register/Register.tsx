@@ -1,42 +1,27 @@
 import * as React from 'react'
 
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
 import { Link, Navigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
+import { Copyright } from '../../../common/components/ui/Copyright/Copyright'
+import InputConfirmPassword from '../../../common/components/ui/Input/InputConfirmPassword'
+import InputEmail from '../../../common/components/ui/Input/InputEmail'
+import InputFirstName from '../../../common/components/ui/Input/InputFirstName'
+import InputLastName from '../../../common/components/ui/Input/InputLastName'
+import InputPassword from '../../../common/components/ui/Input/InputPassword'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { registrationTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
 import { authSelector } from '../../../common/selectors'
 
-const Copyright = (props: any) => {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" to="#" className={styles.href}>
-        Friday Project
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  )
-}
-
 export const Register = () => {
   const dispatch = useAppDispatch()
   const isRegistered = useAppSelector(authSelector.isRegisteredIn)
+
   const formik = useFormik({
     initialValues: {
       fistName: '',
@@ -98,84 +83,19 @@ export const Register = () => {
                 <Box sx={{ mt: 3 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        autoComplete="given-name"
-                        fullWidth
-                        required
-                        error={!!formik.errors.fistName && formik.touched.fistName}
-                        id={formik.errors.fistName ? 'filled-error' : 'fistName'}
-                        label={
-                          formik.errors.fistName && formik.touched.fistName
-                            ? formik.errors.fistName
-                            : 'First Name'
-                        }
-                        variant="standard"
-                        {...formik.getFieldProps('fistName')}
-                      />
+                      <InputFirstName formik={formik} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        autoComplete="family-name"
-                        fullWidth
-                        required
-                        error={!!formik.errors.lastName && formik.touched.lastName}
-                        id={formik.errors.lastName ? 'filled-error' : 'lastName'}
-                        label={
-                          formik.errors.lastName && formik.touched.lastName
-                            ? formik.errors.lastName
-                            : 'Last Name'
-                        }
-                        variant="standard"
-                        {...formik.getFieldProps('lastName')}
-                      />
+                      <InputLastName formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        autoComplete="email"
-                        fullWidth
-                        required
-                        error={!!formik.errors.email && formik.touched.email}
-                        id={formik.errors.email ? 'filled-error' : 'email'}
-                        label={
-                          formik.errors.email && formik.touched.email
-                            ? formik.errors.email
-                            : 'Email Address'
-                        }
-                        variant="standard"
-                        {...formik.getFieldProps('email')}
-                      />
+                      <InputEmail formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        autoComplete="new-password"
-                        fullWidth
-                        required
-                        error={!!formik.errors.password && formik.touched.password}
-                        id={formik.errors.password ? 'filled-error' : 'password'}
-                        label={
-                          formik.errors.password && formik.touched.password
-                            ? formik.errors.password
-                            : 'Password'
-                        }
-                        type="password"
-                        variant="standard"
-                        {...formik.getFieldProps('password')}
-                      />
+                      <InputPassword formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        error={!!formik.errors.confirmPassword}
-                        id={formik.errors.confirmPassword ? 'filled-error' : 'confirmPassword'}
-                        label={
-                          formik.errors.confirmPassword
-                            ? formik.errors.confirmPassword
-                            : 'Confirm password'
-                        }
-                        type="password"
-                        variant="standard"
-                        {...formik.getFieldProps('confirmPassword')}
-                      />
+                      <InputConfirmPassword formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
                       <FormControlLabel
