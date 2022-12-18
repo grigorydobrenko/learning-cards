@@ -1,21 +1,13 @@
 import React from 'react'
 
-import {
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Container, CssBaseline, Grid, Paper, Typography } from '@mui/material'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
 import { Link, Navigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
 import { Copyright } from '../../../common/components/ui/Copyright/Copyright'
+import InputEmail from '../../../common/components/ui/Input/InputEmail'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { sendEmailToSetNewPasswordTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
@@ -70,20 +62,7 @@ export const ForgotPassword = () => {
                   <Box sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                       <Grid item xs={12}>
-                        <TextField
-                          autoComplete="email"
-                          fullWidth
-                          required
-                          error={formik.touched.email && !!formik.errors.email}
-                          id={formik.errors.email ? 'filled-error' : 'email'}
-                          label={
-                            formik.errors.email && formik.touched.email
-                              ? formik.errors.email
-                              : 'Email Address'
-                          }
-                          variant="standard"
-                          {...formik.getFieldProps('email')}
-                        />
+                        <InputEmail formik={formik} />
                       </Grid>
                       <Grid item xs={12}>
                         <Typography color="text.secondary" variant="body2">
