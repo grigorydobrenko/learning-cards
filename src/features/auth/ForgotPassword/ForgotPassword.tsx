@@ -12,10 +12,10 @@ import {
 } from '@mui/material'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
-import { useAppDispatch } from '../../../common/hooks/customHooks'
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { sendEmailToSetNewPasswordTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
 
@@ -34,6 +34,7 @@ const Copyright = (props: any) => {
 
 export const ForgotPassword = () => {
   const dispatch = useAppDispatch()
+  const status = useAppSelector(state => state.app.status)
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -54,6 +55,10 @@ export const ForgotPassword = () => {
       return errors
     },
   })
+
+  if (status === 'succeeded') {
+    return <Navigate to={PATH.CHECK_EMAIL} />
+  }
 
   return (
     <Grid container justifyContent="center">
