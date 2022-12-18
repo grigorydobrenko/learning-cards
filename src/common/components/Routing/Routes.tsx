@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes, useParams } from 'react-router-dom'
 
 import { CheckEmail } from '../../../features/auth/ForgotPassword/CheckEmail'
 import { CreateNewPassword } from '../../../features/auth/ForgotPassword/CreateNewPassword'
@@ -22,6 +22,12 @@ export const PATH = {
   NOT_FOUND: '/404',
 }
 
+const PrivateRoutes = () => {
+  let { token } = useParams()
+
+  return token ? <Outlet /> : <Navigate to={PATH.LOGIN} />
+}
+
 export const AppRoutes = () => {
   return (
     <Routes>
@@ -31,7 +37,8 @@ export const AppRoutes = () => {
       <Route path={PATH.LOGIN} element={<Login />} />
       <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
       <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
-      <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />}>
+      <Route element={<PrivateRoutes />}>
+        <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
         <Route path={PATH.CREATE_PASSWORD_TOKEN} element={<CreateNewPassword />} />
       </Route>
       <Route path={'*'} element={<NotFound />} />
