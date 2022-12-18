@@ -37,8 +37,8 @@ export const AppRoutes = () => {
       <Route path={PATH.LOGIN} element={<Login />} />
       <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
       <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
+      <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
       <Route element={<PrivateRoutes />}>
-        <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
         <Route path={PATH.CREATE_PASSWORD_TOKEN} element={<CreateNewPassword />} />
       </Route>
       <Route path={'*'} element={<NotFound />} />
