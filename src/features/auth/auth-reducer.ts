@@ -92,7 +92,7 @@ export const logoutTC = (): AppThunkType => (dispatch: AppThunkDispatch) => {
     .logout()
     .then(res => {
       dispatch(setIsLoggedInAC(false))
-      dispatch(setAppStatusAC('succeeded'))
+      dispatch(setAppStatusAC('idle'))
     })
     .catch(e => {
       const err = e as Error | AxiosError<{ error: string }>
@@ -178,7 +178,7 @@ export const setNewPasswordTC =
       .then(response => {
         dispatch(setIsNewPasswordSetAC(true))
         dispatch(setIsRegisteredInAC(false))
-        dispatch(setAppStatusAC('succeeded'))
+        dispatch(setAppStatusAC('idle'))
         dispatch(setAppFeedbackAC(response.data.info))
       })
       .catch(error => {
