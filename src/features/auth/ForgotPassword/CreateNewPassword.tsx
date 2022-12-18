@@ -8,8 +8,8 @@ import { PATH } from '../../../common/components/Routing/Routes'
 import InputConfirmPassword from '../../../common/components/ui/Input/InputConfirmPassword'
 import InputPassword from '../../../common/components/ui/Input/InputPassword'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
-import { setNewPasswordTC } from '../auth-reducer'
 import { authSelector } from '../../../common/selectors'
+import { setNewPasswordTC } from '../auth-reducer'
 
 export const CreateNewPassword = () => {
   let { token } = useParams()

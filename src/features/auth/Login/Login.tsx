@@ -9,12 +9,12 @@ import { PATH } from '../../../common/components/Routing/Routes'
 import InputEmail from '../../../common/components/ui/Input/InputEmail'
 import InputPassword from '../../../common/components/ui/Input/InputPassword'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
+import { authSelector } from '../../../common/selectors'
 import styles from '../../Header/Header.module.css'
 import { LoginPayloadType } from '../auth-api'
 import { loginTC } from '../auth-reducer'
 
 import loginStyles from './Login.module.css'
-import { authSelector } from '../../../common/selectors'
 
 type FormikErrorType = {
   email?: string
@@ -25,6 +25,7 @@ export const Login = () => {
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
+
   const isLoggedIn = useAppSelector(authSelector.isLoggedin)
 
   const validate = (values: LoginPayloadType) => {

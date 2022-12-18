@@ -8,10 +8,10 @@ import { CustomizedSnackbars } from '../common/components/ErrorSnackBar/ErrorSna
 import { CustomizedFeedbackSnackbars } from '../common/components/FeddbackSnackBar/FeedbackSnackBar'
 import { AppRoutes } from '../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../common/hooks/customHooks'
+import { appSelector } from '../common/selectors'
 import { Header } from '../features/Header/Header'
 
 import { initializeAppTC } from './app-reducer'
-import { appSelector } from '../common/selectors'
 
 function App() {
   const status = useAppSelector(appSelector.status)

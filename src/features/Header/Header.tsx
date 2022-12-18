@@ -12,9 +12,9 @@ import logo from '../../assets/img/incubator-logo.svg'
 import userPhoto from '../../assets/img/user-photo.png'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppSelector } from '../../common/hooks/customHooks'
+import { appSelector, authSelector } from '../../common/selectors'
 
 import style from './Header.module.css'
-import { appSelector, authSelector } from '../../common/selectors'
 
 export const Header = () => {
   const user = useAppSelector(appSelector.user)

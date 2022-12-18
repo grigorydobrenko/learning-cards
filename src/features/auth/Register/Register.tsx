@@ -14,9 +14,9 @@ import InputFirstName from '../../../common/components/ui/Input/InputFirstName'
 import InputLastName from '../../../common/components/ui/Input/InputLastName'
 import InputPassword from '../../../common/components/ui/Input/InputPassword'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
+import { authSelector } from '../../../common/selectors'
 import { registrationTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
-import { authSelector } from '../../../common/selectors'
 
 export const Register = () => {
   const dispatch = useAppDispatch()

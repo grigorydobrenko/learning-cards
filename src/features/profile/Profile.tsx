@@ -17,10 +17,10 @@ import userPhoto from '../../assets/img/user-photo.png'
 import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
+import { appSelector, authSelector } from '../../common/selectors'
 import { logoutTC, updateUserDataTC } from '../auth/auth-reducer'
 
 import style from './Profile.module.css'
-import { appSelector, authSelector } from '../../common/selectors'
 
 export const Profile = () => {
   const user = useAppSelector(appSelector.user)

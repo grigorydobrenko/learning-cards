@@ -104,7 +104,7 @@ export const logoutTC = (): AppThunkType => dispatch => {
 
 export const registrationTC =
   (data: ValuesFromRegistrationType): AppThunkType =>
-  dispatch => {
+  async dispatch => {
     dispatch(setAppStatusAC('loading'))
     let dataForServer = {
       email: data.email,
@@ -133,7 +133,7 @@ export const registrationTC =
 
 export const sendEmailToSetNewPasswordTC =
   (data: dataFromForgotPasswordType): AppThunkType =>
-  dispatch => {
+  async dispatch => {
     dispatch(setAppStatusAC('loading'))
     let url =
       process.env.NODE_ENV === 'development'
@@ -173,7 +173,7 @@ link</a>
 
 export const setNewPasswordTC =
   (data: setNewPasswordType): AppThunkType =>
-  dispatch => {
+  async dispatch => {
     dispatch(setAppStatusAC('loading'))
     // registrationAPI
     //   .setNewPassword(data)
