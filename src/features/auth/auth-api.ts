@@ -11,31 +11,32 @@ export const instance = axios.create({
 
 export const authAPI = {
   login(data: LoginPayloadType) {
-    return instance.post<LoginPayloadType, AxiosResponse<LoginResponseType>>('auth/login', data)
+    return instance.post<'', AxiosResponse<UserResponseType>, LoginPayloadType>('auth/login', data)
   },
   logout() {
-    return instance.delete<AxiosResponse<{ info: string; error: string }>>('auth/me')
+    return instance.delete<{ info: string; error: string }>('auth/me')
   },
   me() {
-    return instance.post<{}, AxiosResponse<LoginResponseType>>('auth/me', {})
+    return instance.post<UserResponseType>('auth/me', {})
   },
   updateUserData(data: { name: string; avatar: string }) {
     return instance.put<
-      { name: string; avatar: string },
-      AxiosResponse<UpdateUserDataResponseType>
+      '',
+      AxiosResponse<UpdateUserDataResponseType>,
+      { name: string; avatar: string }
     >('auth/me', data)
   },
 }
 
 export const registrationAPI = {
   registration(data: RegistrationDataType) {
-    return instance.post('/auth/register', data)
+    return instance.post<'', '', RegistrationDataType>('/auth/register', data)
   },
   forgotPassword(data: ForgotPasswordType) {
-    return instance.post('/auth/forgot', data)
+    return instance.post<'', '', ForgotPasswordType>('/auth/forgot', data)
   },
   setNewPassword(data: SetNewPasswordType) {
-    return instance.post('/auth/set-new-password', data)
+    return instance.post<'', '', SetNewPasswordType>('/auth/set-new-password', data)
   },
 }
 
@@ -47,7 +48,7 @@ export type LoginPayloadType = {
   rememberMe: boolean
 }
 
-export type LoginResponseType = {
+export type UserResponseType = {
   _id: string
   email: string
   rememberMe: boolean
@@ -58,7 +59,7 @@ export type LoginResponseType = {
   avatar: string
 }
 export type UpdateUserDataResponseType = {
-  updatedUser: LoginResponseType
+  updatedUser: UserResponseType
   error?: string
 }
 

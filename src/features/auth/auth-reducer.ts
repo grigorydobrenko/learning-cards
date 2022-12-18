@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 
 import { setAppFeedbackAC, setAppStatusAC, setUserDataAC } from '../../app/app-reducer'
-import { AppRootState, AppThunkDispatch, AppThunkType } from '../../app/store'
+import { AppThunkType } from '../../app/store'
 import { errorUtils } from '../../common/utils/error-utils'
 
 import { authAPI, ForgotPasswordType, LoginPayloadType } from './auth-api'
@@ -41,7 +41,7 @@ export const setIsNewPasswordSetAC = (value: boolean) =>
 
 export const loginTC =
   (data: LoginPayloadType): AppThunkType =>
-  async (dispatch: AppThunkDispatch) => {
+  async dispatch => {
     dispatch(setAppStatusAC('loading'))
     try {
       const response = await authAPI.login(data)
@@ -59,7 +59,7 @@ export const loginTC =
   }
 export const updateUserDataTC =
   (data: { name?: string; avatar?: string }): AppThunkType =>
-  (dispatch: AppThunkDispatch, getState: () => AppRootState) => {
+  (dispatch, getState) => {
     dispatch(setAppStatusAC('loading'))
     const state = getState()
     const user = state.app.userData
@@ -86,7 +86,7 @@ export const updateUserDataTC =
         dispatch(setAppStatusAC('failed'))
       })
   }
-export const logoutTC = (): AppThunkType => (dispatch: AppThunkDispatch) => {
+export const logoutTC = (): AppThunkType => dispatch => {
   dispatch(setAppStatusAC('loading'))
   authAPI
     .logout()
@@ -104,7 +104,7 @@ export const logoutTC = (): AppThunkType => (dispatch: AppThunkDispatch) => {
 
 export const registrationTC =
   (data: ValuesFromRegistrationType): AppThunkType =>
-  (dispatch: AppThunkDispatch) => {
+  dispatch => {
     dispatch(setAppStatusAC('loading'))
     let dataForServer = {
       email: data.email,
@@ -131,7 +131,7 @@ export const registrationTC =
 
 export const sendEmailToSetNewPasswordTC =
   (data: dataFromForgotPasswordType): AppThunkType =>
-  (dispatch: AppThunkDispatch) => {
+  dispatch => {
     dispatch(setAppStatusAC('loading'))
     let url =
       process.env.NODE_ENV === 'development'
@@ -169,7 +169,7 @@ link</a>
 
 export const setNewPasswordTC =
   (data: setNewPasswordType): AppThunkType =>
-  (dispatch: AppThunkDispatch) => {
+  dispatch => {
     dispatch(setAppStatusAC('loading'))
     // registrationAPI
     //   .setNewPassword(data)

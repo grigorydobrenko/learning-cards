@@ -1,10 +1,10 @@
 import { AxiosError } from 'axios'
 
 import { errorUtils } from '../common/utils/error-utils'
-import { LoginResponseType, authAPI } from '../features/auth/auth-api'
+import { UserResponseType, authAPI } from '../features/auth/auth-api'
 import { setIsLoggedInAC } from '../features/auth/auth-reducer'
 
-import { AppThunkDispatch, AppThunkType } from './store'
+import { AppThunkType } from './store'
 
 const initState: initStateType = {
   status: 'idle',
@@ -43,13 +43,13 @@ export const setAppFeedbackAC = (feedBack: null | string) =>
   ({ type: 'APP/SET-FEEDBACK', feedBack } as const)
 export const setAppStatusAC = (status: RequestStatusType) =>
   ({ type: 'APP/SET-STATUS', status } as const)
-export const setUserDataAC = (userData: LoginResponseType) =>
+export const setUserDataAC = (userData: UserResponseType) =>
   ({ type: 'APP/SET-USER-DATA', userData } as const)
 export const setAppInitializedAC = (value: boolean) =>
   ({ type: 'APP/SET-APP-INITIALIZED', isInitialized: value } as const)
 //  thunks==============================================================
 
-export const initializeAppTC = (): AppThunkType => (dispatch: AppThunkDispatch) => {
+export const initializeAppTC = (): AppThunkType => dispatch => {
   authAPI
     .me()
     .then(res => {
@@ -73,7 +73,7 @@ export type initStateType = {
   status: RequestStatusType
   error: null | string
   feedBack: null | string
-  userData: null | LoginResponseType
+  userData: null | UserResponseType
   isInitialized: boolean
 }
 
