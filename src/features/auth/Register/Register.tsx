@@ -39,9 +39,6 @@ export const Register = () => {
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
   }
-  // const handleMouseDownConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault()
-  // }
 
   const formik = useFormik({
     initialValues: {
