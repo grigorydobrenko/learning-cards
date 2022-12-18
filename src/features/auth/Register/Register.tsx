@@ -1,20 +1,6 @@
 import * as React from 'react'
 
-import { VisibilityOff, Visibility } from '@mui/icons-material'
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Grid,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material'
 import FormControl from '@mui/material/FormControl'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
@@ -22,6 +8,11 @@ import { Link, Navigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
 import { Copyright } from '../../../common/components/ui/Copyright/Copyright'
+import InputConfirmPassword from '../../../common/components/ui/Input/InputConfirmPassword'
+import InputEmail from '../../../common/components/ui/Input/InputEmail'
+import InputFirstName from '../../../common/components/ui/Input/InputFirstName'
+import InputLastName from '../../../common/components/ui/Input/InputLastName'
+import InputPassword from '../../../common/components/ui/Input/InputPassword'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { registrationTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
@@ -29,16 +20,6 @@ import styles from '../authCommonStyle.module.css'
 export const Register = () => {
   const dispatch = useAppDispatch()
   const isRegistered = useAppSelector(state => state.auth.isRegisteredIn)
-
-  const [showPassword, setShowPassword] = React.useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
-
-  const handleClickShowPassword = () => setShowPassword(show => !show)
-  const handleClickShowConfirmPassword = () => setShowConfirmPassword(show => !show)
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
 
   const formik = useFormik({
     initialValues: {
@@ -101,114 +82,19 @@ export const Register = () => {
                 <Box sx={{ mt: 3 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        autoComplete="given-name"
-                        fullWidth
-                        error={!!formik.errors.fistName && formik.touched.fistName}
-                        id={formik.errors.fistName ? 'filled-error' : 'fistName'}
-                        label={
-                          formik.errors.fistName && formik.touched.fistName
-                            ? formik.errors.fistName
-                            : 'First Name'
-                        }
-                        variant="standard"
-                        {...formik.getFieldProps('fistName')}
-                      />
+                      <InputFirstName formik={formik} />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                      <TextField
-                        autoComplete="family-name"
-                        fullWidth
-                        error={!!formik.errors.lastName && formik.touched.lastName}
-                        id={formik.errors.lastName ? 'filled-error' : 'lastName'}
-                        label={
-                          formik.errors.lastName && formik.touched.lastName
-                            ? formik.errors.lastName
-                            : 'Last Name'
-                        }
-                        variant="standard"
-                        {...formik.getFieldProps('lastName')}
-                      />
+                      <InputLastName formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        autoComplete="email"
-                        fullWidth
-                        required
-                        error={!!formik.errors.email && formik.touched.email}
-                        id={formik.errors.email ? 'filled-error' : 'email'}
-                        label={
-                          formik.errors.email && formik.touched.email
-                            ? formik.errors.email
-                            : 'Email Address'
-                        }
-                        variant="standard"
-                        {...formik.getFieldProps('email')}
-                      />
+                      <InputEmail formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel
-                          htmlFor="standard-adornment-password"
-                          required={true}
-                          error={!!formik.errors.password && formik.touched.password}
-                        >
-                          {formik.errors.password && formik.touched.password
-                            ? formik.errors.password
-                            : 'Password'}
-                        </InputLabel>
-                        <Input
-                          autoComplete="new-password"
-                          fullWidth
-                          required
-                          error={!!formik.errors.password && formik.touched.password}
-                          type={showPassword ? 'text' : 'password'}
-                          endAdornment={
-                            <InputAdornment position="end">
-                              <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                              >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                              </IconButton>
-                            </InputAdornment>
-                          }
-                          {...formik.getFieldProps('password')}
-                        />
-                      </FormControl>
+                      <InputPassword formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
-                      <FormControl variant="standard" fullWidth>
-                        <InputLabel
-                          htmlFor="standard-adornment-password"
-                          required={true}
-                          error={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
-                        >
-                          {formik.errors.confirmPassword && formik.touched.confirmPassword
-                            ? formik.errors.confirmPassword
-                            : 'Confirm password'}
-                        </InputLabel>
-                        <Input
-                          autoComplete="new-password"
-                          fullWidth
-                          required
-                          error={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
-                          type={showConfirmPassword ? 'text' : 'password'}
-                          endAdornment={
-                            <InputAdornment position="end">
-                              <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowConfirmPassword}
-                                onMouseDown={handleMouseDownPassword}
-                              >
-                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                              </IconButton>
-                            </InputAdornment>
-                          }
-                          {...formik.getFieldProps('confirmPassword')}
-                        />
-                      </FormControl>
+                      <InputConfirmPassword formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
                       <FormControlLabel
