@@ -1,11 +1,16 @@
 import * as React from 'react'
 
+import { VisibilityOff, Visibility } from '@mui/icons-material'
 import {
   Box,
   Button,
   Checkbox,
   FormControlLabel,
   Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
   Paper,
   TextField,
   Typography,
@@ -24,6 +29,20 @@ import styles from '../authCommonStyle.module.css'
 export const Register = () => {
   const dispatch = useAppDispatch()
   const isRegistered = useAppSelector(state => state.auth.isRegisteredIn)
+
+  const [showPassword, setShowPassword] = React.useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false)
+
+  const handleClickShowPassword = () => setShowPassword(show => !show)
+  const handleClickShowConfirmPassword = () => setShowConfirmPassword(show => !show)
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+  }
+  // const handleMouseDownConfirmPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault()
+  // }
+
   const formik = useFormik({
     initialValues: {
       fistName: '',
@@ -88,7 +107,6 @@ export const Register = () => {
                       <TextField
                         autoComplete="given-name"
                         fullWidth
-                        required
                         error={!!formik.errors.fistName && formik.touched.fistName}
                         id={formik.errors.fistName ? 'filled-error' : 'fistName'}
                         label={
@@ -104,7 +122,6 @@ export const Register = () => {
                       <TextField
                         autoComplete="family-name"
                         fullWidth
-                        required
                         error={!!formik.errors.lastName && formik.touched.lastName}
                         id={formik.errors.lastName ? 'filled-error' : 'lastName'}
                         label={
@@ -133,36 +150,68 @@ export const Register = () => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        autoComplete="new-password"
-                        fullWidth
-                        required
-                        error={!!formik.errors.password && formik.touched.password}
-                        id={formik.errors.password ? 'filled-error' : 'password'}
-                        label={
-                          formik.errors.password && formik.touched.password
+                      <FormControl variant="standard" fullWidth>
+                        <InputLabel
+                          htmlFor="standard-adornment-password"
+                          required={true}
+                          error={!!formik.errors.password && formik.touched.password}
+                        >
+                          {formik.errors.password && formik.touched.password
                             ? formik.errors.password
-                            : 'Password'
-                        }
-                        type="password"
-                        variant="standard"
-                        {...formik.getFieldProps('password')}
-                      />
+                            : 'Password'}
+                        </InputLabel>
+                        <Input
+                          autoComplete="new-password"
+                          fullWidth
+                          required
+                          error={!!formik.errors.password && formik.touched.password}
+                          type={showPassword ? 'text' : 'password'}
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                              >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          }
+                          {...formik.getFieldProps('password')}
+                        />
+                      </FormControl>
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        error={!!formik.errors.confirmPassword}
-                        id={formik.errors.confirmPassword ? 'filled-error' : 'confirmPassword'}
-                        label={
-                          formik.errors.confirmPassword
+                      <FormControl variant="standard" fullWidth>
+                        <InputLabel
+                          htmlFor="standard-adornment-password"
+                          required={true}
+                          error={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
+                        >
+                          {formik.errors.confirmPassword && formik.touched.confirmPassword
                             ? formik.errors.confirmPassword
-                            : 'Confirm password'
-                        }
-                        type="password"
-                        variant="standard"
-                        {...formik.getFieldProps('confirmPassword')}
-                      />
+                            : 'Confirm password'}
+                        </InputLabel>
+                        <Input
+                          autoComplete="new-password"
+                          fullWidth
+                          required
+                          error={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
+                          type={showConfirmPassword ? 'text' : 'password'}
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowConfirmPassword}
+                                onMouseDown={handleMouseDownPassword}
+                              >
+                                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          }
+                          {...formik.getFieldProps('confirmPassword')}
+                        />
+                      </FormControl>
                     </Grid>
                     <Grid item xs={12}>
                       <FormControlLabel
