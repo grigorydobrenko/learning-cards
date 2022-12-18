@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { TextField } from '@mui/material'
+import { FormikProps } from 'formik'
 
 const InputFirstName = (props: any) => {
   return (
@@ -24,7 +25,11 @@ const InputFirstName = (props: any) => {
 
 export default InputFirstName
 
-// type InputFirstNamePropsType = {
+type InputTypes = {
+  fistName: string
+  errors: string
+  touched: boolean
+  getFieldProps: () => void
+}
 
-//   fistName: string
-// }
+type InputFirstNamePropsType = Pick<FormikProps<InputTypes>, 'errors' | 'touched' | 'getFieldProps'>
