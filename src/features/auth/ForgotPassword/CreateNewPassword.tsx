@@ -1,19 +1,12 @@
 import React from 'react'
 
-import {
-  Box,
-  Button,
-  Container,
-  CssBaseline,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Container, CssBaseline, Grid, Paper, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import { Navigate, useParams } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
+import InputConfirmPassword from '../../../common/components/ui/Input/InputConfirmPassword'
+import InputPassword from '../../../common/components/ui/Input/InputPassword'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { setNewPasswordTC } from '../auth-reducer'
 
@@ -87,45 +80,10 @@ export const CreateNewPassword = () => {
                 <Box sx={{ mt: 3 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <TextField
-                        autoComplete="new-password"
-                        fullWidth
-                        required
-                        error={!!formik.errors.password && formik.touched.password}
-                        id={
-                          formik.errors.password && formik.touched.password
-                            ? 'filled-error'
-                            : 'password'
-                        }
-                        label={
-                          formik.errors.password && formik.touched.password
-                            ? formik.errors.password
-                            : 'New password'
-                        }
-                        type="password"
-                        variant="standard"
-                        {...formik.getFieldProps('password')}
-                      />
+                      <InputPassword formik={formik} />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        autoComplete="new-password"
-                        fullWidth
-                        error={!!formik.errors.confirmPassword && formik.touched.confirmPassword}
-                        id={
-                          formik.errors.confirmPassword && formik.touched.confirmPassword
-                            ? 'filled-error'
-                            : 'confirmPassword'
-                        }
-                        label={
-                          formik.errors.confirmPassword && formik.touched.confirmPassword
-                            ? formik.errors.confirmPassword
-                            : 'Confirm new password'
-                        }
-                        type="password"
-                        variant="standard"
-                        {...formik.getFieldProps('confirmPassword')}
-                      />
+                      <InputConfirmPassword formik={formik} />
                     </Grid>
                   </Grid>
                   <Grid container justifyContent="flex-start" sx={{ mt: 3 }}>
