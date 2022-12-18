@@ -1,24 +1,13 @@
 import React, { useEffect } from 'react'
 
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormHelperText,
-  Grid,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel,
-  Paper,
-} from '@mui/material'
-import FormControl from '@mui/material/FormControl'
+import { Box, Button, Checkbox, FormControlLabel, Grid, Paper } from '@mui/material'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
 import { Link, useNavigate } from 'react-router-dom'
 
 import { PATH } from '../../../common/components/Routing/Routes'
+import InputEmail from '../../../common/components/ui/Input/InputEmail'
+import InputPassword from '../../../common/components/ui/Input/InputPassword'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import styles from '../../Header/Header.module.css'
 import { LoginPayloadType } from '../auth-api'
@@ -32,8 +21,6 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
-  const [isShownPassword, setIsShownPassword] = React.useState(false)
-
   const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
@@ -54,14 +41,6 @@ export const Login = () => {
     }
 
     return errors
-  }
-
-  const handleClickShowPassword = () => {
-    setIsShownPassword(!isShownPassword)
-  }
-
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
   }
 
   const formik = useFormik({
@@ -92,45 +71,16 @@ export const Login = () => {
             <h2 className={loginStyles.title}>Sign in</h2>
             <form onSubmit={formik.handleSubmit}>
               <FormGroup>
-                <FormControl variant="standard" sx={{ mb: 3 }} fullWidth>
-                  <InputLabel htmlFor="standard-adornment-email" shrink={true}>
-                    Email
-                  </InputLabel>
-                  <Input id="standard-adornment-email" {...formik.getFieldProps('email')} />
-                  {formik.touched.email && formik.errors.email && (
-                    <FormHelperText error id="component-error-text">
-                      {formik.errors.email}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-
-                <FormControl variant="standard" fullWidth sx={{ mb: 3 }}>
-                  <InputLabel htmlFor="standard-adornment-password" shrink={true}>
-                    Password
-                  </InputLabel>
-                  <Input
-                    id="standard-adornment-password"
-                    type={isShownPassword ? 'text' : 'password'}
-                    {...formik.getFieldProps('password')}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {isShownPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                  {formik.touched.password && formik.errors.password && (
-                    <FormHelperText error id="component-error-text">
-                      {formik.errors.password}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-
+                <Box sx={{ mt: 3, mb: 4 }}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <InputEmail formik={formik} />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <InputPassword formik={formik} />
+                    </Grid>
+                  </Grid>
+                </Box>
                 <FormControlLabel
                   label={<div className={loginStyles.rememberMe}>Remember me</div>}
                   control={
