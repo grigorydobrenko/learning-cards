@@ -9,6 +9,8 @@ import { Login } from '../../../features/auth/Login/Login'
 import { Register } from '../../../features/auth/Register/Register'
 import { Packs } from '../../../features/packs/Packs'
 import { Profile } from '../../../features/profile/Profile'
+import { useAppSelector } from '../../hooks/customHooks'
+import { authSelector } from '../../selectors'
 import { NotFound } from '../PageNotFound/NotFound'
 
 export const PATH = {
@@ -30,17 +32,26 @@ const PrivateRoutes = () => {
   return token ? <Outlet /> : <Navigate to={PATH.LOGIN} />
 }
 
+const PrivateRoutesForPacks = () => {
+  const isLoggedIn = useAppSelector(authSelector.isLoggedin)
+
+  return isLoggedIn ? <Outlet /> : <Navigate to={PATH.LOGIN} />
+}
+
 export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={PATH.MAIN} element={<Profile />} />
-      <Route path={PATH.PROFILE} element={<Profile />} />
+
       <Route path={PATH.REGISTER} element={<Register />} />
       <Route path={PATH.LOGIN} element={<Login />} />
       <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
       <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
       <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
-      <Route path={PATH.PACKS} element={<Packs />} />
+      <Route element={<PrivateRoutesForPacks />}>
+        <Route path={PATH.PACKS} element={<Packs />} />
+        <Route path={PATH.PROFILE} element={<Profile />} />
+      </Route>
       <Route element={<PrivateRoutes />}>
         <Route path={PATH.CREATE_PASSWORD_TOKEN} element={<CreateNewPassword />} />
       </Route>
