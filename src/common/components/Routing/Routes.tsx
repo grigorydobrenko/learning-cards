@@ -7,6 +7,7 @@ import { CreateNewPassword } from '../../../features/auth/ForgotPassword/CreateN
 import { ForgotPassword } from '../../../features/auth/ForgotPassword/ForgotPassword'
 import { Login } from '../../../features/auth/Login/Login'
 import { Register } from '../../../features/auth/Register/Register'
+import { Packs } from '../../../features/packs/Packs'
 import { Profile } from '../../../features/profile/Profile'
 import { NotFound } from '../PageNotFound/NotFound'
 
@@ -20,6 +21,7 @@ export const PATH = {
   CREATE_PASSWORD: '/create-password',
   CREATE_PASSWORD_TOKEN: '/create-password/:token',
   NOT_FOUND: '/404',
+  PACKS: '/packs',
 }
 
 const PrivateRoutes = () => {
@@ -38,6 +40,7 @@ export const AppRoutes = () => {
       <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
       <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
       <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
+      <Route path={PATH.PACKS} element={<Packs />} />
       <Route element={<PrivateRoutes />}>
         <Route path={PATH.CREATE_PASSWORD_TOKEN} element={<CreateNewPassword />} />
       </Route>
