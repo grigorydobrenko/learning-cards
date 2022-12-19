@@ -33,9 +33,11 @@ export const setCardsAC = (cards: CardType[]) => ({ type: 'cards/SET-CARDS', car
 
 export const getCardsTC = (): AppThunkType => async dispatch => {
   try {
+    dispatch(setAppStatusAC('loading'))
     const res = await cardsApi.getCards()
 
     dispatch(setCardsAC(res.data.cards))
+    dispatch(setAppStatusAC('succeeded'))
   } catch (e) {
     const err = e as Error | AxiosError<{ error: string }>
 

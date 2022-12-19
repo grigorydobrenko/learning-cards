@@ -139,9 +139,6 @@ export const Cards = () => {
           className={s.Search}
         />
         <Table dataSource={dataSource} columns={columns} pagination={pagination} />
-        Cards
-        <div>1</div>
-        <div>2</div>
         <button onClick={getcards}>getCardds</button>
       </Container>
     </div>
