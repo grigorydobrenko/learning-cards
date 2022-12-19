@@ -5,6 +5,7 @@ import './index.css'
 import { Provider } from 'react-redux'
 import { HashRouter } from 'react-router-dom'
 
+import 'antd/dist/reset.css'
 import App from './app/App'
 import store from './app/store'
 import reportWebVitals from './reportWebVitals'
@@ -12,13 +13,11 @@ import reportWebVitals from './reportWebVitals'
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 root.render(
-  // <React.StrictMode>
   <HashRouter>
     <Provider store={store}>
       <App />
     </Provider>
   </HashRouter>
-  // </React.StrictMode>
 )
 
 // If you want to start measuring performance in your app, pass a function
