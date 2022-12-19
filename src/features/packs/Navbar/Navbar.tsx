@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import FilterAltOffOutlinedIcon from '@mui/icons-material/FilterAltOffOutlined'
+import { ClearOutlined } from '@ant-design/icons'
 import { Col, InputNumber, Radio, RadioChangeEvent, Row, Slider } from 'antd'
 import Search from 'antd/es/input/Search'
 
@@ -8,10 +8,15 @@ import styles from './Navbar.module.css'
 
 export const Navbar = () => {
   const [choosePacks, setChoosePacks] = useState('all')
-  const [maxCountCardsInPacks, setMaxCountCardsInPacks] = useState(20)
-  const [minCountCardsInPacks, setMinCountCardsInPacks] = useState(1)
 
-  const onSearchHandler = () => {}
+  const [searchValue, setSearchValue] = useState('')
+  const [minCountCardsInPacks, setMinCountCardsInPacks] = useState(1)
+  const [maxCountCardsInPacks, setMaxCountCardsInPacks] = useState(20)
+
+  const onSearchHandler = (value: string) => {
+    setSearchValue(value)
+    console.log(searchValue)
+  }
 
   const onChangeFilterHandler = ({ target: { value } }: RadioChangeEvent) => {
     console.log('radio checked', value)
@@ -29,6 +34,10 @@ export const Navbar = () => {
     setMaxCountCardsInPacks(maxValue)
   }
   const resetFiltersHandler = () => {
+    setChoosePacks('all')
+    setMinCountCardsInPacks(1)
+    setMaxCountCardsInPacks(20)
+    setSearchValue('')
     console.log('Filters was reset')
   }
 
@@ -40,7 +49,7 @@ export const Navbar = () => {
   return (
     <div className={styles.navbar}>
       <Row>
-        <Col span={9}>
+        <Col span={8}>
           <Search
             placeholder="input search text"
             allowClear
@@ -49,7 +58,7 @@ export const Navbar = () => {
             enterButton
           />
         </Col>
-        <Col span={3}>
+        <Col span={4}>
           <Radio.Group
             options={options}
             onChange={onChangeFilterHandler}
@@ -59,11 +68,7 @@ export const Navbar = () => {
         </Col>
 
         <Col span={2}>
-          <InputNumber
-            //style={{ margin: '0 16px' }}
-            value={minCountCardsInPacks}
-            onChange={onSetMinCount}
-          />
+          <InputNumber value={minCountCardsInPacks} onChange={onSetMinCount} />
         </Col>
         <Col span={6}>
           <Slider
@@ -73,14 +78,10 @@ export const Navbar = () => {
           />
         </Col>
         <Col span={3}>
-          <InputNumber
-            //style={{ margin: '0 16px' }}
-            value={maxCountCardsInPacks}
-            onChange={onSetMaxCount}
-          />
+          <InputNumber value={maxCountCardsInPacks} onChange={onSetMaxCount} />
         </Col>
         <Col span={1}>
-          <FilterAltOffOutlinedIcon onClick={resetFiltersHandler} />
+          <ClearOutlined style={{ fontSize: '30px' }} onClick={resetFiltersHandler} />
         </Col>
       </Row>
     </div>
