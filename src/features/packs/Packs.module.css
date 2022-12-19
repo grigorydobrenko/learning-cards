@@ -1,0 +1,12 @@
+.mainContainer {
+    /*//width: 100%;*/
+}
+
+.head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+
+}
+
