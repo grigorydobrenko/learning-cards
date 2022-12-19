@@ -8,11 +8,51 @@ import { Link, NavLink } from 'react-router-dom'
 
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
+import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 
+import { getCardsTC } from './cards-reducer'
 import s from './Cards.module.css'
 
 export const Cards = () => {
-  const dataSource = [
+  const cards = useAppSelector(state => state.cards.cards)
+
+  const dataSource = cards.map(card => ({
+    key: card._id,
+    question: card.question,
+    answer: card.answer,
+    lastUpdated: card.updated,
+    grade: card.grade,
+  }))
+
+  const _dataSource = [
+    {
+      key: '1',
+      question: 'How "This" works in JavaScript?',
+      answer: 'This is how "This" works in JavaScript',
+      lastUpdated: '18.03.2021',
+      grade: 0,
+    },
+    {
+      key: '1',
+      question: 'How "This" works in JavaScript?',
+      answer: 'This is how "This" works in JavaScript',
+      lastUpdated: '18.03.2021',
+      grade: 0,
+    },
+    {
+      key: '1',
+      question: 'How "This" works in JavaScript?',
+      answer: 'This is how "This" works in JavaScript',
+      lastUpdated: '18.03.2021',
+      grade: 0,
+    },
+    {
+      key: '1',
+      question: 'How "This" works in JavaScript?',
+      answer: 'This is how "This" works in JavaScript',
+      lastUpdated: '18.03.2021',
+      grade: 0,
+    },
     {
       key: '1',
       question: 'How "This" works in JavaScript?',
@@ -44,6 +84,18 @@ export const Cards = () => {
       key: 'grade',
     },
   ]
+
+  const pagination = {
+    defaultPageSize: 2,
+    showSizeChanger: true,
+    pageSizeOptions: [2, 5, 15, 20],
+  }
+
+  const dispatch = useAppDispatch()
+
+  const getcards = () => {
+    dispatch(getCardsTC())
+  }
 
   return (
     <div>
@@ -86,11 +138,11 @@ export const Cards = () => {
           style={{ width: '100%' }}
           className={s.Search}
         />
-        <Table dataSource={dataSource} columns={columns} />
+        <Table dataSource={dataSource} columns={columns} pagination={pagination} />
         Cards
         <div>1</div>
         <div>2</div>
-        <div>3</div>
+        <button onClick={getcards}>getCardds</button>
       </Container>
     </div>
   )
