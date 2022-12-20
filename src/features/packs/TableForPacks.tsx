@@ -6,7 +6,7 @@ import { Table } from 'antd'
 import { useAppSelector } from '../../common/hooks/customHooks'
 import { packsSelector } from '../../common/selectors'
 
-import { cardPacksType } from './packs-api'
+import { CardPacksType } from './packs-api'
 
 const TeachHandler = () => {
   console.log('Teach')
@@ -31,7 +31,7 @@ export const TableForPacks = () => {
     // eslint-disable-next-line react/jsx-key
     <StepForwardOutlined style={{ fontSize: '20px', margin: '0 5px' }} onClick={TeachHandler} />,
   ]
-  const cardPacks = useAppSelector(packsSelector.cardPacks).map((pack: cardPacksType) => {
+  const cardPacks = useAppSelector(packsSelector.cardPacks).map((pack: CardPacksType) => {
     return {
       key: pack._id,
       name: pack.name,
