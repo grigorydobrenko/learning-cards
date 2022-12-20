@@ -16,12 +16,21 @@ export const packsTableAPI = {
       // data
     )
   },
+  createNewPack() {
+    return instance.post<'', AxiosResponse<PackResponseType>, CreatePacksRequestType>(
+      '/cards/pack',
+      { name: 'New Pack', deckCover: 'url or base64' }
+    )
+  },
 }
 
 //TYPES================================================
-
+export type CreatePacksRequestType = {
+  name: string
+  deckCover: string
+}
 export type PackResponseType = {
-  cardPacks: Array<cardPacksType>
+  cardPacks: Array<CardPacksType>
   cardPacksTotalCount: number | null
   maxCardsCount: number | null
   minCardsCount: number | null
@@ -31,7 +40,7 @@ export type PackResponseType = {
   tokenDeathTime: number | null
 }
 
-export type cardPacksType = {
+export type CardPacksType = {
   cardsCount: number
   created: string
   deckCover: null | number
