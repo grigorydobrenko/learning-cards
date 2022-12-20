@@ -8,12 +8,15 @@ import { cardsApi } from './cards-api'
 
 const InitialState: InitialStateType = {
   cards: [],
-  cardsTotalCount: null,
-  maxGrade: null,
-  minGrade: null,
-  page: null,
-  pageCount: null,
-  packUserId: null,
+  cardsTotalCount: 0,
+  maxGrade: 0,
+  minGrade: 0,
+  page: 0,
+  pageCount: 0,
+  sort: '',
+  search: '',
+  packUserId: '',
+  isMyPack: null,
 }
 
 export const cardsReducer = (
@@ -22,21 +25,28 @@ export const cardsReducer = (
 ): InitialStateType => {
   switch (action.type) {
     case 'cards/SET-CARDS':
-      return { ...state, cards: action.cards }
+      return { ...state, ...action.cardsResponse }
+    case 'cards/SET-PAGE-COUNT':
+      return { ...state, pageCount: action.pageCount }
 
     default:
       return state
   }
 }
 
-export const setCardsAC = (cards: CardType[]) => ({ type: 'cards/SET-CARDS', cards } as const)
+// export const setCardsAC = (cards: CardType[], cardsTotalCount: number) =>
+//   ({ type: 'cards/SET-CARDS', cards, cardsTotalCount } as const)
+export const setCardsAC = (cardsResponse: ResponseGetCardsType) =>
+  ({ type: 'cards/SET-CARDS', cardsResponse } as const)
+export const setPageCountAC = (pageCount: number) =>
+  ({ type: 'cards/SET-PAGE-COUNT', pageCount } as const)
 
 export const getCardsTC = (): AppThunkType => async dispatch => {
   try {
     dispatch(setAppStatusAC('loading'))
     const res = await cardsApi.getCards()
 
-    dispatch(setCardsAC(res.data.cards))
+    dispatch(setCardsAC(res.data))
     dispatch(setAppStatusAC('succeeded'))
   } catch (e) {
     const err = e as Error | AxiosError<{ error: string }>
@@ -47,17 +57,23 @@ export const getCardsTC = (): AppThunkType => async dispatch => {
 }
 
 type setCardsACType = ReturnType<typeof setCardsAC>
-export type cardsReducerActionsType = setCardsACType
+type setPageCountACType = ReturnType<typeof setPageCountAC>
+export type cardsReducerActionsType = setCardsACType | setPageCountACType
 
 type InitialStateType = {
   cards: CardType[]
-  cardsTotalCount: number | null
-  maxGrade: number | null
-  minGrade: number | null
-  page: number | null
-  pageCount: number | null
-  packUserId: string | null
+  cardsTotalCount: number
+  maxGrade: number
+  minGrade: number
+  page: number
+  pageCount: number
+  packUserId: string
+  sort: string
+  search: string
+  isMyPack: boolean | null
 }
+
+type ResponseGetCardsType = Omit<InitialStateType, 'sort' | 'search' | 'isMyPack'>
 
 export type CardType = {
   answer: string

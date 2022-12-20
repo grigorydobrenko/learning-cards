@@ -10,7 +10,7 @@ import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 
-import { getCardsTC } from './cards-reducer'
+import { getCardsTC, setPageCountAC } from './cards-reducer'
 import s from './Cards.module.css'
 
 export const Cards = () => {
@@ -21,6 +21,8 @@ export const Cards = () => {
 
     return date.toLocaleString().slice(0, 10)
   }
+
+  const dispatch = useAppDispatch()
 
   const dataSource = cards.map(card => ({
     key: card._id,
@@ -58,9 +60,10 @@ export const Cards = () => {
     defaultPageSize: 2,
     showSizeChanger: true,
     pageSizeOptions: [2, 5, 15, 20],
+    onChange: (pageSize: number) => {
+      dispatch(setPageCountAC(pageSize))
+    },
   }
-
-  const dispatch = useAppDispatch()
 
   const getcards = () => {
     dispatch(getCardsTC())
