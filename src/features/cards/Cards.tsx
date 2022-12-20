@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import { Rate, Table } from 'antd'
+import { Pagination, Rate, Table } from 'antd'
 import Search from 'antd/lib/input/Search'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -10,11 +10,11 @@ import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 
-import { getCardsTC, setPageCountAC } from './cards-reducer'
+import { getCardsTC, setPageAC, setPageCountAC } from './cards-reducer'
 import s from './Cards.module.css'
 
 export const Cards = () => {
-  const cards = useAppSelector(state => state.cards.cards)
+  const cards = useAppSelector(state => state.cards)
 
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
@@ -24,7 +24,7 @@ export const Cards = () => {
 
   const dispatch = useAppDispatch()
 
-  const dataSource = cards.map(card => ({
+  const dataSource = cards.cards.map(card => ({
     key: card._id,
     question: card.question,
     answer: card.answer,
@@ -57,18 +57,19 @@ export const Cards = () => {
   ]
 
   const pagination = {
-    defaultPageSize: 2,
+    defaultPageSize: cards.pageCount,
     showSizeChanger: true,
-    pageSizeOptions: [2, 5, 15, 20],
-    onChange: (pageSize: number) => {
+    pageSizeOptions: [2, cards.pageCount, 7, 10, 15, 20],
+    onChange: (page: number, pageSize: number) => {
+      dispatch(setPageAC(page))
       dispatch(setPageCountAC(pageSize))
     },
+    total: cards.cardsTotalCount,
   }
 
-  const getcards = () => {
+  useEffect(() => {
     dispatch(getCardsTC())
-  }
-
+  }, [cards.page, cards.pageCount])
   return (
     <div>
       <Container
@@ -108,7 +109,6 @@ export const Cards = () => {
           className={s.Search}
         />
         <Table dataSource={dataSource} columns={columns} pagination={pagination} />
-        <button onClick={getcards}>getCardds</button>
       </Container>
     </div>
   )

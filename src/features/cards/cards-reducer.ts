@@ -11,9 +11,9 @@ const InitialState: InitialStateType = {
   cardsTotalCount: 0,
   maxGrade: 0,
   minGrade: 0,
-  page: 0,
-  pageCount: 0,
-  sort: '',
+  page: 1,
+  pageCount: 5,
+  sort: '0grade',
   search: '',
   packUserId: '',
   isMyPack: null,
@@ -25,9 +25,17 @@ export const cardsReducer = (
 ): InitialStateType => {
   switch (action.type) {
     case 'cards/SET-CARDS':
-      return { ...state, ...action.cardsResponse }
+      return {
+        ...state,
+        cards: action.cardsResponse.cards,
+        cardsTotalCount: action.cardsResponse.cardsTotalCount,
+      }
     case 'cards/SET-PAGE-COUNT':
       return { ...state, pageCount: action.pageCount }
+    case 'cards/SET-PAGE':
+      return { ...state, page: action.page }
+    case 'cards/SET-SORT':
+      return { ...state, sort: action.sort }
 
     default:
       return state
@@ -40,11 +48,20 @@ export const setCardsAC = (cardsResponse: ResponseGetCardsType) =>
   ({ type: 'cards/SET-CARDS', cardsResponse } as const)
 export const setPageCountAC = (pageCount: number) =>
   ({ type: 'cards/SET-PAGE-COUNT', pageCount } as const)
+export const setPageAC = (page: number) => ({ type: 'cards/SET-PAGE', page } as const)
+export const setCardsSortAC = (sort: string) => ({ type: 'cards/SET-SORT', sort } as const)
 
-export const getCardsTC = (): AppThunkType => async dispatch => {
+export const getCardsTC = (): AppThunkType => async (dispatch, getState) => {
+  const cardsState = getState().cards
+  const params = {
+    cardsPack_id: '617ff51fd7b1030004090a1f',
+    page: cardsState.page,
+    pageCount: cardsState.pageCount,
+    sortCards: cardsState.sort,
+  }
   try {
     dispatch(setAppStatusAC('loading'))
-    const res = await cardsApi.getCards()
+    const res = await cardsApi.getCards(params)
 
     dispatch(setCardsAC(res.data))
     dispatch(setAppStatusAC('succeeded'))
@@ -58,7 +75,13 @@ export const getCardsTC = (): AppThunkType => async dispatch => {
 
 type setCardsACType = ReturnType<typeof setCardsAC>
 type setPageCountACType = ReturnType<typeof setPageCountAC>
-export type cardsReducerActionsType = setCardsACType | setPageCountACType
+type setPageACType = ReturnType<typeof setPageAC>
+type setCardsSortACType = ReturnType<typeof setCardsSortAC>
+export type cardsReducerActionsType =
+  | setCardsACType
+  | setPageCountACType
+  | setPageACType
+  | setCardsSortACType
 
 type InitialStateType = {
   cards: CardType[]
