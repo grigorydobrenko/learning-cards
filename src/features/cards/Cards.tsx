@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import { Table } from 'antd'
+import { Rate, Table } from 'antd'
 import Search from 'antd/lib/input/Search'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -27,7 +27,7 @@ export const Cards = () => {
     question: card.question,
     answer: card.answer,
     lastUpdated: getDate(card.updated),
-    grade: card.grade,
+    grade: <RateStars rating={card.grade} />,
   }))
 
   const columns = [
@@ -110,3 +110,19 @@ export const Cards = () => {
     </div>
   )
 }
+
+type Props = {
+  rating: number
+}
+
+const RateStars = (props: Props) => {
+  const { rating } = props
+
+  return (
+    <>
+      <Rate allowHalf defaultValue={rating} />
+    </>
+  )
+}
+
+export default RateStars
