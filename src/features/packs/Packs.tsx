@@ -6,7 +6,7 @@ import Title from 'antd/lib/typography/Title'
 import { useAppDispatch } from '../../common/hooks/customHooks'
 
 import { Navbar } from './Navbar/Navbar'
-import { getPacksTC } from './packs-reducer'
+import { addNewPackTC, getPacksTC } from './packs-reducer'
 import styles from './Packs.module.css'
 import { TableForPacks } from './TableForPacks'
 
@@ -16,7 +16,10 @@ export const Packs = () => {
   useEffect(() => {
     dispatch(getPacksTC())
   }, [])
-  const addNewPackHandler = () => {}
+  const addNewPackHandler = () => {
+    dispatch(addNewPackTC())
+    dispatch(getPacksTC())
+  }
 
   return (
     <div className={styles.mainContainer}>
