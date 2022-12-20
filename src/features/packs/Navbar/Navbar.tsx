@@ -37,13 +37,13 @@ export const Navbar = () => {
       dispatch(getPacksTC())
     }
   }
+  const onSetMinCount = (minValue: any) => {
+    setMinCountCardsInPacks(minValue)
+  }
   const onChangeCardsCount = ([minValue, maxValue]: Array<number>) => {
     setMinCountCardsInPacks(minValue)
     setMaxCountCardsInPacks(maxValue)
     console.log([minValue, maxValue])
-  }
-  const onSetMinCount = (minValue: any) => {
-    setMinCountCardsInPacks(minValue)
   }
   const onSetMaxCount = (maxValue: any) => {
     setMaxCountCardsInPacks(maxValue)
