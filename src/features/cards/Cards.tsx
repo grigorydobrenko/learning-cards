@@ -16,51 +16,19 @@ import s from './Cards.module.css'
 export const Cards = () => {
   const cards = useAppSelector(state => state.cards.cards)
 
+  const getDate = (dateString: string) => {
+    let date = new Date(Date.parse(dateString))
+
+    return date.toLocaleString().slice(0, 10)
+  }
+
   const dataSource = cards.map(card => ({
     key: card._id,
     question: card.question,
     answer: card.answer,
-    lastUpdated: card.updated,
+    lastUpdated: getDate(card.updated),
     grade: card.grade,
   }))
-
-  const _dataSource = [
-    {
-      key: '1',
-      question: 'How "This" works in JavaScript?',
-      answer: 'This is how "This" works in JavaScript',
-      lastUpdated: '18.03.2021',
-      grade: 0,
-    },
-    {
-      key: '1',
-      question: 'How "This" works in JavaScript?',
-      answer: 'This is how "This" works in JavaScript',
-      lastUpdated: '18.03.2021',
-      grade: 0,
-    },
-    {
-      key: '1',
-      question: 'How "This" works in JavaScript?',
-      answer: 'This is how "This" works in JavaScript',
-      lastUpdated: '18.03.2021',
-      grade: 0,
-    },
-    {
-      key: '1',
-      question: 'How "This" works in JavaScript?',
-      answer: 'This is how "This" works in JavaScript',
-      lastUpdated: '18.03.2021',
-      grade: 0,
-    },
-    {
-      key: '1',
-      question: 'How "This" works in JavaScript?',
-      answer: 'This is how "This" works in JavaScript',
-      lastUpdated: '18.03.2021',
-      grade: 0,
-    },
-  ]
 
   const columns = [
     {
@@ -77,6 +45,7 @@ export const Cards = () => {
       title: 'Last Updated',
       dataIndex: 'lastUpdated',
       key: 'lastUpdated',
+      sorter: (a: any, b: any) => a.lastUpdated.localeCompare(b.lastUpdated),
     },
     {
       title: 'Grade',
@@ -101,13 +70,10 @@ export const Cards = () => {
     <div>
       <Container
         disableGutters={true}
-        // maxWidth="lg"
         sx={{
           display: { md: 'flex' },
           flexDirection: 'column',
           justifyContent: 'space-between',
-
-          // alignItems: 'center',
         }}
       >
         <Link className={s.backLink} to={PATH.NOT_FOUND}>
