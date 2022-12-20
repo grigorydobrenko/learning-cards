@@ -1,13 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Button, Col, Divider, Row } from 'antd'
 import Title from 'antd/lib/typography/Title'
 
+import { useAppDispatch } from '../../common/hooks/customHooks'
+
 import { Navbar } from './Navbar/Navbar'
+import { getPacksTC } from './packs-reducer'
 import styles from './Packs.module.css'
 import { TableForPacks } from './TableForPacks'
 
 export const Packs = () => {
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(getPacksTC())
+  }, [])
   const addNewPackHandler = () => {}
 
   return (
