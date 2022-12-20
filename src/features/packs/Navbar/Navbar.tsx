@@ -4,6 +4,10 @@ import { ClearOutlined } from '@ant-design/icons'
 import { Col, InputNumber, Radio, RadioChangeEvent, Row, Slider } from 'antd'
 import Search from 'antd/es/input/Search'
 
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
+import { appSelector, packsSelector } from '../../../common/selectors'
+import { getPacksTC, setMyPacksDataAC } from '../packs-reducer'
+
 import styles from './Navbar.module.css'
 
 export const Navbar = () => {
@@ -13,6 +17,9 @@ export const Navbar = () => {
   const [minCountCardsInPacks, setMinCountCardsInPacks] = useState(1)
   const [maxCountCardsInPacks, setMaxCountCardsInPacks] = useState(20)
 
+  const cardPacks = useAppSelector(packsSelector.cardPacks)
+  const userData = useAppSelector(appSelector.user)
+  const dispatch = useAppDispatch()
   const onSearchHandler = (value: string) => {
     setSearchValue(value)
     console.log(searchValue)
@@ -21,6 +28,14 @@ export const Navbar = () => {
   const onChangeFilterHandler = ({ target: { value } }: RadioChangeEvent) => {
     console.log('radio checked', value)
     setChoosePacks(value)
+    if (choosePacks !== 'my' && userData) {
+      const myPacks = cardPacks.filter(pack => pack._id === userData._id)
+
+      dispatch(setMyPacksDataAC(myPacks))
+    }
+    if (choosePacks !== 'all' && userData) {
+      dispatch(getPacksTC())
+    }
   }
   const onChangeCardsCount = ([minValue, maxValue]: Array<number>) => {
     setMinCountCardsInPacks(minValue)
@@ -35,6 +50,7 @@ export const Navbar = () => {
   }
   const resetFiltersHandler = () => {
     setChoosePacks('all')
+    dispatch(getPacksTC())
     setMinCountCardsInPacks(1)
     setMaxCountCardsInPacks(20)
     setSearchValue('')
