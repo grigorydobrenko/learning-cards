@@ -7,12 +7,12 @@ import { CreateNewPassword } from '../../../features/auth/ForgotPassword/CreateN
 import { ForgotPassword } from '../../../features/auth/ForgotPassword/ForgotPassword'
 import { Login } from '../../../features/auth/Login/Login'
 import { Register } from '../../../features/auth/Register/Register'
+import { Cards } from '../../../features/cards/Cards'
 import { Packs } from '../../../features/packs/Packs'
 import { Profile } from '../../../features/profile/Profile'
 import { useAppSelector } from '../../hooks/customHooks'
 import { authSelector } from '../../selectors'
 import { NotFound } from '../PageNotFound/NotFound'
-import { Cards } from '../../../features/cards/Cards'
 
 export const PATH = {
   MAIN: '/',
