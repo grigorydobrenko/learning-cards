@@ -5,8 +5,15 @@ import { Col, InputNumber, Radio, RadioChangeEvent, Row, Slider } from 'antd'
 import Search from 'antd/es/input/Search'
 
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
-import { appSelector, packsSelector } from '../../../common/selectors'
-import { getPacksTC, setMyPacksDataAC } from '../packs-reducer'
+import { packsSelector } from '../../../common/selectors'
+import {
+  changeSortAC,
+  getPacksTC,
+  setMaxCardsCountAC,
+  setMinCardsCountAC,
+  setMyPacksDataAC,
+  setSearchDataAC,
+} from '../packs-reducer'
 
 import styles from './Navbar.module.css'
 
@@ -14,45 +21,58 @@ export const Navbar = () => {
   const [choosePacks, setChoosePacks] = useState('all')
 
   const [searchValue, setSearchValue] = useState('')
-  const [minCountCardsInPacks, setMinCountCardsInPacks] = useState(1)
-  const [maxCountCardsInPacks, setMaxCountCardsInPacks] = useState(20)
+  // const [minCountCardsInPacks, setMinCountCardsInPacks] = useState(0)
+  // const [maxCountCardsInPacks, setMaxCountCardsInPacks] = useState(20)
 
-  const cardPacks = useAppSelector(packsSelector.cardPacks)
-  const userData = useAppSelector(appSelector.user)
+  // const cardPacks = useAppSelector(packsSelector.cardPacks)
+  const minCountCardsInPacks = useAppSelector(packsSelector.minCountCardsInPacks)
+  const maxCountCardsInPacks = useAppSelector(packsSelector.maxCountCardsInPacks)
+  // const userData = useAppSelector(appSelector.user)
   const dispatch = useAppDispatch()
   const onSearchHandler = (value: string) => {
-    setSearchValue(value)
+    dispatch(setSearchDataAC(value))
     console.log(searchValue)
   }
 
   const onChangeFilterHandler = ({ target: { value } }: RadioChangeEvent) => {
     console.log('radio checked', value)
     setChoosePacks(value)
-    if (choosePacks !== 'my' && userData) {
-      const myPacks = cardPacks.filter(pack => pack._id === userData._id)
+    if (choosePacks !== 'my') {
+      dispatch(setMyPacksDataAC(true))
+      dispatch(changeSortAC('1updated'))
+    }
+    dispatch(setMyPacksDataAC(false))
 
-      dispatch(setMyPacksDataAC(myPacks))
-    }
-    if (choosePacks !== 'all' && userData) {
-      dispatch(getPacksTC())
-    }
+    setChoosePacks(value)
+    // if (choosePacks !== 'my' && userData) {
+    //   const myPacks = cardPacks.filter(pack => pack._id === userData._id)
+    //
+    //   // dispatch(setMyPacksDataAC(myPacks))
+    // }
+    // if (choosePacks !== 'all' && userData) {
+    //   dispatch(getPacksTC())
+    // }
   }
-  const onSetMinCount = (minValue: any) => {
-    setMinCountCardsInPacks(minValue)
-  }
-  const onChangeCardsCount = ([minValue, maxValue]: Array<number>) => {
-    setMinCountCardsInPacks(minValue)
-    setMaxCountCardsInPacks(maxValue)
+  const onSetMinCount = (minValue: number | null) =>
+    minValue ? dispatch(setMinCardsCountAC(minValue)) : 0
+  const onSetMaxCount = (maxValue: number | null) =>
+    maxValue ? dispatch(setMaxCardsCountAC(maxValue)) : 20
+
+  const onChangeCardsCountSlider = ([minValue, maxValue]: Array<number>) => {
+    dispatch(setMinCardsCountAC(minValue))
+    dispatch(setMaxCardsCountAC(maxValue))
+    // setMinCountCardsInPacks(minValue)
+    // setMaxCountCardsInPacks(maxValue)
     console.log([minValue, maxValue])
   }
-  const onSetMaxCount = (maxValue: any) => {
-    setMaxCountCardsInPacks(maxValue)
-  }
+
   const resetFiltersHandler = () => {
     setChoosePacks('all')
     dispatch(getPacksTC())
-    setMinCountCardsInPacks(1)
-    setMaxCountCardsInPacks(20)
+    // setMinCountCardsInPacks(0)
+    // setMaxCountCardsInPacks(20)
+    dispatch(setMinCardsCountAC(0))
+    dispatch(setMaxCardsCountAC(20))
     setSearchValue('')
     console.log('Filters was reset')
   }
@@ -89,8 +109,12 @@ export const Navbar = () => {
         <Col span={6}>
           <Slider
             range={{ draggableTrack: true }}
-            value={[minCountCardsInPacks, maxCountCardsInPacks]}
-            onChange={onChangeCardsCount}
+            value={
+              minCountCardsInPacks && maxCountCardsInPacks
+                ? [minCountCardsInPacks, maxCountCardsInPacks]
+                : [0, 20]
+            }
+            onChange={onChangeCardsCountSlider}
           />
         </Col>
         <Col span={3}>
