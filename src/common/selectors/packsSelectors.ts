@@ -7,3 +7,4 @@ export const isMyPacks = (state: AppRootState) => state.packs.isMyPacks
 export const search = (state: AppRootState) => state.packs.packName
 export const sort = (state: AppRootState) => state.packs.sort
 export const pageCount = (state: AppRootState) => state.packs.pageCount
+export const userId = (state: AppRootState) => state.packs.userId
