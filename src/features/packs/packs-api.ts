@@ -10,22 +10,16 @@ export const instance = axios.create({
 })
 
 export const packsTableAPI = {
-  getPacks({
-    sort,
-    search,
-    isMyPacks,
-    pageCount,
-    minCountCardsInPacks,
-    maxCountCardsInPacks,
-  }: PacksPayloadType) {
+  getPacks({ sort, packName, isMyPacks, pageCount, min, max, userId }: PacksPayloadType) {
     return instance.get<'', AxiosResponse<PacksResponseType>, PacksPayloadType>('cards/pack', {
       params: {
         sort,
-        search,
+        packName,
         isMyPacks,
         pageCount,
-        minCountCardsInPacks,
-        maxCountCardsInPacks,
+        min,
+        max,
+        userId,
       },
     })
   },
@@ -74,9 +68,10 @@ export type CardPacksType = {
 
 export type PacksPayloadType = {
   sort: string | null
-  search: string | null
+  packName: string | null
   isMyPacks: boolean
-  minCountCardsInPacks: number | null
-  maxCountCardsInPacks: number | null
+  min: number | null
+  max: number | null
   pageCount: number | null
+  userId: string | null
 }
