@@ -52,7 +52,9 @@ export const Cards = () => {
       title: 'Last Updated',
       dataIndex: 'lastUpdated',
       key: 'lastUpdated',
-      sorter: (a: any, b: any) => a.lastUpdated.localeCompare(b.lastUpdated),
+      // sorter: (a: any, b: any) => a.lastUpdated.localeCompare(b.lastUpdated),
+      sorter: (a: any, b: any) => {},
+      // showSorterTooltip: 'false',
       onHeaderCell: (column: any) => {
         return {
           onClick: () => {
@@ -86,6 +88,7 @@ export const Cards = () => {
     dispatch(getCardsTC())
   }, [pageCount, page, sort])
 
+  // @ts-ignore
   return (
     <div>
       <Container
@@ -124,7 +127,16 @@ export const Cards = () => {
           style={{ width: '100%' }}
           className={s.Search}
         />
-        <Table dataSource={dataSource} columns={columns} pagination={pagination} />
+        <Table
+          dataSource={dataSource}
+          columns={columns}
+          pagination={pagination}
+          locale={{
+            triggerDesc: 'click to toggle order',
+            triggerAsc: 'click to toggle order',
+            cancelSort: 'click to toggle order',
+          }}
+        />
       </Container>
     </div>
   )
