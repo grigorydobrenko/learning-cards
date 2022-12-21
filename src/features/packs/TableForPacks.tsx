@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { DeleteOutlined, EditOutlined, StepForwardOutlined } from '@ant-design/icons'
-import { Table } from 'antd'
+import { Col, Row, Table } from 'antd'
 
 import { useAppSelector } from '../../common/hooks/customHooks'
 import { packsSelector } from '../../common/selectors'
@@ -31,12 +31,19 @@ export const TableForPacks = () => {
     // eslint-disable-next-line react/jsx-key
     <StepForwardOutlined style={{ fontSize: '20px', margin: '0 5px' }} onClick={TeachHandler} />,
   ]
+
+  const getDate = (dateString: string) => {
+    let date = new Date(Date.parse(dateString))
+
+    return date.toLocaleString().slice(0, 10)
+  }
+
   const cardPacks = useAppSelector(packsSelector.cardPacks).map((pack: CardPacksType) => {
     return {
       key: pack._id,
       name: pack.name,
       cards: pack.cardsCount,
-      lastUpdated: pack.updated,
+      lastUpdated: getDate(pack.updated),
       createdBy: pack.user_name,
     }
   })
@@ -51,6 +58,7 @@ export const TableForPacks = () => {
       title: 'Cards',
       dataIndex: 'cards',
       key: 'cards',
+      sorter: (a: any, b: any) => a.cards - b.cards,
     },
     {
       title: 'Last Updated',
@@ -73,11 +81,20 @@ export const TableForPacks = () => {
 
   return (
     <div>
-      <Table
-        dataSource={cardPacks}
-        columns={columns}
-        pagination={{ defaultPageSize: 5, showSizeChanger: true, pageSizeOptions: [5, 10, 15, 20] }}
-      />
+      <Row>
+        <Col xs={24} span={12}>
+          <Table
+            dataSource={cardPacks}
+            tableLayout={'fixed'}
+            columns={columns}
+            pagination={{
+              defaultPageSize: 5,
+              showSizeChanger: true,
+              pageSizeOptions: [5, 10, 15, 20],
+            }}
+          />
+        </Col>
+      </Row>
     </div>
   )
 }
