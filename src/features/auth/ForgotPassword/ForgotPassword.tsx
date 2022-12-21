@@ -14,7 +14,6 @@ import styles from '../authCommonStyle.module.css'
 
 export const ForgotPassword = () => {
   const dispatch = useAppDispatch()
-  const status = useAppSelector(state => state.app.status)
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -35,10 +34,6 @@ export const ForgotPassword = () => {
       return errors
     },
   })
-
-  if (status === 'succeeded') {
-    return <Navigate to={PATH.CHECK_EMAIL} />
-  }
 
   return (
     <Grid container justifyContent="center">

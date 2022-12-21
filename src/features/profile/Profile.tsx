@@ -24,7 +24,6 @@ import style from './Profile.module.css'
 
 export const Profile = () => {
   const user = useAppSelector(appSelector.user)
-  const isLoggedIn = useAppSelector(authSelector.isLoggedin)
   const dispatch = useAppDispatch()
   const changeUserName = (title: string) => {
     dispatch(updateUserDataTC({ name: title }))
@@ -34,17 +33,13 @@ export const Profile = () => {
     dispatch(logoutTC())
   }
 
-  if (!isLoggedIn) {
-    return <Navigate to={PATH.LOGIN} />
-  }
-
   return (
     <>
       <Container
         maxWidth="lg"
         sx={{ display: 'flex', flexDirection: 'column', alignItems: 'start', gap: '40px' }}
       >
-        <Link className={style.profileLink} to={PATH.NOT_FOUND}>
+        <Link className={style.profileLink} to={PATH.PACKS}>
           <img src={arrowIcon} alt="arrow icon" />
           <span>Back to pack list</span>
         </Link>

@@ -4,7 +4,7 @@ import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { Rate, Table } from 'antd'
 import Search from 'antd/lib/input/Search'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useParams } from 'react-router-dom'
 
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
@@ -19,7 +19,7 @@ export const Cards = () => {
   const page = useAppSelector(state => state.cards.page)
   const pageCount = useAppSelector(state => state.cards.pageCount)
   const sort = useAppSelector(state => state.cards.sort)
-
+  const { id } = useParams()
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
 
@@ -83,7 +83,8 @@ export const Cards = () => {
   }
 
   useEffect(() => {
-    dispatch(getCardsTC())
+    //@ts-ignore
+    dispatch(getCardsTC(id))
   }, [pageCount, page, sort])
 
   return (

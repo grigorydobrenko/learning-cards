@@ -43,18 +43,20 @@ export const setPagePageCountAC = (pageCount: number, page: number) =>
 
 export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
 
-export const getCardsTC = (): AppThunkType => async (dispatch, getState) => {
-  const { pageCount, page, sort } = getState().cards
-  // const params = {
-  //   cardsPack_id: '617ff51fd7b1030004090a1f',
-  //   page: cardsState.page,
-  //   pageCount: cardsState.pageCount,
-  //   sortCards: cardsState.sort,
-  // }
-  const res = await cardsApi.getCards(pageCount, page, sort)
+export const getCardsTC =
+  (cardsPackId: string): AppThunkType =>
+  async (dispatch, getState) => {
+    const { pageCount, page, sort } = getState().cards
+    // const params = {
+    //   cardsPack_id: '617ff51fd7b1030004090a1f',
+    //   page: cardsState.page,
+    //   pageCount: cardsState.pageCount,
+    //   sortCards: cardsState.sort,
+    // }
+    const res = await cardsApi.getCards(pageCount, page, sort, cardsPackId)
 
-  dispatch(setCardsAC(res.data))
-}
+    dispatch(setCardsAC(res.data))
+  }
 
 type setCardsACType = ReturnType<typeof setCardsAC>
 type setPagePageCountACType = ReturnType<typeof setPagePageCountAC>

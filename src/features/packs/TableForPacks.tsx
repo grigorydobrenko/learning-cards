@@ -7,6 +7,7 @@ import { useAppSelector } from '../../common/hooks/customHooks'
 import { packsSelector } from '../../common/selectors'
 
 import { CardPacksType } from './packs-api'
+import { Link } from 'react-router-dom'
 
 const TeachHandler = () => {
   console.log('Teach')
@@ -45,7 +46,7 @@ export const TableForPacks = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-      render: (text: string) => <a>{text}</a>,
+      render: (text: string) => <Link to={'617ff51fd7b1030004090a1f'}>{text}</Link>,
     },
     {
       title: 'Cards',
