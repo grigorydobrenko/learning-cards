@@ -12,6 +12,7 @@ import { Profile } from '../../../features/profile/Profile'
 import { useAppSelector } from '../../hooks/customHooks'
 import { authSelector } from '../../selectors'
 import { NotFound } from '../PageNotFound/NotFound'
+import { Cards } from '../../../features/cards/Cards'
 
 export const PATH = {
   MAIN: '/',
@@ -24,6 +25,7 @@ export const PATH = {
   CREATE_PASSWORD_TOKEN: '/create-password/:token',
   NOT_FOUND: '/404',
   PACKS: '/packs',
+  CARDS: '/cards',
 }
 
 const PrivateRoutes = () => {
@@ -42,7 +44,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={PATH.MAIN} element={<Profile />} />
-
+      <Route path={PATH.PROFILE} element={<Profile />} />
       <Route path={PATH.REGISTER} element={<Register />} />
       <Route path={PATH.LOGIN} element={<Login />} />
       <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
@@ -55,6 +57,7 @@ export const AppRoutes = () => {
       <Route element={<PrivateRoutes />}>
         <Route path={PATH.CREATE_PASSWORD_TOKEN} element={<CreateNewPassword />} />
       </Route>
+      <Route path={PATH.CARDS} element={<Cards />} />
       <Route path={'*'} element={<NotFound />} />
       {/*<Route path={PATH.NOT_FOUND} element={<NotFound />} />*/}
       {/*<Route path={'*'} element={<Navigate to="/404" />} />*/}
