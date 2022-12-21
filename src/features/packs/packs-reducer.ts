@@ -12,7 +12,7 @@ const InitialState: InitialStateType = {
   maxCardsCount: null,
   minCardsCount: null,
   page: null,
-  pageCount: null,
+  pageCount: 10,
   sort: '0updated',
   search: null,
   isMyPacks: false,
@@ -60,15 +60,17 @@ export const changeSortAC = (sortData: string) => ({ type: 'packs/CHANGE-SORT', 
 
 export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   dispatch(setAppStatusAC('loading'))
-  const { isMyPacks } = getState().packs
+  const { sort, pageCount, search, isMyPacks, minCountCardsInPacks, maxCountCardsInPacks } =
+    getState().packs
 
   try {
     const response = await packsTableAPI.getPacks({
-      // sort,
-      // search,
+      sort,
+      search,
       isMyPacks,
-      // minCountCardsInPacks,
-      // maxCountCardsInPacks,
+      pageCount,
+      minCountCardsInPacks,
+      maxCountCardsInPacks,
     })
 
     dispatch(setPacksDataAC(response.data))
