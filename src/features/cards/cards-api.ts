@@ -6,7 +6,7 @@ const instance = axios.create({
 })
 
 export const cardsApi = {
-  getCards(pageCount: number, page: number) {
+  getCards(pageCount: number, page: number, sort: string) {
     return instance.get('/cards/card', {
       params: {
         // cardAnswer: 'english',
@@ -16,7 +16,7 @@ export const cardsApi = {
 
         // min: 1,
         // max: 4,
-        // sortCards: '0grade',
+        sortCards: sort,
         page: page,
         pageCount: pageCount,
       },

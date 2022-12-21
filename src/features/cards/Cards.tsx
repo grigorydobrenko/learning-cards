@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
@@ -10,7 +10,7 @@ import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 
-import { getCardsTC, setPagePageCountAC } from './cards-reducer'
+import { getCardsTC, setPagePageCountAC, toggleSortAC } from './cards-reducer'
 import s from './Cards.module.css'
 
 export const Cards = () => {
@@ -18,14 +18,13 @@ export const Cards = () => {
   const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
   const page = useAppSelector(state => state.cards.page)
   const pageCount = useAppSelector(state => state.cards.pageCount)
+  const sort = useAppSelector(state => state.cards.sort)
 
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
 
     return date.toLocaleString().slice(0, 10)
   }
-
-  const dispatch = useAppDispatch()
 
   const dataSource = cards.map(card => ({
     key: card._id,
@@ -34,6 +33,9 @@ export const Cards = () => {
     lastUpdated: getDate(card.updated),
     grade: <RateStars rating={card.grade} />,
   }))
+
+  const [flag, setFlag] = useState(!!sort[0])
+  const dispatch = useAppDispatch()
 
   const columns = [
     {
@@ -51,6 +53,17 @@ export const Cards = () => {
       dataIndex: 'lastUpdated',
       key: 'lastUpdated',
       sorter: (a: any, b: any) => a.lastUpdated.localeCompare(b.lastUpdated),
+      onHeaderCell: (column: any) => {
+        return {
+          onClick: () => {
+            setFlag(!flag)
+
+            console.log(flag)
+            dispatch(toggleSortAC(flag))
+            console.log('onClick')
+          },
+        }
+      },
     },
     {
       title: 'Grade',
@@ -71,7 +84,7 @@ export const Cards = () => {
 
   useEffect(() => {
     dispatch(getCardsTC())
-  }, [pageCount, page])
+  }, [pageCount, page, sort])
 
   return (
     <div>

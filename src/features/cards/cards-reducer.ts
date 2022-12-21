@@ -24,12 +24,16 @@ export const cardsReducer = (
       return { ...state, ...action.cardsResponse }
     case 'cards/SET-PAGE-COUNT':
       return { ...state, pageCount: action.pageCount, page: action.page }
+    case 'cards/TOGGLE-SORT': {
+      // let flag = action.sort
+
+      return { ...state, sort: Number(action.sort).toString() + 'grade' }
+    }
 
     default:
       return state
   }
 }
-
 
 export const setCardsAC = (cardsResponse: ResponseGetCardsType) =>
   ({ type: 'cards/SET-CARDS', cardsResponse } as const)
@@ -37,22 +41,25 @@ export const setCardsAC = (cardsResponse: ResponseGetCardsType) =>
 export const setPagePageCountAC = (pageCount: number, page: number) =>
   ({ type: 'cards/SET-PAGE-COUNT', pageCount, page } as const)
 
+export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
+
 export const getCardsTC = (): AppThunkType => async (dispatch, getState) => {
-  const { pageCount, page } = getState().cards
+  const { pageCount, page, sort } = getState().cards
   // const params = {
   //   cardsPack_id: '617ff51fd7b1030004090a1f',
   //   page: cardsState.page,
   //   pageCount: cardsState.pageCount,
   //   sortCards: cardsState.sort,
   // }
-  const res = await cardsApi.getCards(pageCount, page)
+  const res = await cardsApi.getCards(pageCount, page, sort)
 
   dispatch(setCardsAC(res.data))
 }
 
 type setCardsACType = ReturnType<typeof setCardsAC>
 type setPagePageCountACType = ReturnType<typeof setPagePageCountAC>
-export type cardsReducerActionsType = setCardsACType | setPagePageCountACType
+type toggleSortACType = ReturnType<typeof toggleSortAC>
+export type cardsReducerActionsType = setCardsACType | setPagePageCountACType | toggleSortACType
 
 type InitialStateType = {
   cards: CardType[]
