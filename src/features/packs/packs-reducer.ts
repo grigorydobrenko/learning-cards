@@ -4,18 +4,20 @@ import { setAppStatusAC } from '../../app/app-reducer'
 import { AppThunkType } from '../../app/store'
 import { errorUtils } from '../../common/utils/error-utils'
 
-import { CardPacksType, PackResponseType, PacksRequestType, packsTableAPI } from './packs-api'
+import { CardPacksType, PacksResponseType, packsTableAPI } from './packs-api'
 
 const InitialState: InitialStateType = {
   cardPacks: [],
-  settings: {},
   cardPacksTotalCount: null,
   maxCardsCount: null,
   minCardsCount: null,
   page: null,
   pageCount: null,
-  token: '',
-  tokenDeathTime: null,
+  sort: '0updated',
+  search: null,
+  isMyPacks: false,
+  minCountCardsInPacks: 0,
+  maxCountCardsInPacks: 20,
 }
 
 export const packsReducer = (
@@ -26,35 +28,48 @@ export const packsReducer = (
     case 'packs/SET-PACKS':
       return { ...state, ...action.data }
     case 'packs/SET-MY-PACKS':
-      return { ...state, cardPacks: action.data }
+      return { ...state, isMyPacks: action.isMyPacks }
+    case 'packs/SET-MIN-CARDS-COUNT':
+      return { ...state, minCountCardsInPacks: action.minCount }
+    case 'packs/SET-MAX-CARDS-COUNT':
+      return { ...state, maxCountCardsInPacks: action.maxCount }
+    case 'packs/SET-SEARCH-DATA':
+      return { ...state, search: action.searchData }
+    case 'packs/CHANGE-SORT':
+      return { ...state, sort: action.sortData }
     default:
       return state
   }
 }
 
 //ACTIONS========================================
-export const setPacksDataAC = (data: PackResponseType) =>
+
+export const setPacksDataAC = (data: PacksResponseType) =>
   ({ type: 'packs/SET-PACKS', data } as const)
-export const setMyPacksDataAC = (data: Array<CardPacksType>) =>
-  ({ type: 'packs/SET-MY-PACKS', data } as const)
+export const setMyPacksDataAC = (isMyPacks: boolean) =>
+  ({ type: 'packs/SET-MY-PACKS', isMyPacks } as const)
+export const setMinCardsCountAC = (minCount: number | null) =>
+  ({ type: 'packs/SET-MIN-CARDS-COUNT', minCount } as const)
+export const setMaxCardsCountAC = (maxCount: number) =>
+  ({ type: 'packs/SET-MAX-CARDS-COUNT', maxCount } as const)
+export const setSearchDataAC = (searchData: string) =>
+  ({ type: 'packs/SET-SEARCH-DATA', searchData } as const)
+export const changeSortAC = (sortData: string) => ({ type: 'packs/CHANGE-SORT', sortData } as const)
 
 //THUNKS =========================================
 
-export const getPacksTC = (): AppThunkType => async dispatch => {
+export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   dispatch(setAppStatusAC('loading'))
-  // const requestData: PacksRequestType = {
-  //   packName: 'english',
-  //   min: 3,
-  //   max: 22,
-  //   sortPacks: '0updated',
-  //   page: 1,
-  //   pageCount: 10,
-  //   user_id: '',
-  //   block: false,
-  // }
+  const { isMyPacks } = getState().packs
 
   try {
-    const response = await packsTableAPI.getPacks()
+    const response = await packsTableAPI.getPacks({
+      // sort,
+      // search,
+      isMyPacks,
+      // minCountCardsInPacks,
+      // maxCountCardsInPacks,
+    })
 
     dispatch(setPacksDataAC(response.data))
 
@@ -69,17 +84,6 @@ export const getPacksTC = (): AppThunkType => async dispatch => {
 
 export const addNewPackTC = (): AppThunkType => async dispatch => {
   dispatch(setAppStatusAC('loading'))
-  // const requestData: PacksRequestType = {
-  //   packName: 'english',
-  //   min: 3,
-  //   max: 22,
-  //   sortPacks: '0updated',
-  //   page: 1,
-  //   pageCount: 10,
-  //   user_id: '',
-  //   block: false,
-  // }
-
   try {
     const response = await packsTableAPI.createNewPack()
 
@@ -98,16 +102,35 @@ export const addNewPackTC = (): AppThunkType => async dispatch => {
 
 type InitialStateType = {
   cardPacks: Array<CardPacksType>
-  settings: Partial<PacksRequestType>
   cardPacksTotalCount: number | null
   maxCardsCount: number | null
   minCardsCount: number | null
   page: number | null
   pageCount: number | null
-  token: string
-  tokenDeathTime: number | null
+  sort: string
+  search: string | null
+  isMyPacks: boolean
+  minCountCardsInPacks: number | null
+  maxCountCardsInPacks: number | null
 }
 
-export type packsReducerActionType = setPacksDataACType | setMyPacksDataACType
+// export type sortSettingsType = {
+//   minCountCardsInPacks: number
+//   maxCountCardsInPacks: number
+//   searchValue: string
+//   choosePacks: string
+// }
+
+export type packsReducerActionType =
+  | setPacksDataACType
+  | setMyPacksDataACType
+  | setMinCardsCountACType
+  | setMaxCardsCountACType
+  | setSearchDataACType
+  | changeSortACType
 export type setPacksDataACType = ReturnType<typeof setPacksDataAC>
 export type setMyPacksDataACType = ReturnType<typeof setMyPacksDataAC>
+export type setMinCardsCountACType = ReturnType<typeof setMinCardsCountAC>
+export type setMaxCardsCountACType = ReturnType<typeof setMaxCardsCountAC>
+export type setSearchDataACType = ReturnType<typeof setSearchDataAC>
+export type changeSortACType = ReturnType<typeof changeSortAC>
