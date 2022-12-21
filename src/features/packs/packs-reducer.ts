@@ -12,12 +12,13 @@ const InitialState: InitialStateType = {
   maxCardsCount: null,
   minCardsCount: null,
   page: null,
-  pageCount: 10,
+  pageCount: null,
   sort: '0updated',
-  search: null,
+  packName: null,
   isMyPacks: false,
-  minCountCardsInPacks: 0,
-  maxCountCardsInPacks: 20,
+  min: 0,
+  max: 20,
+  userId: null,
 }
 
 export const packsReducer = (
@@ -26,17 +27,21 @@ export const packsReducer = (
 ): InitialStateType => {
   switch (action.type) {
     case 'packs/SET-PACKS':
-      return { ...state, ...action.data }
+      return { ...state, ...action.data, pageCount: action.data.cardPacksTotalCount }
     case 'packs/SET-MY-PACKS':
-      return { ...state, isMyPacks: action.isMyPacks }
+      return { ...state, cardPacks: action.myPacks }
     case 'packs/SET-MIN-CARDS-COUNT':
-      return { ...state, minCountCardsInPacks: action.minCount }
+      return { ...state, min: action.minCount }
     case 'packs/SET-MAX-CARDS-COUNT':
-      return { ...state, maxCountCardsInPacks: action.maxCount }
+      return { ...state, max: action.maxCount }
     case 'packs/SET-SEARCH-DATA':
-      return { ...state, search: action.searchData }
+      return { ...state, packName: action.packName }
     case 'packs/CHANGE-SORT':
       return { ...state, sort: action.sortData }
+    case 'packs/SET-USER-ID':
+      return { ...state, userId: action.userId }
+    case 'packs/SET-IS-MY-PACKS':
+      return { ...state, isMyPacks: action.isMyPacks }
     default:
       return state
   }
@@ -46,31 +51,34 @@ export const packsReducer = (
 
 export const setPacksDataAC = (data: PacksResponseType) =>
   ({ type: 'packs/SET-PACKS', data } as const)
-export const setMyPacksDataAC = (isMyPacks: boolean) =>
-  ({ type: 'packs/SET-MY-PACKS', isMyPacks } as const)
+export const setMyPacksDataAC = (myPacks: Array<CardPacksType>) =>
+  ({ type: 'packs/SET-MY-PACKS', myPacks } as const)
 export const setMinCardsCountAC = (minCount: number | null) =>
   ({ type: 'packs/SET-MIN-CARDS-COUNT', minCount } as const)
 export const setMaxCardsCountAC = (maxCount: number) =>
   ({ type: 'packs/SET-MAX-CARDS-COUNT', maxCount } as const)
-export const setSearchDataAC = (searchData: string) =>
-  ({ type: 'packs/SET-SEARCH-DATA', searchData } as const)
+export const setSearchDataAC = (packName: string) =>
+  ({ type: 'packs/SET-SEARCH-DATA', packName } as const)
 export const changeSortAC = (sortData: string) => ({ type: 'packs/CHANGE-SORT', sortData } as const)
+export const setUserIdAC = (userId: string) => ({ type: 'packs/SET-USER-ID', userId } as const)
+export const setIsMyPacksAC = (isMyPacks: boolean) =>
+  ({ type: 'packs/SET-IS-MY-PACKS', isMyPacks } as const)
 
 //THUNKS =========================================
 
 export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   dispatch(setAppStatusAC('loading'))
-  const { sort, pageCount, search, isMyPacks, minCountCardsInPacks, maxCountCardsInPacks } =
-    getState().packs
+  const { sort, pageCount, packName, isMyPacks, min, max, userId } = getState().packs
 
   try {
     const response = await packsTableAPI.getPacks({
       sort,
-      search,
+      packName,
       isMyPacks,
       pageCount,
-      minCountCardsInPacks,
-      maxCountCardsInPacks,
+      min,
+      max,
+      userId,
     })
 
     dispatch(setPacksDataAC(response.data))
@@ -110,10 +118,11 @@ type InitialStateType = {
   page: number | null
   pageCount: number | null
   sort: string
-  search: string | null
+  packName: string | null
   isMyPacks: boolean
-  minCountCardsInPacks: number | null
-  maxCountCardsInPacks: number | null
+  min: number | null
+  max: number | null
+  userId: string | null
 }
 
 // export type sortSettingsType = {
@@ -130,9 +139,13 @@ export type packsReducerActionType =
   | setMaxCardsCountACType
   | setSearchDataACType
   | changeSortACType
+  | setUserIdACType
+  | setIsMyPacksACType
 export type setPacksDataACType = ReturnType<typeof setPacksDataAC>
 export type setMyPacksDataACType = ReturnType<typeof setMyPacksDataAC>
 export type setMinCardsCountACType = ReturnType<typeof setMinCardsCountAC>
 export type setMaxCardsCountACType = ReturnType<typeof setMaxCardsCountAC>
 export type setSearchDataACType = ReturnType<typeof setSearchDataAC>
 export type changeSortACType = ReturnType<typeof changeSortAC>
+export type setUserIdACType = ReturnType<typeof setUserIdAC>
+export type setIsMyPacksACType = ReturnType<typeof setIsMyPacksAC>
