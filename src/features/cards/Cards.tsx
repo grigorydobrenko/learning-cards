@@ -52,9 +52,7 @@ export const Cards = () => {
       title: 'Last Updated',
       dataIndex: 'lastUpdated',
       key: 'lastUpdated',
-      // sorter: (a: any, b: any) => a.lastUpdated.localeCompare(b.lastUpdated),
-      sorter: (a: any, b: any) => {},
-      // showSorterTooltip: 'false',
+      sorter: (a: any, b: any) => 0,
       onHeaderCell: (column: any) => {
         return {
           onClick: () => {
@@ -88,7 +86,6 @@ export const Cards = () => {
     dispatch(getCardsTC())
   }, [pageCount, page, sort])
 
-  // @ts-ignore
   return (
     <div>
       <Container
