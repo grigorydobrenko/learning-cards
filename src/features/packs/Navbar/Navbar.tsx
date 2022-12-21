@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { ClearOutlined } from '@ant-design/icons'
 import { Col, InputNumber, Radio, RadioChangeEvent, Row, Slider } from 'antd'
@@ -7,7 +7,6 @@ import Search from 'antd/es/input/Search'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { packsSelector } from '../../../common/selectors'
 import {
-  changeSortAC,
   getPacksTC,
   setMaxCardsCountAC,
   setMinCardsCountAC,
@@ -27,8 +26,14 @@ export const Navbar = () => {
   // const cardPacks = useAppSelector(packsSelector.cardPacks)
   const minCountCardsInPacks = useAppSelector(packsSelector.minCountCardsInPacks)
   const maxCountCardsInPacks = useAppSelector(packsSelector.maxCountCardsInPacks)
+  const pageCount = useAppSelector(packsSelector.pageCount)
+  const isMyPacks = useAppSelector(packsSelector.isMyPacks)
   // const userData = useAppSelector(appSelector.user)
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(getPacksTC())
+  }, [pageCount, isMyPacks])
   const onSearchHandler = (value: string) => {
     dispatch(setSearchDataAC(value))
     console.log(searchValue)
@@ -39,19 +44,11 @@ export const Navbar = () => {
     setChoosePacks(value)
     if (choosePacks !== 'my') {
       dispatch(setMyPacksDataAC(true))
-      dispatch(changeSortAC('1updated'))
+      // dispatch(changeSortAC('1updated'))
     }
-    dispatch(setMyPacksDataAC(false))
+    //dispatch(setMyPacksDataAC(false))
 
-    setChoosePacks(value)
-    // if (choosePacks !== 'my' && userData) {
-    //   const myPacks = cardPacks.filter(pack => pack._id === userData._id)
-    //
-    //   // dispatch(setMyPacksDataAC(myPacks))
-    // }
-    // if (choosePacks !== 'all' && userData) {
-    //   dispatch(getPacksTC())
-    // }
+    // setChoosePacks(value)
   }
   const onSetMinCount = (minValue: number | null) =>
     minValue ? dispatch(setMinCardsCountAC(minValue)) : 0
