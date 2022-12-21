@@ -10,14 +10,22 @@ export const instance = axios.create({
 })
 
 export const packsTableAPI = {
-  getPacks() {
-    return instance.get<'', AxiosResponse<PackResponseType>, PacksRequestType>(
-      'cards/pack'
-      // data
-    )
+  getPacks({}: // sort,
+  // search,
+  //isMyPacks,
+  // minCountCardsInPacks,
+  // maxCountCardsInPacks,
+  PacksRequestType) {
+    return instance.get<'', AxiosResponse<PacksResponseType>, PacksRequestType>('cards/pack', {
+      // sort,
+      // search,
+      // isMyPacks,
+      // minCountCardsInPacks,
+      // maxCountCardsInPacks,
+    })
   },
   createNewPack() {
-    return instance.post<'', AxiosResponse<PackResponseType>, CreatePacksRequestType>(
+    return instance.post<'', AxiosResponse<PacksResponseType>, CreatePacksRequestType>(
       '/cards/pack',
       { name: 'New Pack', deckCover: 'url or base64' }
     )
@@ -29,7 +37,7 @@ export type CreatePacksRequestType = {
   name: string
   deckCover: string
 }
-export type PackResponseType = {
+export type PacksResponseType = {
   cardPacks: Array<CardPacksType>
   cardPacksTotalCount: number | null
   maxCardsCount: number | null
@@ -60,12 +68,9 @@ export type CardPacksType = {
 }
 
 export type PacksRequestType = {
-  packName: string // не обязательно
-  min: number // не обязательно
-  max: number // не обязательно
-  sortPacks: string // не обязательно
-  page: number // не обязательно
-  pageCount: number // не обязательно
-  user_id: string // не обязательно
-  block: boolean // не обязательно
+  // sort: string
+  // search: string | null
+  isMyPacks: boolean
+  // minCountCardsInPacks: number | null
+  // maxCountCardsInPacks: number | null
 }
