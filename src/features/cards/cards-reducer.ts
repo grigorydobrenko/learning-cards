@@ -30,7 +30,6 @@ export const cardsReducer = (
   }
 }
 
-
 export const setCardsAC = (cardsResponse: ResponseGetCardsType) =>
   ({ type: 'cards/SET-CARDS', cardsResponse } as const)
 
