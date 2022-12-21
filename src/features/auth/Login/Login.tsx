@@ -22,11 +22,11 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
   const dispatch = useAppDispatch()
 
-  const isLoggedIn = useAppSelector(authSelector.isLoggedin)
+  // const isLoggedIn = useAppSelector(authSelector.isLoggedin)
 
   const validate = (values: LoginPayloadType) => {
     const errors: FormikErrorType = {}
@@ -59,11 +59,11 @@ export const Login = () => {
 
   //nya-admin@nya.nya
   //1qazxcvBG
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/profile')
-    }
-  }, [isLoggedIn])
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     navigate('/profile')
+  //   }
+  // }, [isLoggedIn])
 
   return (
     <Grid container justifyContent="center">
