@@ -56,7 +56,7 @@ export const TableForPacks = () => {
       title: 'Last Updated',
       dataIndex: 'lastUpdated',
       key: 'lastUpdated',
-      sorter: (a: any, b: any) => a.lastUpdated - b.lastUpdated,
+      sorter: (a: any, b: any) => a.lastUpdated.localeCompare(b.lastUpdated),
     },
     {
       title: 'Created by',
