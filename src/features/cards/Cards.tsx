@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect }  from 'react'
 
 import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
@@ -10,7 +10,7 @@ import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 
-import { _getCardsTC, getCardsTC, setPagePageCountAC } from './cards-reducer'
+import { getCardsTC, setPagePageCountAC } from './cards-reducer'
 import s from './Cards.module.css'
 
 export const Cards = () => {
@@ -60,16 +60,13 @@ export const Cards = () => {
   ]
 
   const pagination = {
+    defaultPageSize: pageCount,
     showSizeChanger: true,
     total: cardsTotalCount,
-    pageSizeOptions: [5, 10, 15, 20],
+    pageSizeOptions: [2, pageCount, 7, 10, 15, 20],
     onChange: (page: number, pageSize: number) => {
       dispatch(setPagePageCountAC(pageSize, page))
     },
-  }
-
-  const getcards = () => {
-    dispatch(_getCardsTC())
   }
 
   useEffect(() => {
@@ -115,7 +112,7 @@ export const Cards = () => {
           className={s.Search}
         />
         <Table dataSource={dataSource} columns={columns} pagination={pagination} />
-        <button onClick={getcards}>getCardds</button>
+
       </Container>
     </div>
   )

@@ -1,8 +1,4 @@
-import { AxiosError } from 'axios'
-
-import { setAppStatusAC } from '../../app/app-reducer'
 import { AppThunkType } from '../../app/store'
-import { errorUtils } from '../../common/utils/error-utils'
 
 import { cardsApi } from './cards-api'
 
@@ -11,9 +7,9 @@ const InitialState: InitialStateType = {
   cardsTotalCount: 0,
   maxGrade: 0,
   minGrade: 0,
-  page: 0,
-  pageCount: 0,
-  sort: '',
+  page: 1,
+  pageCount: 5,
+  sort: '0grade',
   search: '',
   packUserId: '',
   isMyPack: null,
@@ -34,35 +30,23 @@ export const cardsReducer = (
   }
 }
 
-// export const setCardsAC = (cards: CardType[], cardsTotalCount: number) =>
-//   ({ type: 'cards/SET-CARDS', cards, cardsTotalCount } as const)
+
 export const setCardsAC = (cardsResponse: ResponseGetCardsType) =>
   ({ type: 'cards/SET-CARDS', cardsResponse } as const)
 
 export const setPagePageCountAC = (pageCount: number, page: number) =>
   ({ type: 'cards/SET-PAGE-COUNT', pageCount, page } as const)
 
-export const _getCardsTC = (): AppThunkType => async dispatch => {
-  try {
-    dispatch(setAppStatusAC('loading'))
-    const res = await cardsApi._getCards()
-
-    dispatch(setCardsAC(res.data))
-    dispatch(setAppStatusAC('succeeded'))
-  } catch (e) {
-    const err = e as Error | AxiosError<{ error: string }>
-
-    errorUtils(err, dispatch)
-    dispatch(setAppStatusAC('failed'))
-  }
-}
-
 export const getCardsTC = (): AppThunkType => async (dispatch, getState) => {
   const { pageCount, page } = getState().cards
-
+  // const params = {
+  //   cardsPack_id: '617ff51fd7b1030004090a1f',
+  //   page: cardsState.page,
+  //   pageCount: cardsState.pageCount,
+  //   sortCards: cardsState.sort,
+  // }
   const res = await cardsApi.getCards(pageCount, page)
 
-  // dispatch(setPagePageCountAC(res.data.pageCount, res.data.page))
   dispatch(setCardsAC(res.data))
 }
 
