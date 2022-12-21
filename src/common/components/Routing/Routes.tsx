@@ -43,7 +43,7 @@ const PrivateRoutesForPacks = () => {
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path={PATH.MAIN} element={<Profile />} />
+      <Route path={PATH.MAIN} element={<Packs />} />
       <Route path={PATH.PROFILE} element={<Profile />} />
       <Route path={PATH.REGISTER} element={<Register />} />
       <Route path={PATH.LOGIN} element={<Login />} />
@@ -52,7 +52,7 @@ export const AppRoutes = () => {
       <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
       <Route element={<PrivateRoutesForPacks />}>
         <Route path={PATH.PACKS} element={<Packs />} />
-        <Route path={PATH.PROFILE} element={<Profile />} />
+        {/* <Route path={PATH.PROFILE} element={<Profile />} /> */}
       </Route>
       <Route element={<PrivateRoutes />}>
         <Route path={PATH.CREATE_PASSWORD_TOKEN} element={<CreateNewPassword />} />
