@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
@@ -10,11 +10,14 @@ import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 
-import { getCardsTC, setPageCountAC } from './cards-reducer'
+import { _getCardsTC, getCardsTC, setPagePageCountAC } from './cards-reducer'
 import s from './Cards.module.css'
 
 export const Cards = () => {
   const cards = useAppSelector(state => state.cards.cards)
+  const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
+  const page = useAppSelector(state => state.cards.page)
+  const pageCount = useAppSelector(state => state.cards.pageCount)
 
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
@@ -57,17 +60,21 @@ export const Cards = () => {
   ]
 
   const pagination = {
-    defaultPageSize: 2,
     showSizeChanger: true,
-    pageSizeOptions: [2, 5, 15, 20],
-    onChange: (pageSize: number) => {
-      dispatch(setPageCountAC(pageSize))
+    total: cardsTotalCount,
+    pageSizeOptions: [5, 10, 15, 20],
+    onChange: (page: number, pageSize: number) => {
+      dispatch(setPagePageCountAC(pageSize, page))
     },
   }
 
   const getcards = () => {
-    dispatch(getCardsTC())
+    dispatch(_getCardsTC())
   }
+
+  useEffect(() => {
+    dispatch(getCardsTC())
+  }, [pageCount, page])
 
   return (
     <div>

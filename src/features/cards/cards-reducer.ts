@@ -27,7 +27,7 @@ export const cardsReducer = (
     case 'cards/SET-CARDS':
       return { ...state, ...action.cardsResponse }
     case 'cards/SET-PAGE-COUNT':
-      return { ...state, pageCount: action.pageCount }
+      return { ...state, pageCount: action.pageCount, page: action.page }
 
     default:
       return state
@@ -38,13 +38,14 @@ export const cardsReducer = (
 //   ({ type: 'cards/SET-CARDS', cards, cardsTotalCount } as const)
 export const setCardsAC = (cardsResponse: ResponseGetCardsType) =>
   ({ type: 'cards/SET-CARDS', cardsResponse } as const)
-export const setPageCountAC = (pageCount: number) =>
-  ({ type: 'cards/SET-PAGE-COUNT', pageCount } as const)
 
-export const getCardsTC = (): AppThunkType => async dispatch => {
+export const setPagePageCountAC = (pageCount: number, page: number) =>
+  ({ type: 'cards/SET-PAGE-COUNT', pageCount, page } as const)
+
+export const _getCardsTC = (): AppThunkType => async dispatch => {
   try {
     dispatch(setAppStatusAC('loading'))
-    const res = await cardsApi.getCards()
+    const res = await cardsApi._getCards()
 
     dispatch(setCardsAC(res.data))
     dispatch(setAppStatusAC('succeeded'))
@@ -56,9 +57,18 @@ export const getCardsTC = (): AppThunkType => async dispatch => {
   }
 }
 
+export const getCardsTC = (): AppThunkType => async (dispatch, getState) => {
+  const { pageCount, page } = getState().cards
+
+  const res = await cardsApi.getCards(pageCount, page)
+
+  // dispatch(setPagePageCountAC(res.data.pageCount, res.data.page))
+  dispatch(setCardsAC(res.data))
+}
+
 type setCardsACType = ReturnType<typeof setCardsAC>
-type setPageCountACType = ReturnType<typeof setPageCountAC>
-export type cardsReducerActionsType = setCardsACType | setPageCountACType
+type setPagePageCountACType = ReturnType<typeof setPagePageCountAC>
+export type cardsReducerActionsType = setCardsACType | setPagePageCountACType
 
 type InitialStateType = {
   cards: CardType[]

@@ -6,7 +6,7 @@ const instance = axios.create({
 })
 
 export const cardsApi = {
-  getCards() {
+  _getCards() {
     return instance.get('/cards/card', {
       params: {
         // cardAnswer: 'english',
@@ -18,7 +18,23 @@ export const cardsApi = {
         // max: 4,
         // sortCards: '0grade',
         // page: 1,
-        pageCount: 7,
+        // pageCount: 8,
+      },
+    })
+  },
+  getCards(pageCount: number, page: number) {
+    return instance.get('/cards/card', {
+      params: {
+        // cardAnswer: 'english',
+        // cardQuestion: 'english',
+        // cardsPack_id: '622b52e929bee9000469654f',
+        cardsPack_id: '617ff51fd7b1030004090a1f',
+
+        // min: 1,
+        // max: 4,
+        // sortCards: '0grade',
+        page: page,
+        pageCount: pageCount,
       },
     })
   },
