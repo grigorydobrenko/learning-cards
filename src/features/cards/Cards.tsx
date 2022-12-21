@@ -1,4 +1,4 @@
-import React, { useEffect }  from 'react'
+import React, { useEffect } from 'react'
 
 import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
@@ -63,7 +63,7 @@ export const Cards = () => {
     defaultPageSize: pageCount,
     showSizeChanger: true,
     total: cardsTotalCount,
-    pageSizeOptions: [2, pageCount, 7, 10, 15, 20],
+    pageSizeOptions: [2, 5, 7, 10, 15, 20],
     onChange: (page: number, pageSize: number) => {
       dispatch(setPagePageCountAC(pageSize, page))
     },
@@ -112,7 +112,6 @@ export const Cards = () => {
           className={s.Search}
         />
         <Table dataSource={dataSource} columns={columns} pagination={pagination} />
-
       </Container>
     </div>
   )
