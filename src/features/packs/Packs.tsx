@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { Button, Col, Divider, Row } from 'antd'
 import Title from 'antd/lib/typography/Title'
@@ -6,17 +6,13 @@ import Title from 'antd/lib/typography/Title'
 import { useAppDispatch } from '../../common/hooks/customHooks'
 
 import { Navbar } from './Navbar/Navbar'
-import { addNewPackTC, getPacksTC } from './packs-reducer'
+import { addNewPackTC } from './packs-reducer'
 import styles from './Packs.module.css'
 import { TableForPacks } from './TableForPacks'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
-  // const userData = useAppSelector(appSelector.user)
 
-  useEffect(() => {
-    dispatch(getPacksTC())
-  }, [])
   const addNewPackHandler = () => {
     dispatch(addNewPackTC())
   }
