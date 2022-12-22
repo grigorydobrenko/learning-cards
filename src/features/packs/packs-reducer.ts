@@ -12,13 +12,15 @@ const InitialState: InitialStateType = {
   maxCardsCount: null,
   minCardsCount: null,
   page: null,
-  pageCount: null,
+  pageCount: 45,
   sort: '0updated',
   packName: null,
   isMyPacks: false,
   min: 0,
   max: 20,
   userId: null,
+  token: '',
+  createPackName: 'New Pack Test',
 }
 
 export const packsReducer = (
@@ -27,7 +29,7 @@ export const packsReducer = (
 ): InitialStateType => {
   switch (action.type) {
     case 'packs/SET-PACKS':
-      return { ...state, ...action.data, pageCount: action.data.cardPacksTotalCount }
+      return { ...state, ...action.data }
     case 'packs/SET-MY-PACKS':
       return { ...state, cardPacks: action.myPacks }
     case 'packs/SET-MIN-CARDS-COUNT':
@@ -92,13 +94,13 @@ export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   }
 }
 
-export const addNewPackTC = (): AppThunkType => async dispatch => {
+export const addNewPackTC = (): AppThunkType => async (dispatch, getState) => {
   dispatch(setAppStatusAC('loading'))
+  const name = getState().packs.createPackName
+
   try {
-    const response = await packsTableAPI.createNewPack()
-
-    dispatch(setPacksDataAC(response.data))
-
+    await packsTableAPI.createNewPack({ cardsPack: { name } })
+    dispatch(getPacksTC())
     dispatch(setAppStatusAC('succeeded'))
   } catch (e) {
     const err = e as Error | AxiosError<{ error: string }>
@@ -123,6 +125,8 @@ type InitialStateType = {
   min: number | null
   max: number | null
   userId: string | null
+  createPackName: string
+  token: string | null
 }
 
 // export type sortSettingsType = {
