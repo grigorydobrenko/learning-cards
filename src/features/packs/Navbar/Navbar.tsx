@@ -27,8 +27,8 @@ export const Navbar = () => {
   const cardPacks = useAppSelector(packsSelector.cardPacks)
   const min = useAppSelector(packsSelector.min)
   const max = useAppSelector(packsSelector.max)
-  const pageCount = useAppSelector(packsSelector.pageCount)
-  const isMyPacks = useAppSelector(packsSelector.isMyPacks)
+  // const pageCount = useAppSelector(packsSelector.pageCount)
+  // const isMyPacks = useAppSelector(packsSelector.isMyPacks)
   const search = useAppSelector(packsSelector.search)
   const userData = useAppSelector(appSelector.user)
   const dispatch = useAppDispatch()
@@ -37,9 +37,9 @@ export const Navbar = () => {
   const debouncedMinCardsCount = useDebounce(minCards, 700)
   const debouncedMaxCardsCount = useDebounce(maxCards, 700)
 
-  useEffect(() => {
-    dispatch(getPacksTC())
-  }, [search, min, max])
+  // useEffect(() => {
+  //   dispatch(getPacksTC())
+  // }, [search, min, max])
 
   useEffect(() => {
     dispatch(setSearchDataAC(searchValue))
@@ -90,8 +90,10 @@ export const Navbar = () => {
   //
   //   // setChoosePacks(value)
   // }
-  const onChangeMinCardsCount = (minValue: number | null) => (minValue ? setMinCards(minValue) : 0)
-  const onChangeMaxCardsCount = (maxValue: number | null) => (maxValue ? setMaxCards(maxValue) : 20)
+  const onChangeMinCardsCount = (minValue: number | null) =>
+    minValue ? setMinCards(minValue) : null
+  const onChangeMaxCardsCount = (maxValue: number | null) =>
+    maxValue ? setMaxCards(maxValue) : null
 
   const onChangeCardsCountSlider = ([minCards, maxCards]: Array<number>) => {
     setMinCards(minCards)
@@ -101,12 +103,12 @@ export const Navbar = () => {
 
   const resetFiltersHandler = () => {
     setChoosePacks('all')
-    dispatch(getPacksTC())
     // setMinCountCardsInPacks(0)
     // setMaxCountCardsInPacks(20)
     setMinCards(0)
     setMaxCards(20)
-    // setSearchValue('')
+    setSearchValue('')
+    dispatch(getPacksTC())
     console.log('Filters was reset')
   }
 
