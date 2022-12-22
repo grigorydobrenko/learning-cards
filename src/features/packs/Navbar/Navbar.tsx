@@ -40,7 +40,7 @@ export const Navbar = () => {
 
   // useEffect(() => {
   //   dispatch(getPacksTC())
-  // }, [min, max, user_id, packName])
+  // }, [min, max, user_id, packName])  // разкомитить и пофиксить даблзапросы
 
   useEffect(() => {
     dispatch(setSearchDataAC(searchValue))

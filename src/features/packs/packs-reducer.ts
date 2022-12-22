@@ -74,7 +74,7 @@ export const setPagePacksCountAC = (pageCount: number, page: number) =>
 
 export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   dispatch(setAppStatusAC('loading'))
-  const { sortPacks, pageCount, page, packName, min, max, user_id } = getState().packs
+  let { sortPacks, pageCount, page, packName, min, max, user_id } = getState().packs
 
   try {
     const response = await packsTableAPI.getPacks({
