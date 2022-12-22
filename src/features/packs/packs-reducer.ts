@@ -59,7 +59,7 @@ export const setMinCardsCountAC = (minCount: number) =>
   ({ type: 'packs/SET-MIN-CARDS-COUNT', minCount } as const)
 export const setMaxCardsCountAC = (maxCount: number) =>
   ({ type: 'packs/SET-MAX-CARDS-COUNT', maxCount } as const)
-export const setSearchDataAC = (packName: string) =>
+export const setSearchDataAC = (packName: string | null) =>
   ({ type: 'packs/SET-SEARCH-DATA', packName } as const)
 export const changeSortAC = (sortData: string) => ({ type: 'packs/CHANGE-SORT', sortData } as const)
 export const setUserIdAC = (user_id: string | null) =>
