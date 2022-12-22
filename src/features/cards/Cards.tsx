@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Container } from '@mui/material'
@@ -10,6 +10,7 @@ import { Link, NavLink } from 'react-router-dom'
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
+import { useDebounce } from '../../common/hooks/useDebounce'
 
 import {
   addNewCardTC,
@@ -109,9 +110,21 @@ export const Cards = () => {
     },
   }
 
+  const [searchValue, setSearchValue] = useState<string | undefined>(undefined)
+  const debouncedSearchValue = useDebounce<string | undefined>(searchValue, 500)
+
+  console.log(typeof debouncedSearchValue)
+  const handleSearchValue = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value)
+  }
+
+  // useEffect(() => {
+  //   // dispatch(getCardsTC())
+  // }, [debouncedSearchValue])
+
   useEffect(() => {
-    dispatch(getCardsTC())
-  }, [pageCount, page, sort])
+    dispatch(getCardsTC(debouncedSearchValue))
+  }, [pageCount, page, sort, debouncedSearchValue])
 
   return (
     <div>
@@ -152,6 +165,7 @@ export const Cards = () => {
         </Container>
         <div className={s.SearchLabel}>Search</div>
         <Search
+          onChange={handleSearchValue}
           prefix
           placeholder="Provide your text"
           style={{ width: '100%' }}

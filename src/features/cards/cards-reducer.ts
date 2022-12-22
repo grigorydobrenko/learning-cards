@@ -45,18 +45,29 @@ export const setPagePageCountAC = (pageCount: number, page: number) =>
 
 export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
 
-export const getCardsTC = (): AppThunkType => async (dispatch, getState) => {
-  const { pageCount, page, sort } = getState().cards
-  // const params = {
-  //   cardsPack_id: '617ff51fd7b1030004090a1f',
-  //   page: cardsState.page,
-  //   pageCount: cardsState.pageCount,
-  //   sortCards: cardsState.sort,
-  // }
-  const res = await cardsApi.getCards(pageCount, page, sort)
+export const AC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
 
-  dispatch(setCardsAC(res.data))
-}
+export const getCardsTC =
+  (debouncedSearchValue?: string): AppThunkType =>
+  async (dispatch, getState) => {
+    const { pageCount, page, sort } = getState().cards
+
+    // const params = {
+    //   cardsPack_id: '617ff51fd7b1030004090a1f',
+    //   page: cardsState.page,
+    //   pageCount: cardsState.pageCount,
+    //   sortCards: cardsState.sort,
+    // }
+    let res
+
+    if (debouncedSearchValue) {
+      res = await cardsApi.getCards(pageCount, page, sort, debouncedSearchValue)
+    } else {
+      res = await cardsApi.getCards(pageCount, page, sort)
+    }
+
+    dispatch(setCardsAC(res.data))
+  }
 
 // thunks
 
