@@ -6,11 +6,11 @@ const instance = axios.create({
 })
 
 export const cardsApi = {
-  getCards(pageCount: number, page: number, sort: string) {
+  getCards(pageCount: number, page: number, sort: string, debouncedSearchValue?: string) {
     return instance.get('/cards/card', {
       params: {
         // cardAnswer: 'english',
-        // cardQuestion: 'english',
+        cardQuestion: debouncedSearchValue,
         // cardsPack_id: '622b52e929bee9000469654f',
         cardsPack_id: '617ff51fd7b1030004090a1f',
 
@@ -21,6 +21,25 @@ export const cardsApi = {
         pageCount: pageCount,
       },
     })
+  },
+  addNewCard() {
+    const data = {
+      cardsPack_id: '5eb543f6bea3ad21480f1ee7',
+    }
+
+    return instance.post('/cards/card', data)
+  },
+
+  editCard() {
+    const data = {
+      cardsPack_id: '5eb543f6bea3ad21480f1ee7',
+    }
+
+    return instance.put(`/cards/card`, data)
+  },
+
+  deleteCard() {
+    return instance.delete(`/cards/card?id=5eb6cb9a7a82672138e0d7c1`)
   },
 }
 
