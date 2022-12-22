@@ -45,9 +45,8 @@ export const setPagePageCountAC = (pageCount: number, page: number) =>
 
 export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
 
-
 export const getCardsTC =
-  (debouncedSearchValue?: string): AppThunkType =>
+  (id?: string, debouncedSearchValue?: string): AppThunkType =>
   async (dispatch, getState) => {
     const { pageCount, page, sort } = getState().cards
 
@@ -60,29 +59,29 @@ export const getCardsTC =
     let res
 
     if (debouncedSearchValue) {
-      res = await cardsApi.getCards(pageCount, page, sort, debouncedSearchValue)
+      res = await cardsApi.getCards(pageCount, page, sort, id, debouncedSearchValue)
     } else {
-      res = await cardsApi.getCards(pageCount, page, sort)
+      res = await cardsApi.getCards(pageCount, page, sort, id)
     }
 
-  dispatch(setCardsAC(res.data))
-}
+    dispatch(setCardsAC(res?.data))
+  }
 
 // thunks
 
 export const addNewCardTC = (): AppThunkType => async dispatch => {
   await cardsApi.addNewCard()
-  dispatch(getCardsTC())
+  // dispatch(getCardsTC())
 }
 
 export const editCardTC = (): AppThunkType => async dispatch => {
   await cardsApi.editCard()
-  dispatch(getCardsTC())
+  // dispatch(getCardsTC())
 }
 
 export const deleteCardTC = (): AppThunkType => async dispatch => {
   await cardsApi.deleteCard()
-  dispatch(getCardsTC())
+  // dispatch(getCardsTC())
 }
 
 // types

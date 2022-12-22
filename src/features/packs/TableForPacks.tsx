@@ -2,16 +2,16 @@ import React from 'react'
 
 import { DeleteOutlined, EditOutlined, StepForwardOutlined } from '@ant-design/icons'
 import { Col, Row, Table } from 'antd'
+import { Link } from 'react-router-dom'
 
 import { useAppSelector } from '../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../common/selectors'
 
 import { CardPacksType } from './packs-api'
 
-import { Link } from 'react-router-dom'
-
 export const TableForPacks = () => {
   const userData = useAppSelector(appSelector.user)
+
   const TeachHandler = () => {
     console.log('Teach')
   }
@@ -49,7 +49,8 @@ export const TableForPacks = () => {
     if (userData && userData._id === pack.user_id) {
       return {
         key: pack._id,
-        name: pack.name,
+        // name: pack.name,
+        name: <Link to={pack._id}>{pack.name}</Link>,
         cards: pack.cardsCount,
         lastUpdated: getDate(pack.updated),
         createdBy: pack.user_name,
@@ -58,7 +59,7 @@ export const TableForPacks = () => {
     } else {
       return {
         key: pack._id,
-        name: pack.name,
+        name: <Link to={pack._id}>{pack.name}</Link>,
         cards: pack.cardsCount,
         lastUpdated: getDate(pack.updated),
         createdBy: pack.user_name,
@@ -72,7 +73,8 @@ export const TableForPacks = () => {
       dataIndex: 'name',
       key: 'key',
       // render: (text: string) => <a>{text}</a>,
-      render: (text: string) => <Link to={'617ff51fd7b1030004090a1f'}>{text}</Link>,
+      // render: (text: string) => <Link to={'617ff51fd7b1030004090a1f'}>{text}</Link>,
+      // render: (text: string) => ,
     },
     {
       title: 'Cards',
@@ -120,5 +122,3 @@ export const TableForPacks = () => {
     </div>
   )
 }
-
-

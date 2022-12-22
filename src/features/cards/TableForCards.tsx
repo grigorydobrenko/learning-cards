@@ -3,6 +3,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { ConfigProvider, Empty, Table } from 'antd'
 import Search from 'antd/lib/input/Search'
+import { useParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { useDebounce } from '../../common/hooks/useDebounce'
@@ -108,8 +109,12 @@ export const TableForCards = () => {
     setSearchValue(event.target.value)
   }
 
+  const { id } = useParams()
+
+  console.log(id)
+
   useEffect(() => {
-    dispatch(getCardsTC(debouncedSearchValue))
+    dispatch(getCardsTC(id, debouncedSearchValue))
   }, [pageCount, page, sort, debouncedSearchValue])
 
   const toggleMessage = 'click to toggle order'

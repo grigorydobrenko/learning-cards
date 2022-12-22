@@ -30,16 +30,19 @@ export const PATH = {
 
 const RequireToken = () => {
   let { token } = useParams()
+
   return token ? <Outlet /> : <Navigate to={PATH.LOGIN} />
 }
 
 const RequireAuth = () => {
   const isLoggedIn = useAppSelector(authSelector.isLoggedin)
+
   return isLoggedIn ? <Outlet /> : <Navigate to={PATH.LOGIN} />
 }
 
 const RequireAppStatus = () => {
   const status = useAppSelector(appSelector.status)
+
   return status !== 'succeeded' ? <Outlet /> : <Navigate to={PATH.CHECK_EMAIL} />
 }
 
@@ -50,8 +53,8 @@ export const AppRoutes = () => {
         {/* <Route index element={<Packs />} /> */}
         <Route path={PATH.PACKS} element={<Packs />} />
         <Route path={PATH.PROFILE} element={<Profile />} />
-        {/*<Route path={'packs/:id'} element={<Cards />} />*/}
-        <Route path={'/cards'} element={<Cards />} />
+        <Route path={'packs/:id'} element={<Cards />} />
+        {/*<Route path={'/cards'} element={<Cards />} />*/}
       </Route>
       <Route element={<RequireToken />}>
         <Route path={PATH.CREATE_PASSWORD_TOKEN} element={<CreateNewPassword />} />
