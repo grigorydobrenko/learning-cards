@@ -20,7 +20,7 @@ const InitialState: InitialStateType = {
   max: 20,
   user_id: null,
   token: '',
-  createPackName: 'New Pack Test',
+  createPackName: 'Ну как там кукуха?',
 }
 
 export const packsReducer = (
