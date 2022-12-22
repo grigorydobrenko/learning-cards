@@ -12,13 +12,13 @@ import { TableForPacks } from './TableForPacks'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
+  // const userData = useAppSelector(appSelector.user)
 
   useEffect(() => {
     dispatch(getPacksTC())
   }, [])
   const addNewPackHandler = () => {
     dispatch(addNewPackTC())
-    dispatch(getPacksTC())
   }
 
   return (
