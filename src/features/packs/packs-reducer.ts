@@ -18,7 +18,7 @@ const InitialState: InitialStateType = {
   isMyPacks: false,
   min: 0,
   max: 20,
-  userId: null,
+  user_id: null,
   token: '',
   createPackName: 'New Pack Test',
 }
@@ -41,7 +41,7 @@ export const packsReducer = (
     case 'packs/CHANGE-SORT':
       return { ...state, sort: action.sortData }
     case 'packs/SET-USER-ID':
-      return { ...state, userId: action.userId }
+      return { ...state, user_id: action.user_id }
     case 'packs/SET-IS-MY-PACKS':
       return { ...state, isMyPacks: action.isMyPacks }
     default:
@@ -55,14 +55,15 @@ export const setPacksDataAC = (data: PacksResponseType) =>
   ({ type: 'packs/SET-PACKS', data } as const)
 export const setMyPacksDataAC = (myPacks: Array<CardPacksType>) =>
   ({ type: 'packs/SET-MY-PACKS', myPacks } as const)
-export const setMinCardsCountAC = (minCount: number | null) =>
+export const setMinCardsCountAC = (minCount: number) =>
   ({ type: 'packs/SET-MIN-CARDS-COUNT', minCount } as const)
 export const setMaxCardsCountAC = (maxCount: number) =>
   ({ type: 'packs/SET-MAX-CARDS-COUNT', maxCount } as const)
 export const setSearchDataAC = (packName: string) =>
   ({ type: 'packs/SET-SEARCH-DATA', packName } as const)
 export const changeSortAC = (sortData: string) => ({ type: 'packs/CHANGE-SORT', sortData } as const)
-export const setUserIdAC = (userId: string) => ({ type: 'packs/SET-USER-ID', userId } as const)
+export const setUserIdAC = (user_id: string | null) =>
+  ({ type: 'packs/SET-USER-ID', user_id } as const)
 export const setIsMyPacksAC = (isMyPacks: boolean) =>
   ({ type: 'packs/SET-IS-MY-PACKS', isMyPacks } as const)
 
@@ -70,7 +71,7 @@ export const setIsMyPacksAC = (isMyPacks: boolean) =>
 
 export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   dispatch(setAppStatusAC('loading'))
-  const { sort, pageCount, packName, isMyPacks, min, max, userId } = getState().packs
+  const { sort, pageCount, packName, isMyPacks, min, max, user_id } = getState().packs
 
   try {
     const response = await packsTableAPI.getPacks({
@@ -80,7 +81,7 @@ export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
       pageCount,
       min,
       max,
-      userId,
+      user_id,
     })
 
     dispatch(setPacksDataAC(response.data))
@@ -122,9 +123,9 @@ type InitialStateType = {
   sort: string
   packName: string | null
   isMyPacks: boolean
-  min: number | null
-  max: number | null
-  userId: string | null
+  min: number
+  max: number
+  user_id: string | null
   createPackName: string
   token: string | null
 }
