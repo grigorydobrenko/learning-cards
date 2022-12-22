@@ -38,9 +38,9 @@ export const Navbar = () => {
   const debouncedMinCardsCount = useDebounce(minCards, 1000)
   const debouncedMaxCardsCount = useDebounce(maxCards, 1000)
 
-  useEffect(() => {
-    dispatch(getPacksTC())
-  }, [min, max, user_id, packName])
+  // useEffect(() => {
+  //   dispatch(getPacksTC())
+  // }, [min, max, user_id, packName])
 
   useEffect(() => {
     dispatch(setSearchDataAC(searchValue))
@@ -48,11 +48,13 @@ export const Navbar = () => {
 
   useEffect(() => {
     dispatch(setMinCardsCountAC(minCards))
+    // dispatch(changeSortAC('1updated'))
     console.log('setMinCardsCountAC: ', minCards)
   }, [debouncedMinCardsCount])
 
   useEffect(() => {
     dispatch(setMaxCardsCountAC(maxCards))
+    // dispatch(changeSortAC('1updated'))
     console.log('setMaxCardsCountAC: ', maxCards)
   }, [debouncedMaxCardsCount])
 
@@ -79,11 +81,10 @@ export const Navbar = () => {
 
   const resetFiltersHandler = () => {
     setChoosePacks('all')
-    // setMinCountCardsInPacks(0)
-    // setMaxCountCardsInPacks(20)
     setMinCards(0)
     setMaxCards(20)
     setSearchValue(null)
+    // dispatch(changeSortAC('0updated'))
     dispatch(getPacksTC())
     console.log('Filters was reset')
   }
