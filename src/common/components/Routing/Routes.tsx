@@ -11,7 +11,7 @@ import { Cards } from '../../../features/cards/Cards'
 import { Packs } from '../../../features/packs/Packs'
 import { Profile } from '../../../features/profile/Profile'
 import { useAppSelector } from '../../hooks/customHooks'
-import { authSelector } from '../../selectors'
+import { appSelector, authSelector } from '../../selectors'
 import { NotFound } from '../PageNotFound/NotFound'
 
 export const PATH = {
@@ -28,39 +28,43 @@ export const PATH = {
   CARDS: '/cards',
 }
 
-const PrivateRoutes = () => {
+const RequireToken = () => {
   let { token } = useParams()
-
   return token ? <Outlet /> : <Navigate to={PATH.LOGIN} />
 }
 
-const PrivateRoutesForPacks = () => {
+const RequireAuth = () => {
   const isLoggedIn = useAppSelector(authSelector.isLoggedin)
-
   return isLoggedIn ? <Outlet /> : <Navigate to={PATH.LOGIN} />
+}
+
+const RequireAppStatus = () => {
+  const status = useAppSelector(appSelector.status)
+  return status !== 'succeeded' ? <Outlet /> : <Navigate to={PATH.CHECK_EMAIL} />
 }
 
 export const AppRoutes = () => {
   return (
     <Routes>
-      <Route path={PATH.MAIN} element={<Packs />} />
-      <Route path={PATH.PROFILE} element={<Profile />} />
-      <Route path={PATH.REGISTER} element={<Register />} />
-      <Route path={PATH.LOGIN} element={<Login />} />
-      <Route path={PATH.FORGOT_PASSWORD} element={<ForgotPassword />} />
-      <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
-      <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
-      <Route element={<PrivateRoutesForPacks />}>
+      <Route element={<RequireAuth />}>
+        {/* <Route index element={<Packs />} /> */}
         <Route path={PATH.PACKS} element={<Packs />} />
         <Route path={PATH.PROFILE} element={<Profile />} />
+        {/*<Route path={'packs/:id'} element={<Cards />} />*/}
+        <Route path={'/cards'} element={<Cards />} />
       </Route>
-      <Route element={<PrivateRoutes />}>
+      <Route element={<RequireToken />}>
         <Route path={PATH.CREATE_PASSWORD_TOKEN} element={<CreateNewPassword />} />
       </Route>
-      <Route path={PATH.CARDS} element={<Cards />} />
-      <Route path={'*'} element={<NotFound />} />
-      {/*<Route path={PATH.NOT_FOUND} element={<NotFound />} />*/}
-      {/*<Route path={'*'} element={<Navigate to="/404" />} />*/}
+      <Route path={PATH.REGISTER} element={<Register />} />
+      <Route path={PATH.LOGIN} element={<Login />} />
+      <Route path={PATH.FORGOT_PASSWORD} element={<RequireAppStatus />}>
+        <Route index element={<ForgotPassword />} />
+      </Route>
+      <Route path={PATH.CREATE_PASSWORD} element={<CreateNewPassword />} />
+      <Route path={PATH.CHECK_EMAIL} element={<CheckEmail />} />
+      <Route path={PATH.NOT_FOUND} element={<NotFound />} />
+      <Route path={'*'} element={<Navigate to="/404" />} />
     </Routes>
   )
 }

@@ -8,6 +8,8 @@ import { appSelector, packsSelector } from '../../common/selectors'
 
 import { CardPacksType } from './packs-api'
 
+import { Link } from 'react-router-dom'
+
 export const TableForPacks = () => {
   const userData = useAppSelector(appSelector.user)
   const TeachHandler = () => {
@@ -69,7 +71,8 @@ export const TableForPacks = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'key',
-      render: (text: string) => <a>{text}</a>,
+      // render: (text: string) => <a>{text}</a>,
+      render: (text: string) => <Link to={'617ff51fd7b1030004090a1f'}>{text}</Link>,
     },
     {
       title: 'Cards',
@@ -118,10 +121,4 @@ export const TableForPacks = () => {
   )
 }
 
-// type TablePacksType = {
-//   key: string
-//   name: string
-//   cards: number
-//   lastUpdated: string
-//   createdBy: string
-// }
+

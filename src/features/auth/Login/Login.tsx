@@ -61,7 +61,7 @@ export const Login = () => {
   //1qazxcvBG
   useEffect(() => {
     if (isLoggedIn) {
-      navigate('/profile')
+      navigate('/packs')
     }
   }, [isLoggedIn])
 

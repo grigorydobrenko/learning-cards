@@ -45,7 +45,6 @@ export const setPagePageCountAC = (pageCount: number, page: number) =>
 
 export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
 
-export const AC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
 
 export const getCardsTC =
   (debouncedSearchValue?: string): AppThunkType =>
@@ -66,8 +65,8 @@ export const getCardsTC =
       res = await cardsApi.getCards(pageCount, page, sort)
     }
 
-    dispatch(setCardsAC(res.data))
-  }
+  dispatch(setCardsAC(res.data))
+}
 
 // thunks
 
