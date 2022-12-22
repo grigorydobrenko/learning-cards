@@ -3,7 +3,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import { Rate, Table } from 'antd'
+import { ConfigProvider, Empty, Rate, Table } from 'antd'
 import Search from 'antd/lib/input/Search'
 import { Link, NavLink } from 'react-router-dom'
 
@@ -126,6 +126,13 @@ export const Cards = () => {
     dispatch(getCardsTC(debouncedSearchValue))
   }, [pageCount, page, sort, debouncedSearchValue])
 
+  const toggleMessagge = 'click to toggle order'
+  const locale = {
+    triggerDesc: toggleMessagge,
+    triggerAsc: toggleMessagge,
+    cancelSort: toggleMessagge,
+  }
+
   return (
     <div>
       <Container
@@ -136,7 +143,7 @@ export const Cards = () => {
           justifyContent: 'space-between',
         }}
       >
-        <Link className={s.backLink} to={PATH.NOT_FOUND}>
+        <Link className={s.backLink} to={'/packs'}>
           <img src={arrowIcon} alt="arrow icon" />
           <span>Back to pack list</span>
         </Link>
@@ -171,16 +178,21 @@ export const Cards = () => {
           style={{ width: '100%' }}
           className={s.Search}
         />
-        <Table
-          dataSource={dataSource}
-          columns={columns}
-          pagination={pagination}
-          locale={{
-            triggerDesc: 'click to toggle order',
-            triggerAsc: 'click to toggle order',
-            cancelSort: 'click to toggle order',
-          }}
-        />
+        <ConfigProvider
+          renderEmpty={() => (
+            <Empty
+              style={{ color: 'black' }}
+              description="В данной колоде нету карточек удовлетворяющих поиску"
+            />
+          )}
+        >
+          <Table
+            dataSource={dataSource}
+            columns={columns}
+            pagination={pagination}
+            locale={locale}
+          />
+        </ConfigProvider>
       </Container>
     </div>
   )
