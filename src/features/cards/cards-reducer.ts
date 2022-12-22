@@ -12,7 +12,7 @@ const InitialState: InitialStateType = {
   sort: '0grade',
   search: '',
   packUserId: '',
-  isMyPack: null,
+  isMyPack: true,
 }
 
 export const cardsReducer = (

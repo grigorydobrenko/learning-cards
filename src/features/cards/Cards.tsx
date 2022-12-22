@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { Rate, Table } from 'antd'
@@ -19,6 +20,7 @@ export const Cards = () => {
   const page = useAppSelector(state => state.cards.page)
   const pageCount = useAppSelector(state => state.cards.pageCount)
   const sort = useAppSelector(state => state.cards.sort)
+  const isMyPack = useAppSelector(state => state.cards.isMyPack)
 
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
@@ -26,12 +28,23 @@ export const Cards = () => {
     return date.toLocaleString().slice(0, 10)
   }
 
+  const editHandler = () => {}
+  const deleteHandler = () => {}
+
   const dataSource = cards.map(card => ({
     key: card._id,
     question: card.question,
     answer: card.answer,
     lastUpdated: getDate(card.updated),
-    grade: <RateStars rating={card.grade} />,
+    grade: isMyPack ? (
+      <div>
+        <RateStars rating={card.grade} />
+        <EditOutlined onClick={editHandler} className={s.CardSettingElement} />
+        <DeleteOutlined onClick={deleteHandler} className={s.CardDeleteElement} />
+      </div>
+    ) : (
+      <RateStars rating={card.grade} />
+    ),
   }))
 
   const [flag, setFlag] = useState(!!sort[0])
@@ -69,6 +82,7 @@ export const Cards = () => {
       title: 'Grade',
       dataIndex: 'grade',
       key: 'grade',
+      width: '20%',
     },
   ]
 
@@ -110,12 +124,18 @@ export const Cards = () => {
           }}
         >
           <Typography variant="h6" component="h2" sx={{ fontWeight: '600' }} gutterBottom>
-            Friend’s Pack
+            {isMyPack ? 'My Pack' : 'Friend’s Pack'}
           </Typography>
 
-          <NavLink className={s.Button} to={PATH.CARDS}>
-            Learn to pack
-          </NavLink>
+          {isMyPack ? (
+            <NavLink className={s.Button} to={PATH.CARDS}>
+              Add new card
+            </NavLink>
+          ) : (
+            <NavLink className={s.Button} to={PATH.CARDS}>
+              Learn to pack
+            </NavLink>
+          )}
         </Container>
         <div className={s.SearchLabel}>Search</div>
         <Search
@@ -153,4 +173,18 @@ const RateStars = (props: Props) => {
   )
 }
 
-export default RateStars
+// const Edit = () => {
+//   return (
+//     <>
+//       <EditOutlined />
+//     </>
+//   )
+// }
+//
+// const Delete = () => {
+//   return (
+//     <>
+//       <DeleteOutlined />
+//     </>
+//   )
+// }

@@ -1,7 +1,8 @@
 .App {
+  position: relative;
+
   width: 100%;
   margin: 0 auto;
-  position: relative;
   padding-top: 5px;
 }
 

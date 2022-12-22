@@ -46,3 +46,10 @@
 .Search {
   margin-bottom: 24px;
 }
+
+.CardSettingElement {
+  margin-left: 20px;
+}
+.CardDeleteElement {
+  margin-left: 10px;
+}
