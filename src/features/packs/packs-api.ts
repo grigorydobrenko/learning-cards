@@ -10,28 +10,38 @@ export const instance = axios.create({
 })
 
 export const packsTableAPI = {
-  getPacks({ sort, packName, isMyPacks, pageCount, min, max, user_id }: PacksPayloadType) {
+  getPacks({ sortPacks, packName, pageCount, page, min, max, user_id }: PacksPayloadType) {
     return instance.get<'', AxiosResponse<PacksResponseType>, PacksPayloadType>('cards/pack', {
       params: {
-        sort,
+        sortPacks,
         packName,
-        isMyPacks,
         pageCount,
+        page,
         min,
         max,
         user_id,
       },
     })
   },
+
   createNewPack({ cardsPack: { name } }: CreatePacksRequestType) {
     return instance.post<'', AxiosResponse<PacksResponseType>, CreatePacksRequestType>(
       '/cards/pack',
       { cardsPack: { name } }
     )
   },
+
+  deletePack(id: DeletePackRequestType) {
+    return instance.delete<'', AxiosResponse<PacksResponseType>, DeletePackRequestType>(
+      '/cards/pack'
+    )
+  },
 }
 
 //TYPES================================================
+type DeletePackRequestType = {
+  id: string
+}
 export type CreatePacksRequestType = {
   cardsPack: {
     name: string | null
@@ -41,15 +51,13 @@ export type CreatePacksRequestType = {
 }
 export type PacksResponseType = {
   cardPacks: Array<CardPacksType>
-  cardPacksTotalCount: number | null
-  maxCardsCount: number | null
-  minCardsCount: number | null
-  page: number | null
-  pageCount: number | null
-  token: string
+  cardPacksTotalCount: number
+  maxCardsCount: number
+  minCardsCount: number
+  page: number
+  pageCount: number
   tokenDeathTime: number | null
 }
-
 export type CardPacksType = {
   cardsCount: number
   created: string
@@ -68,13 +76,12 @@ export type CardPacksType = {
   __v: number
   _id: string
 }
-
 export type PacksPayloadType = {
-  sort: string | null
+  sortPacks: string | null
   packName: string | null
-  isMyPacks: boolean
   min: number | null
   max: number | null
   pageCount: number | null
+  page: number
   user_id: string | null
 }
