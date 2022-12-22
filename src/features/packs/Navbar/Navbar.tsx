@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { ClearOutlined } from '@ant-design/icons'
 import { Col, Input, Radio, RadioChangeEvent, Row, Slider } from 'antd'
+import Search from 'antd/lib/input/Search'
 
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../../common/selectors'
@@ -28,7 +29,7 @@ export const Navbar = () => {
 
   const dispatch = useAppDispatch()
 
-  const [searchValue, setSearchValue] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string | null>(null)
   const [minCards, setMinCards] = useState<number>(min)
   const [maxCards, setMaxCards] = useState<number>(max)
   const [choosePacks, setChoosePacks] = useState<string>('all')
@@ -82,7 +83,7 @@ export const Navbar = () => {
     // setMaxCountCardsInPacks(20)
     setMinCards(0)
     setMaxCards(20)
-    setSearchValue('')
+    setSearchValue(null)
     dispatch(getPacksTC())
     console.log('Filters was reset')
   }
@@ -96,7 +97,7 @@ export const Navbar = () => {
     <div className={styles.navbar}>
       <Row>
         <Col span={8}>
-          <Input
+          <Search
             placeholder="input search text"
             allowClear
             onChange={onSearchHandler}
