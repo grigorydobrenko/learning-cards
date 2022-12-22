@@ -23,18 +23,21 @@ export const packsTableAPI = {
       },
     })
   },
-  createNewPack() {
+  createNewPack({ cardsPack: { name } }: CreatePacksRequestType) {
     return instance.post<'', AxiosResponse<PacksResponseType>, CreatePacksRequestType>(
       '/cards/pack',
-      { name: 'New Pack', deckCover: 'url or base64' }
+      { cardsPack: { name } }
     )
   },
 }
 
 //TYPES================================================
 export type CreatePacksRequestType = {
-  name: string
-  deckCover: string
+  cardsPack: {
+    name: string | null
+    userId?: string
+    deckCover?: string
+  }
 }
 export type PacksResponseType = {
   cardPacks: Array<CardPacksType>
