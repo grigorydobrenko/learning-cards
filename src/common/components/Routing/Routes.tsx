@@ -53,7 +53,7 @@ export const AppRoutes = () => {
         {/* <Route index element={<Packs />} /> */}
         <Route path={PATH.PACKS} element={<Packs />} />
         <Route path={PATH.PROFILE} element={<Profile />} />
-        <Route path={'packs/:id'} element={<Cards />} />
+        <Route path={'packs/:pack_id'} element={<Cards />} />
         {/*<Route path={'/cards'} element={<Cards />} />*/}
       </Route>
       <Route element={<RequireToken />}>

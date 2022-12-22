@@ -10,14 +10,14 @@ export const cardsApi = {
     pageCount: number,
     page: number,
     sort: string,
-    id?: string,
+    pack_id?: string,
     debouncedSearchValue?: string
   ) {
     return instance.get('/cards/card', {
       params: {
         // cardAnswer: 'english',
         cardQuestion: debouncedSearchValue,
-        cardsPack_id: id,
+        cardsPack_id: pack_id,
         // cardsPack_id: cardsPack_id,
 
         // min: 1,
@@ -28,24 +28,29 @@ export const cardsApi = {
       },
     })
   },
-  addNewCard() {
+  addNewCard(id?: string) {
     const data = {
-      cardsPack_id: '5eb543f6bea3ad21480f1ee7',
+      card: {
+        cardsPack_id: id,
+      },
     }
 
     return instance.post('/cards/card', data)
   },
 
-  editCard() {
+  editCard(id: string) {
     const data = {
-      cardsPack_id: '5eb543f6bea3ad21480f1ee7',
+      card: {
+        _id: id,
+        question: 'update question',
+      },
     }
 
     return instance.put(`/cards/card`, data)
   },
 
-  deleteCard() {
-    return instance.delete(`/cards/card?id=5eb6cb9a7a82672138e0d7c1`)
+  deleteCard(id: string) {
+    return instance.delete(`/cards/card?id=${id}`)
   },
 }
 

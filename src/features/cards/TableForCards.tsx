@@ -18,10 +18,8 @@ import {
 import s from './Cards.module.css'
 import { RateStars } from './RateStars'
 
-export const TableForCards = () => {
-  const { cards, cardsTotalCount, page, pageCount, sort, isMyPack } = useAppSelector(
-    state => state.cards
-  )
+export const TableForCards = ({ isMyPack }: props) => {
+  const { cards, cardsTotalCount, page, pageCount, sort } = useAppSelector(state => state.cards)
 
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
@@ -30,12 +28,14 @@ export const TableForCards = () => {
   }
 
   const dispatch = useAppDispatch()
-  const editCardHandler = () => {
-    dispatch(editCardTC())
+  const { pack_id } = useParams()
+
+  const editCardHandler = (CardId: string) => {
+    dispatch(editCardTC(CardId, pack_id))
   }
 
-  const deleteCardHandler = () => {
-    dispatch(deleteCardTC())
+  const deleteCardHandler = (CardId: string) => {
+    dispatch(deleteCardTC(CardId, pack_id))
   }
 
   const dataSource = cards.map(card => ({
@@ -46,8 +46,11 @@ export const TableForCards = () => {
     grade: isMyPack ? (
       <div>
         <RateStars rating={card.grade} />
-        <EditOutlined onClick={editCardHandler} className={s.CardSettingElement} />
-        <DeleteOutlined onClick={deleteCardHandler} className={s.CardDeleteElement} />
+        <EditOutlined onClick={() => editCardHandler(card._id)} className={s.CardSettingElement} />
+        <DeleteOutlined
+          onClick={() => deleteCardHandler(card._id)}
+          className={s.CardDeleteElement}
+        />
       </div>
     ) : (
       <RateStars rating={card.grade} />
@@ -61,6 +64,7 @@ export const TableForCards = () => {
       title: 'Question',
       dataIndex: 'question',
       key: 'question',
+      width: '20%',
     },
     {
       title: 'Answer',
@@ -83,6 +87,7 @@ export const TableForCards = () => {
           },
         }
       },
+      width: '15%',
     },
     {
       title: 'Grade',
@@ -109,12 +114,8 @@ export const TableForCards = () => {
     setSearchValue(event.target.value)
   }
 
-  const { id } = useParams()
-
-  console.log(id)
-
   useEffect(() => {
-    dispatch(getCardsTC(id, debouncedSearchValue))
+    dispatch(getCardsTC(pack_id, debouncedSearchValue))
   }, [pageCount, page, sort, debouncedSearchValue])
 
   const toggleMessage = 'click to toggle order'
@@ -146,4 +147,8 @@ export const TableForCards = () => {
       </ConfigProvider>
     </div>
   )
+}
+
+type props = {
+  isMyPack: boolean
 }

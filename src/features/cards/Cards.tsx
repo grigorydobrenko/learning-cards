@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { Container } from '@mui/material'
+import { Button, Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useParams } from 'react-router-dom'
 
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
@@ -13,11 +13,16 @@ import s from './Cards.module.css'
 import { TableForCards } from './TableForCards'
 
 export const Cards = () => {
-  const isMyPack = useAppSelector(state => state.cards.isMyPack) // userId
+  const _id = useAppSelector(state => state.app.userData?._id)
+  const packUserId = useAppSelector(state => state.cards.packUserId)
+  const isMyPack = _id === packUserId
+
   const dispatch = useAppDispatch()
 
+  const { pack_id } = useParams()
+
   const addCardHandler = () => {
-    dispatch(addNewCardTC())
+    dispatch(addNewCardTC(pack_id))
   }
 
   return (
@@ -48,19 +53,17 @@ export const Cards = () => {
           </Typography>
 
           {isMyPack ? (
-            <NavLink className={s.Button} to={PATH.CARDS} onClick={addCardHandler}>
+            <Button className={s.Button} onClick={addCardHandler}>
               Add new card
-            </NavLink>
+            </Button>
           ) : (
             <NavLink className={s.Button} to={PATH.CARDS}>
               Learn to pack
             </NavLink>
           )}
         </Container>
-        <TableForCards />
+        <TableForCards isMyPack={isMyPack} />
       </Container>
     </div>
   )
 }
-
-
