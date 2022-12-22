@@ -13,7 +13,7 @@ import s from './Cards.module.css'
 import { TableForCards } from './TableForCards'
 
 export const Cards = () => {
-  const isMyPack = useAppSelector(state => state.cards.isMyPack)
+  const isMyPack = useAppSelector(state => state.cards.isMyPack) // userId
   const dispatch = useAppDispatch()
 
   const addCardHandler = () => {
