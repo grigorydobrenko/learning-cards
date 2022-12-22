@@ -8,18 +8,17 @@ import { CardPacksType, PacksResponseType, packsTableAPI } from './packs-api'
 
 const InitialState: InitialStateType = {
   cardPacks: [],
-  cardPacksTotalCount: null,
-  maxCardsCount: null,
-  minCardsCount: null,
-  page: null,
-  pageCount: 45,
-  sort: '0updated',
+  cardPacksTotalCount: 0,
+  maxCardsCount: 0,
+  minCardsCount: 0,
+  page: 2,
+  pageCount: 5,
+  sortPacks: '0updated',
   packName: null,
   isMyPacks: false,
   min: 0,
   max: 20,
   user_id: null,
-  token: '',
   createPackName: 'Ну как там кукуха?',
 }
 
@@ -39,11 +38,13 @@ export const packsReducer = (
     case 'packs/SET-SEARCH-DATA':
       return { ...state, packName: action.packName }
     case 'packs/CHANGE-SORT':
-      return { ...state, sort: action.sortData }
+      return { ...state, sortPacks: action.sortData }
     case 'packs/SET-USER-ID':
       return { ...state, user_id: action.user_id }
     case 'packs/SET-IS-MY-PACKS':
       return { ...state, isMyPacks: action.isMyPacks }
+    case 'packs/SET-PAGE-PACKS-COUNT':
+      return { ...state, pageCount: action.pageCount, page: action.page }
     default:
       return state
   }
@@ -66,19 +67,21 @@ export const setUserIdAC = (user_id: string | null) =>
   ({ type: 'packs/SET-USER-ID', user_id } as const)
 export const setIsMyPacksAC = (isMyPacks: boolean) =>
   ({ type: 'packs/SET-IS-MY-PACKS', isMyPacks } as const)
+export const setPagePacksCountAC = (pageCount: number, page: number) =>
+  ({ type: 'packs/SET-PAGE-PACKS-COUNT', pageCount, page } as const)
 
 //THUNKS =========================================
 
 export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   dispatch(setAppStatusAC('loading'))
-  const { sort, pageCount, packName, isMyPacks, min, max, user_id } = getState().packs
+  const { sortPacks, pageCount, page, packName, min, max, user_id } = getState().packs
 
   try {
     const response = await packsTableAPI.getPacks({
-      sort,
+      sortPacks,
       packName,
-      isMyPacks,
       pageCount,
+      page,
       min,
       max,
       user_id,
@@ -111,31 +114,40 @@ export const addNewPackTC = (): AppThunkType => async (dispatch, getState) => {
   }
 }
 
+export const deletePackTC =
+  (id: string): AppThunkType =>
+  async dispatch => {
+    dispatch(setAppStatusAC('loading'))
+
+    try {
+      await packsTableAPI.deletePack({ id })
+      dispatch(getPacksTC())
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
+  }
+
 //TYPES ==========================================
 
 type InitialStateType = {
   cardPacks: Array<CardPacksType>
-  cardPacksTotalCount: number | null
-  maxCardsCount: number | null
-  minCardsCount: number | null
-  page: number | null
-  pageCount: number | null
-  sort: string
+  cardPacksTotalCount: number
+  maxCardsCount: number
+  minCardsCount: number
+  page: number
+  pageCount: number
+  sortPacks: string
   packName: string | null
   isMyPacks: boolean
   min: number
   max: number
   user_id: string | null
   createPackName: string
-  token: string | null
 }
-
-// export type sortSettingsType = {
-//   minCountCardsInPacks: number
-//   maxCountCardsInPacks: number
-//   searchValue: string
-//   choosePacks: string
-// }
 
 export type packsReducerActionType =
   | setPacksDataACType
@@ -146,6 +158,7 @@ export type packsReducerActionType =
   | changeSortACType
   | setUserIdACType
   | setIsMyPacksACType
+  | setPagePacksCountACType
 export type setPacksDataACType = ReturnType<typeof setPacksDataAC>
 export type setMyPacksDataACType = ReturnType<typeof setMyPacksDataAC>
 export type setMinCardsCountACType = ReturnType<typeof setMinCardsCountAC>
@@ -154,3 +167,4 @@ export type setSearchDataACType = ReturnType<typeof setSearchDataAC>
 export type changeSortACType = ReturnType<typeof changeSortAC>
 export type setUserIdACType = ReturnType<typeof setUserIdAC>
 export type setIsMyPacksACType = ReturnType<typeof setIsMyPacksAC>
+export type setPagePacksCountACType = ReturnType<typeof setPagePacksCountAC>
