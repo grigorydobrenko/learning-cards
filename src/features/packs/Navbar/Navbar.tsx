@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { ClearOutlined } from '@ant-design/icons'
-import { Col, InputNumber, Radio, RadioChangeEvent, Row, Slider } from 'antd'
-import Search from 'antd/es/input/Search'
+import { Col, Input, Radio, RadioChangeEvent, Row, Slider } from 'antd'
 
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../../common/selectors'
@@ -11,35 +10,36 @@ import {
   getPacksTC,
   setMaxCardsCountAC,
   setMinCardsCountAC,
-  setMyPacksDataAC,
   setSearchDataAC,
+  setUserIdAC,
 } from '../packs-reducer'
 
 import styles from './Navbar.module.css'
 
 export const Navbar = () => {
-  const [choosePacks, setChoosePacks] = useState<string>('all')
-
-  const [searchValue, setSearchValue] = useState<string>('')
-  const [minCards, setMinCards] = useState<number>(0)
-  const [maxCards, setMaxCards] = useState<number>(20)
-
-  const cardPacks = useAppSelector(packsSelector.cardPacks)
+  //const cardPacks = useAppSelector(packsSelector.cardPacks)
   const min = useAppSelector(packsSelector.min)
   const max = useAppSelector(packsSelector.max)
-  // const pageCount = useAppSelector(packsSelector.pageCount)
+  const user_id = useAppSelector(packsSelector.user_id)
+  const packName = useAppSelector(packsSelector.packName)
   // const isMyPacks = useAppSelector(packsSelector.isMyPacks)
-  const search = useAppSelector(packsSelector.search)
+  //const search = useAppSelector(packsSelector.search)
   const userData = useAppSelector(appSelector.user)
+
   const dispatch = useAppDispatch()
 
-  const debouncedSearchValue = useDebounce(searchValue, 700)
-  const debouncedMinCardsCount = useDebounce(minCards, 700)
-  const debouncedMaxCardsCount = useDebounce(maxCards, 700)
+  const [searchValue, setSearchValue] = useState<string>('')
+  const [minCards, setMinCards] = useState<number>(min)
+  const [maxCards, setMaxCards] = useState<number>(max)
+  const [choosePacks, setChoosePacks] = useState<string>('all')
 
-  // useEffect(() => {
-  //   dispatch(getPacksTC())
-  // }, [search, min, max])
+  const debouncedSearchValue = useDebounce(searchValue, 700)
+  const debouncedMinCardsCount = useDebounce(minCards, 1000)
+  const debouncedMaxCardsCount = useDebounce(maxCards, 1000)
+
+  useEffect(() => {
+    dispatch(getPacksTC())
+  }, [min, max, user_id, packName])
 
   useEffect(() => {
     dispatch(setSearchDataAC(searchValue))
@@ -47,53 +47,28 @@ export const Navbar = () => {
 
   useEffect(() => {
     dispatch(setMinCardsCountAC(minCards))
-    //dispatch(changeSortAC('1updated'))
-    console.log(minCards)
+    console.log('setMinCardsCountAC: ', minCards)
   }, [debouncedMinCardsCount])
 
   useEffect(() => {
     dispatch(setMaxCardsCountAC(maxCards))
-    console.log(maxCards)
+    console.log('setMaxCardsCountAC: ', maxCards)
   }, [debouncedMaxCardsCount])
 
-  const onSearchHandler = (value: string) => {
-    setSearchValue(value)
-    console.log(value)
+  const onSearchHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.currentTarget.value)
+    console.log('onSearchHandler: ', e.currentTarget.value)
   }
 
   const onChangeFilterHandler = ({ target: { value } }: RadioChangeEvent) => {
     console.log('radio checked', value)
     setChoosePacks(value)
-    // if (choosePacks !== 'my' && userData) {
-    //   dispatch(setUserIdAC(userData._id))
-    //   dispatch(setIsMyPacksAC(true))
-    // }
-
     if (choosePacks !== 'my' && userData) {
-      const myPacks = cardPacks.filter(pack => pack._id === userData._id)
-
-      dispatch(setMyPacksDataAC(myPacks))
-    }
-    if (choosePacks !== 'all' && userData) {
-      dispatch(getPacksTC())
+      dispatch(setUserIdAC(userData._id))
+    } else {
+      dispatch(setUserIdAC(null))
     }
   }
-
-  // const onChangeFilterHandler = ({ target: { value } }: RadioChangeEvent) => {
-  //   console.log('radio checked', value)
-  //   setChoosePacks(value)
-  //   if (choosePacks !== 'my') {
-  //     dispatch(setMyPacksDataAC(true))
-  //     // dispatch(changeSortAC('1updated'))
-  //   }
-  //   //dispatch(setMyPacksDataAC(false))
-  //
-  //   // setChoosePacks(value)
-  // }
-  const onChangeMinCardsCount = (minValue: number | null) =>
-    minValue ? setMinCards(minValue) : null
-  const onChangeMaxCardsCount = (maxValue: number | null) =>
-    maxValue ? setMaxCards(maxValue) : null
 
   const onChangeCardsCountSlider = ([minCards, maxCards]: Array<number>) => {
     setMinCards(minCards)
@@ -121,12 +96,11 @@ export const Navbar = () => {
     <div className={styles.navbar}>
       <Row>
         <Col span={8}>
-          <Search
+          <Input
             placeholder="input search text"
             allowClear
-            onSearch={onSearchHandler}
-            style={{ width: 304 }}
-            enterButton
+            onChange={onSearchHandler}
+            style={{ width: 250 }}
           />
         </Col>
         <Col span={4}>
@@ -139,17 +113,17 @@ export const Navbar = () => {
         </Col>
 
         <Col span={2}>
-          <InputNumber value={minCards} onChange={onChangeMinCardsCount} />
+          <Input value={minCards} />
         </Col>
         <Col span={6}>
           <Slider
             range={{ draggableTrack: true }}
-            value={minCards && maxCards ? [minCards, maxCards] : [0, 20]}
+            value={[minCards, maxCards]}
             onChange={onChangeCardsCountSlider}
           />
         </Col>
         <Col span={3}>
-          <InputNumber value={maxCards} onChange={onChangeMaxCardsCount} />
+          <Input value={maxCards} />
         </Col>
         <Col span={1}>
           <ClearOutlined style={{ fontSize: '30px' }} onClick={resetFiltersHandler} />
