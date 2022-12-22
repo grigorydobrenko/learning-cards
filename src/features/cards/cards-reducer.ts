@@ -35,6 +35,8 @@ export const cardsReducer = (
   }
 }
 
+// actions
+
 export const setCardsAC = (cardsResponse: ResponseGetCardsType) =>
   ({ type: 'cards/SET-CARDS', cardsResponse } as const)
 
@@ -55,6 +57,25 @@ export const getCardsTC = (): AppThunkType => async (dispatch, getState) => {
 
   dispatch(setCardsAC(res.data))
 }
+
+// thunks
+
+export const addNewCardTC = (): AppThunkType => async dispatch => {
+  await cardsApi.addNewCard()
+  dispatch(getCardsTC())
+}
+
+export const editCardTC = (): AppThunkType => async dispatch => {
+  await cardsApi.editCard()
+  dispatch(getCardsTC())
+}
+
+export const deleteCardTC = (): AppThunkType => async dispatch => {
+  await cardsApi.deleteCard()
+  dispatch(getCardsTC())
+}
+
+// types
 
 type setCardsACType = ReturnType<typeof setCardsAC>
 type setPagePageCountACType = ReturnType<typeof setPagePageCountAC>

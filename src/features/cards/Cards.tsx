@@ -11,16 +11,20 @@ import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 
-import { getCardsTC, setPagePageCountAC, toggleSortAC } from './cards-reducer'
+import {
+  addNewCardTC,
+  deleteCardTC,
+  editCardTC,
+  getCardsTC,
+  setPagePageCountAC,
+  toggleSortAC,
+} from './cards-reducer'
 import s from './Cards.module.css'
 
 export const Cards = () => {
-  const cards = useAppSelector(state => state.cards.cards)
-  const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
-  const page = useAppSelector(state => state.cards.page)
-  const pageCount = useAppSelector(state => state.cards.pageCount)
-  const sort = useAppSelector(state => state.cards.sort)
-  const isMyPack = useAppSelector(state => state.cards.isMyPack)
+  const { cards, cardsTotalCount, page, pageCount, sort, isMyPack } = useAppSelector(
+    state => state.cards
+  )
 
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
@@ -28,8 +32,17 @@ export const Cards = () => {
     return date.toLocaleString().slice(0, 10)
   }
 
-  const editHandler = () => {}
-  const deleteHandler = () => {}
+  const addCardHandler = () => {
+    dispatch(addNewCardTC())
+  }
+
+  const editCardHandler = () => {
+    dispatch(editCardTC())
+  }
+
+  const deleteCardHandler = () => {
+    dispatch(deleteCardTC())
+  }
 
   const dataSource = cards.map(card => ({
     key: card._id,
@@ -39,8 +52,8 @@ export const Cards = () => {
     grade: isMyPack ? (
       <div>
         <RateStars rating={card.grade} />
-        <EditOutlined onClick={editHandler} className={s.CardSettingElement} />
-        <DeleteOutlined onClick={deleteHandler} className={s.CardDeleteElement} />
+        <EditOutlined onClick={editCardHandler} className={s.CardSettingElement} />
+        <DeleteOutlined onClick={deleteCardHandler} className={s.CardDeleteElement} />
       </div>
     ) : (
       <RateStars rating={card.grade} />
@@ -128,7 +141,7 @@ export const Cards = () => {
           </Typography>
 
           {isMyPack ? (
-            <NavLink className={s.Button} to={PATH.CARDS}>
+            <NavLink className={s.Button} to={PATH.CARDS} onClick={addCardHandler}>
               Add new card
             </NavLink>
           ) : (
@@ -172,19 +185,3 @@ const RateStars = (props: Props) => {
     </>
   )
 }
-
-// const Edit = () => {
-//   return (
-//     <>
-//       <EditOutlined />
-//     </>
-//   )
-// }
-//
-// const Delete = () => {
-//   return (
-//     <>
-//       <DeleteOutlined />
-//     </>
-//   )
-// }

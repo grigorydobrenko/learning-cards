@@ -22,6 +22,25 @@ export const cardsApi = {
       },
     })
   },
+  addNewCard() {
+    const data = {
+      cardsPack_id: '5eb543f6bea3ad21480f1ee7',
+    }
+
+    return instance.post('/cards/card', data)
+  },
+
+  editCard() {
+    const data = {
+      cardsPack_id: '5eb543f6bea3ad21480f1ee7',
+    }
+
+    return instance.put(`/cards/card`, data)
+  },
+
+  deleteCard() {
+    return instance.delete(`/cards/card?id=5eb6cb9a7a82672138e0d7c1`)
+  },
 }
 
 // type CardsPayloadType = {
