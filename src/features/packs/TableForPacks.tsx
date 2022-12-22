@@ -4,34 +4,21 @@ import { DeleteOutlined, EditOutlined, StepForwardOutlined } from '@ant-design/i
 import { Col, Row, Table } from 'antd'
 
 import { useAppSelector } from '../../common/hooks/customHooks'
-import { packsSelector } from '../../common/selectors'
+import { appSelector, packsSelector } from '../../common/selectors'
 
 import { CardPacksType } from './packs-api'
 
-const TeachHandler = () => {
-  console.log('Teach')
-}
-const EditHandler = () => {
-  console.log('Edit')
-}
-const DeleteHandler = () => {
-  console.log('Delete')
-}
-
 export const TableForPacks = () => {
-  const myActions = [
-    // eslint-disable-next-line react/jsx-key
-    <StepForwardOutlined style={{ fontSize: '20px', margin: '0 5px' }} onClick={TeachHandler} />,
-    // eslint-disable-next-line react/jsx-key
-    <EditOutlined style={{ fontSize: '20px', margin: '0 5px' }} onClick={EditHandler} />,
-    // eslint-disable-next-line react/jsx-key
-    <DeleteOutlined style={{ fontSize: '20px', marginLeft: '5px' }} onClick={DeleteHandler} />,
-  ]
-  const notMyActions = [
-    // eslint-disable-next-line react/jsx-key
-    <StepForwardOutlined style={{ fontSize: '20px', margin: '0 5px' }} onClick={TeachHandler} />,
-  ]
-
+  const userData = useAppSelector(appSelector.user)
+  const TeachHandler = () => {
+    console.log('Teach')
+  }
+  const EditHandler = () => {
+    console.log('Edit')
+  }
+  const DeleteHandler = () => {
+    console.log('Delete')
+  }
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
 
@@ -39,41 +26,73 @@ export const TableForPacks = () => {
   }
 
   const cardPacks = useAppSelector(packsSelector.cardPacks).map((pack: CardPacksType) => {
-    return {
-      key: pack._id,
-      name: pack.name,
-      cards: pack.cardsCount,
-      lastUpdated: getDate(pack.updated),
-      createdBy: pack.user_name,
+    const myActions = [
+      // eslint-disable-next-line react/jsx-key
+      <StepForwardOutlined style={{ fontSize: '15px', margin: '0 5px' }} onClick={TeachHandler} />,
+      // eslint-disable-next-line react/jsx-key
+      <EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} onClick={EditHandler} />,
+      // eslint-disable-next-line react/jsx-key
+      <DeleteOutlined style={{ fontSize: '15px', marginLeft: '5px' }} onClick={DeleteHandler} />,
+    ]
+
+    const notMyActions = [
+      // eslint-disable-next-line react/jsx-key
+      <StepForwardOutlined
+        key={pack._id}
+        style={{ fontSize: '15px', margin: '0 5px' }}
+        onClick={TeachHandler}
+      />,
+    ]
+
+    if (userData && userData._id === pack.user_id) {
+      return {
+        key: pack._id,
+        name: pack.name,
+        cards: pack.cardsCount,
+        lastUpdated: getDate(pack.updated),
+        createdBy: pack.user_name,
+        actions: myActions,
+      }
+    } else {
+      return {
+        key: pack._id,
+        name: pack.name,
+        cards: pack.cardsCount,
+        lastUpdated: getDate(pack.updated),
+        createdBy: pack.user_name,
+        actions: notMyActions,
+      }
     }
   })
   const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
-      key: 'name',
+      key: 'key',
       render: (text: string) => <a>{text}</a>,
     },
     {
       title: 'Cards',
       dataIndex: 'cards',
-      key: 'cards',
+      key: 'key',
       sorter: (a: any, b: any) => a.cards - b.cards,
     },
     {
       title: 'Last Updated',
       dataIndex: 'lastUpdated',
-      key: 'lastUpdated',
+      key: 'key',
       sorter: (a: any, b: any) => a.lastUpdated.localeCompare(b.lastUpdated),
     },
     {
       title: 'Created by',
       dataIndex: 'createdBy',
-      key: 'createdBy',
+      key: 'key',
     },
     {
       title: 'Actions',
-      key: 'actions',
+      dataIndex: 'actions',
+      key: 'key',
+      render: (myActions: any) => myActions,
     },
   ]
 
@@ -99,10 +118,10 @@ export const TableForPacks = () => {
   )
 }
 
-type TablePacksType = {
-  key: string
-  name: string
-  cards: number
-  lastUpdated: string
-  createdBy: string
-}
+// type TablePacksType = {
+//   key: string
+//   name: string
+//   cards: number
+//   lastUpdated: string
+//   createdBy: string
+// }
