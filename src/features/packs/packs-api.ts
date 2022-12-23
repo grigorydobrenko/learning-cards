@@ -31,9 +31,9 @@ export const packsTableAPI = {
     )
   },
 
-  deletePack(id: DeletePackRequestType) {
+  deletePack(id: string) {
     return instance.delete<'', AxiosResponse<PacksResponseType>, DeletePackRequestType>(
-      '/cards/pack'
+      `/cards/pack?id=${id}`
     )
   },
 }
@@ -83,5 +83,5 @@ export type PacksPayloadType = {
   max: number | null
   pageCount: number | null
   page: number
-  user_id: string | null
+  user_id: string
 }
