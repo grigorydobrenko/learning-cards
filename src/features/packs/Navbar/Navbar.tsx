@@ -2,6 +2,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { ClearOutlined } from '@ant-design/icons'
 import { Col, Input, Radio, RadioChangeEvent, Row, Slider } from 'antd'
+import Search from 'antd/lib/input/Search'
 
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../../common/selectors'
@@ -28,7 +29,7 @@ export const Navbar = () => {
 
   const dispatch = useAppDispatch()
 
-  const [searchValue, setSearchValue] = useState<string>('')
+  const [searchValue, setSearchValue] = useState<string | null>(null)
   const [minCards, setMinCards] = useState<number>(min)
   const [maxCards, setMaxCards] = useState<number>(max)
   const [choosePacks, setChoosePacks] = useState<string>('all')
@@ -41,17 +42,23 @@ export const Navbar = () => {
     dispatch(getPacksTC())
   }, [min, max, user_id, packName])
 
+  // useEffect(() => {
+  //   dispatch(setUserIdAC(''))
+  // }, [searchValue])
+
   useEffect(() => {
     dispatch(setSearchDataAC(searchValue))
   }, [debouncedSearchValue])
 
   useEffect(() => {
     dispatch(setMinCardsCountAC(minCards))
+    // dispatch(changeSortAC('1updated'))
     console.log('setMinCardsCountAC: ', minCards)
   }, [debouncedMinCardsCount])
 
   useEffect(() => {
     dispatch(setMaxCardsCountAC(maxCards))
+    // dispatch(changeSortAC('1updated'))
     console.log('setMaxCardsCountAC: ', maxCards)
   }, [debouncedMaxCardsCount])
 
@@ -66,7 +73,7 @@ export const Navbar = () => {
     if (choosePacks !== 'my' && userData) {
       dispatch(setUserIdAC(userData._id))
     } else {
-      dispatch(setUserIdAC(null))
+      dispatch(setUserIdAC(''))
     }
   }
 
@@ -78,12 +85,12 @@ export const Navbar = () => {
 
   const resetFiltersHandler = () => {
     setChoosePacks('all')
-    // setMinCountCardsInPacks(0)
-    // setMaxCountCardsInPacks(20)
     setMinCards(0)
     setMaxCards(20)
-    setSearchValue('')
-    dispatch(getPacksTC())
+    setSearchValue(null)
+    dispatch(setUserIdAC(''))
+    // dispatch(changeSortAC('0updated'))
+    // dispatch(getPacksTC())
     console.log('Filters was reset')
   }
 
@@ -96,7 +103,7 @@ export const Navbar = () => {
     <div className={styles.navbar}>
       <Row>
         <Col span={8}>
-          <Input
+          <Search
             placeholder="input search text"
             allowClear
             onChange={onSearchHandler}

@@ -4,13 +4,16 @@ import { DeleteOutlined, EditOutlined, StepForwardOutlined } from '@ant-design/i
 import { Col, Row, Table } from 'antd'
 import { Link } from 'react-router-dom'
 
-import { useAppSelector } from '../../common/hooks/customHooks'
+import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../common/selectors'
 
 import { CardPacksType } from './packs-api'
+import { deletePackTC } from './packs-reducer'
 
 export const TableForPacks = () => {
+  const dispatch = useAppDispatch()
   const userData = useAppSelector(appSelector.user)
+  //const { pageCount, page } = useAppSelector(state => state.packs)
 
   const TeachHandler = () => {
     console.log('Teach')
@@ -18,7 +21,8 @@ export const TableForPacks = () => {
   const EditHandler = () => {
     console.log('Edit')
   }
-  const DeleteHandler = () => {
+  const DeleteHandler = (id: string) => {
+    dispatch(deletePackTC(id))
     console.log('Delete')
   }
   const getDate = (dateString: string) => {
@@ -34,7 +38,11 @@ export const TableForPacks = () => {
       // eslint-disable-next-line react/jsx-key
       <EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} onClick={EditHandler} />,
       // eslint-disable-next-line react/jsx-key
-      <DeleteOutlined style={{ fontSize: '15px', marginLeft: '5px' }} onClick={DeleteHandler} />,
+      <DeleteOutlined
+        key={pack._id}
+        style={{ fontSize: '15px', marginLeft: '5px' }}
+        onClick={() => DeleteHandler(pack._id)}
+      />,
     ]
 
     const notMyActions = [
@@ -80,7 +88,6 @@ export const TableForPacks = () => {
       title: 'Cards',
       dataIndex: 'cards',
       key: 'key',
-      sorter: (a: any, b: any) => a.cards - b.cards,
     },
     {
       title: 'Last Updated',
@@ -100,7 +107,19 @@ export const TableForPacks = () => {
       render: (myActions: any) => myActions,
     },
   ]
+  // const pagination = {
+  //   defaultPageSize: pageCount,
+  //   showSizeChanger: true,
+  //   total: page,
+  //   pageSizeOptions: [2, 5, 7, 10, 15, 20],
+  //   onChange: (page: number, pageSize: number) => {
+  //     dispatch(setPagePacksCountAC(pageSize, page))
+  //   },
+  // }
 
+  // useEffect(() => {
+  //   dispatch(getPacksTC())
+  // }, [pageCount, page])
   console.log(cardPacks)
 
   return (

@@ -5,6 +5,6 @@ export const min = (state: AppRootState) => state.packs.min
 export const max = (state: AppRootState) => state.packs.max
 export const isMyPacks = (state: AppRootState) => state.packs.isMyPacks
 export const search = (state: AppRootState) => state.packs.packName
-export const sort = (state: AppRootState) => state.packs.sort
+export const sort = (state: AppRootState) => state.packs.sortPacks
 export const packName = (state: AppRootState) => state.packs.packName
 export const user_id = (state: AppRootState) => state.packs.user_id
