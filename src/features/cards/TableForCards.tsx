@@ -44,7 +44,7 @@ export const TableForCards = ({ isMyPack }: props) => {
     answer: card.answer,
     lastUpdated: getDate(card.updated),
     grade: isMyPack ? (
-      <div>
+      <div className={card.entityStatus === 'loading' ? s.disabledButton : ''}>
         <RateStars rating={card.grade} />
         <EditOutlined onClick={() => editCardHandler(card._id)} className={s.CardSettingElement} />
         <DeleteOutlined

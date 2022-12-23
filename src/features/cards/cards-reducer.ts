@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios'
 
-import { setAppStatusAC } from '../../app/app-reducer'
+import { RequestStatusType, setAppStatusAC } from '../../app/app-reducer'
 import { AppThunkType } from '../../app/store'
 import { errorUtils } from '../../common/utils/error-utils'
 
@@ -29,9 +29,15 @@ export const cardsReducer = (
     case 'cards/SET-PAGE-COUNT':
       return { ...state, pageCount: action.pageCount, page: action.page }
     case 'cards/TOGGLE-SORT': {
-      // let flag = action.sort
-
       return { ...state, sort: Number(action.sort).toString() + 'grade' }
+    }
+    case 'cards/CHANGE-ENTITY-STATUS': {
+      return {
+        ...state,
+        cards: state.cards.map(card =>
+          card._id === action.cardId ? { ...card, entityStatus: 'loading' } : card
+        ),
+      }
     }
 
     default:
@@ -48,6 +54,9 @@ export const setPagePageCountAC = (pageCount: number, page: number) =>
   ({ type: 'cards/SET-PAGE-COUNT', pageCount, page } as const)
 
 export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
+
+export const changeCardEntityStatusAC = (cardId: string, status: RequestStatusType) =>
+  ({ type: 'cards/CHANGE-ENTITY-STATUS', cardId, status } as const)
 
 // thunks
 
@@ -96,14 +105,19 @@ export const editCardTC =
   async dispatch => {
     try {
       dispatch(setAppStatusAC('loading'))
+      dispatch(changeCardEntityStatusAC(CardId, 'loading'))
+
       await cardsApi.editCard(CardId)
+
       dispatch(getCardsTC(packId))
       dispatch(setAppStatusAC('succeeded'))
+      dispatch(changeCardEntityStatusAC(CardId, 'succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
 
       errorUtils(err, dispatch)
       dispatch(setAppStatusAC('failed'))
+      dispatch(changeCardEntityStatusAC(CardId, 'failed'))
     }
   }
 
@@ -112,14 +126,19 @@ export const deleteCardTC =
   async dispatch => {
     try {
       dispatch(setAppStatusAC('loading'))
+      dispatch(changeCardEntityStatusAC(CardId, 'loading'))
+
       await cardsApi.deleteCard(CardId)
+
       dispatch(getCardsTC(packId))
       dispatch(setAppStatusAC('succeeded'))
+      dispatch(changeCardEntityStatusAC(CardId, 'succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
 
       errorUtils(err, dispatch)
       dispatch(setAppStatusAC('failed'))
+      dispatch(changeCardEntityStatusAC(CardId, 'failed'))
     }
   }
 
@@ -128,7 +147,13 @@ export const deleteCardTC =
 type setCardsACType = ReturnType<typeof setCardsAC>
 type setPagePageCountACType = ReturnType<typeof setPagePageCountAC>
 type toggleSortACType = ReturnType<typeof toggleSortAC>
-export type cardsReducerActionsType = setCardsACType | setPagePageCountACType | toggleSortACType
+type changeCardEntityStatusACType = ReturnType<typeof changeCardEntityStatusAC>
+
+export type cardsReducerActionsType =
+  | setCardsACType
+  | setPagePageCountACType
+  | toggleSortACType
+  | changeCardEntityStatusACType
 
 type InitialStateType = {
   cards: CardType[]
@@ -155,4 +180,5 @@ export type CardType = {
   created: string
   updated: string
   _id: string
+  entityStatus?: RequestStatusType
 }

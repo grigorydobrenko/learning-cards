@@ -13,6 +13,7 @@ import s from './Cards.module.css'
 import { TableForCards } from './TableForCards'
 
 export const Cards = () => {
+  const status = useAppSelector(state => state.app.status)
   const _id = useAppSelector(state => state.app.userData?._id)
   const packUserId = useAppSelector(state => state.cards.packUserId)
   const isMyPack = _id === packUserId
@@ -53,7 +54,7 @@ export const Cards = () => {
           </Typography>
 
           {isMyPack ? (
-            <Button className={s.Button} onClick={addCardHandler}>
+            <Button className={s.Button} onClick={addCardHandler} disabled={status === 'loading'}>
               Add new card
             </Button>
           ) : (

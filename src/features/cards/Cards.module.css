@@ -53,3 +53,9 @@
 .CardDeleteElement {
   margin-left: 10px;
 }
+
+.disabledButton {
+  pointer-events: none;
+
+  opacity: 0.4;
+}
