@@ -11,14 +11,14 @@ const InitialState: InitialStateType = {
   cardPacksTotalCount: 0,
   maxCardsCount: 0,
   minCardsCount: 0,
-  page: 2,
-  pageCount: 5,
+  page: 1,
+  pageCount: 50,
   sortPacks: '0updated',
   packName: null,
   isMyPacks: false,
   min: 0,
   max: 20,
-  user_id: null,
+  user_id: '',
   createPackName: 'Ну как там кукуха?',
 }
 
@@ -45,6 +45,7 @@ export const packsReducer = (
       return { ...state, isMyPacks: action.isMyPacks }
     case 'packs/SET-PAGE-PACKS-COUNT':
       return { ...state, pageCount: action.pageCount, page: action.page }
+
     default:
       return state
   }
@@ -63,8 +64,7 @@ export const setMaxCardsCountAC = (maxCount: number) =>
 export const setSearchDataAC = (packName: string | null) =>
   ({ type: 'packs/SET-SEARCH-DATA', packName } as const)
 export const changeSortAC = (sortData: string) => ({ type: 'packs/CHANGE-SORT', sortData } as const)
-export const setUserIdAC = (user_id: string | null) =>
-  ({ type: 'packs/SET-USER-ID', user_id } as const)
+export const setUserIdAC = (user_id: string) => ({ type: 'packs/SET-USER-ID', user_id } as const)
 export const setIsMyPacksAC = (isMyPacks: boolean) =>
   ({ type: 'packs/SET-IS-MY-PACKS', isMyPacks } as const)
 export const setPagePacksCountAC = (pageCount: number, page: number) =>
@@ -74,7 +74,7 @@ export const setPagePacksCountAC = (pageCount: number, page: number) =>
 
 export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   dispatch(setAppStatusAC('loading'))
-  let { sortPacks, pageCount, page, packName, min, max, user_id } = getState().packs
+  let { sortPacks, pageCount, page, packName, min, max, user_id } = await getState().packs
 
   try {
     const response = await packsTableAPI.getPacks({
@@ -120,7 +120,7 @@ export const deletePackTC =
     dispatch(setAppStatusAC('loading'))
 
     try {
-      await packsTableAPI.deletePack({ id })
+      await packsTableAPI.deletePack(id)
       dispatch(getPacksTC())
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -145,7 +145,7 @@ type InitialStateType = {
   isMyPacks: boolean
   min: number
   max: number
-  user_id: string | null
+  user_id: string
   createPackName: string
 }
 
