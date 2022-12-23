@@ -14,8 +14,10 @@ import { TableForCards } from './TableForCards'
 
 export const Cards = () => {
   const status = useAppSelector(state => state.app.status)
+  const packName = useAppSelector(state => state.cards.packName)
   const _id = useAppSelector(state => state.app.userData?._id)
   const packUserId = useAppSelector(state => state.cards.packUserId)
+
   const isMyPack = _id === packUserId
 
   const dispatch = useAppDispatch()
@@ -50,7 +52,7 @@ export const Cards = () => {
           }}
         >
           <Typography variant="h6" component="h2" sx={{ fontWeight: '600' }} gutterBottom>
-            {isMyPack ? 'My Pack' : 'Friend’s Pack'}
+            {packName}
           </Typography>
 
           {isMyPack ? (

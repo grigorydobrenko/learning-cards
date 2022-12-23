@@ -16,6 +16,7 @@ const InitialState: InitialStateType = {
   sort: '0grade',
   search: '',
   packUserId: '',
+  packName: 'My Pack',
   isMyPack: true,
 }
 
@@ -163,6 +164,7 @@ type InitialStateType = {
   page: number
   pageCount: number
   packUserId: string
+  packName: string
   sort: string
   search: string
   isMyPack: boolean | null
