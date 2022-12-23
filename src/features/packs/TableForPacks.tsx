@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { DeleteOutlined, EditOutlined, StepForwardOutlined } from '@ant-design/icons'
 import { Col, Row, Table } from 'antd'
@@ -8,12 +8,12 @@ import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../common/selectors'
 
 import { CardPacksType } from './packs-api'
-import { getPacksTC, setPagePacksCountAC } from './packs-reducer'
+import { deletePackTC } from './packs-reducer'
 
 export const TableForPacks = () => {
   const dispatch = useAppDispatch()
   const userData = useAppSelector(appSelector.user)
-  const { pageCount, page } = useAppSelector(state => state.packs)
+  //const { pageCount, page } = useAppSelector(state => state.packs)
 
   const TeachHandler = () => {
     console.log('Teach')
@@ -21,8 +21,8 @@ export const TableForPacks = () => {
   const EditHandler = () => {
     console.log('Edit')
   }
-  const DeleteHandler = () => {
-    // dispatch(deletePackTC(e))
+  const DeleteHandler = (id: string) => {
+    dispatch(deletePackTC(id))
     console.log('Delete')
   }
   const getDate = (dateString: string) => {
@@ -41,7 +41,7 @@ export const TableForPacks = () => {
       <DeleteOutlined
         key={pack._id}
         style={{ fontSize: '15px', marginLeft: '5px' }}
-        onClick={DeleteHandler}
+        onClick={() => DeleteHandler(pack._id)}
       />,
     ]
 
@@ -107,19 +107,19 @@ export const TableForPacks = () => {
       render: (myActions: any) => myActions,
     },
   ]
-  const pagination = {
-    defaultPageSize: pageCount,
-    showSizeChanger: true,
-    total: page,
-    pageSizeOptions: [2, 5, 7, 10, 15, 20],
-    onChange: (page: number, pageSize: number) => {
-      dispatch(setPagePacksCountAC(pageSize, page))
-    },
-  }
+  // const pagination = {
+  //   defaultPageSize: pageCount,
+  //   showSizeChanger: true,
+  //   total: page,
+  //   pageSizeOptions: [2, 5, 7, 10, 15, 20],
+  //   onChange: (page: number, pageSize: number) => {
+  //     dispatch(setPagePacksCountAC(pageSize, page))
+  //   },
+  // }
 
-  useEffect(() => {
-    dispatch(getPacksTC())
-  }, [pageCount, page])
+  // useEffect(() => {
+  //   dispatch(getPacksTC())
+  // }, [pageCount, page])
   console.log(cardPacks)
 
   return (
@@ -130,7 +130,11 @@ export const TableForPacks = () => {
             dataSource={cardPacks}
             tableLayout={'fixed'}
             columns={columns}
-            pagination={pagination}
+            pagination={{
+              defaultPageSize: 5,
+              showSizeChanger: true,
+              pageSizeOptions: [5, 10, 15, 20],
+            }}
           />
         </Col>
       </Row>
