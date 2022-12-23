@@ -38,9 +38,13 @@ export const Navbar = () => {
   const debouncedMinCardsCount = useDebounce(minCards, 1000)
   const debouncedMaxCardsCount = useDebounce(maxCards, 1000)
 
+  useEffect(() => {
+    dispatch(getPacksTC())
+  }, [min, max, user_id, packName])
+
   // useEffect(() => {
-  //   dispatch(getPacksTC())
-  // }, [min, max, user_id, packName])  // разкомитить и пофиксить даблзапросы
+  //   dispatch(setUserIdAC(''))
+  // }, [searchValue])
 
   useEffect(() => {
     dispatch(setSearchDataAC(searchValue))
@@ -69,7 +73,7 @@ export const Navbar = () => {
     if (choosePacks !== 'my' && userData) {
       dispatch(setUserIdAC(userData._id))
     } else {
-      dispatch(setUserIdAC(null))
+      dispatch(setUserIdAC(''))
     }
   }
 
@@ -84,8 +88,9 @@ export const Navbar = () => {
     setMinCards(0)
     setMaxCards(20)
     setSearchValue(null)
+    dispatch(setUserIdAC(''))
     // dispatch(changeSortAC('0updated'))
-    dispatch(getPacksTC())
+    // dispatch(getPacksTC())
     console.log('Filters was reset')
   }
 
