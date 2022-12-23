@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { useDebounce } from '../../common/hooks/useDebounce'
+import { cardsSelector } from '../../common/selectors'
 
 import {
   deleteCardTC,
@@ -19,7 +20,7 @@ import s from './Cards.module.css'
 import { RateStars } from './RateStars'
 
 export const TableForCards = ({ isMyPack }: props) => {
-  const { cards, cardsTotalCount, page, pageCount, sort } = useAppSelector(state => state.cards)
+  const { cards, cardsTotalCount, page, pageCount, sort } = useAppSelector(cardsSelector.cards)
 
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))

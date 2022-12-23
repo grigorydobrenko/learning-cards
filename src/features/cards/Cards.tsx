@@ -7,16 +7,17 @@ import { Link, NavLink, useParams } from 'react-router-dom'
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
+import { appSelector, cardsSelector } from '../../common/selectors'
 
 import { addNewCardTC } from './cards-reducer'
 import s from './Cards.module.css'
 import { TableForCards } from './TableForCards'
 
 export const Cards = () => {
-  const status = useAppSelector(state => state.app.status)
-  const packName = useAppSelector(state => state.cards.packName)
+  const status = useAppSelector(appSelector.status)
+  const packName = useAppSelector(cardsSelector.packName)
   const _id = useAppSelector(state => state.app.userData?._id)
-  const packUserId = useAppSelector(state => state.cards.packUserId)
+  const packUserId = useAppSelector(cardsSelector.packUserId)
 
   const isMyPack = _id === packUserId
 
