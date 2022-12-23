@@ -1,4 +1,8 @@
+import { AxiosError } from 'axios'
+
+import { setAppStatusAC } from '../../app/app-reducer'
 import { AppThunkType } from '../../app/store'
+import { errorUtils } from '../../common/utils/error-utils'
 
 import { cardsApi } from './cards-api'
 
@@ -45,49 +49,78 @@ export const setPagePageCountAC = (pageCount: number, page: number) =>
 
 export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sort } as const)
 
+// thunks
+
 export const getCardsTC =
   (pack_id?: string, debouncedSearchValue?: string): AppThunkType =>
   async (dispatch, getState) => {
-    const { pageCount, page, sort } = getState().cards
+    try {
+      dispatch(setAppStatusAC('loading'))
+      const { pageCount, page, sort } = getState().cards
 
-    // const params = {
-    //   cardsPack_id: '617ff51fd7b1030004090a1f',
-    //   page: cardsState.page,
-    //   pageCount: cardsState.pageCount,
-    //   sortCards: cardsState.sort,
-    // }
-    let res
+      let res
 
-    if (debouncedSearchValue) {
-      res = await cardsApi.getCards(pageCount, page, sort, pack_id, debouncedSearchValue)
-    } else {
-      res = await cardsApi.getCards(pageCount, page, sort, pack_id)
+      if (debouncedSearchValue) {
+        res = await cardsApi.getCards(pageCount, page, sort, pack_id, debouncedSearchValue)
+      } else {
+        res = await cardsApi.getCards(pageCount, page, sort, pack_id)
+      }
+      dispatch(setCardsAC(res?.data))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
     }
-
-    dispatch(setCardsAC(res?.data))
   }
-
-// thunks
 
 export const addNewCardTC =
   (PackId?: string): AppThunkType =>
   async dispatch => {
-    await cardsApi.addNewCard(PackId)
-    dispatch(getCardsTC(PackId))
+    try {
+      dispatch(setAppStatusAC('loading'))
+      await cardsApi.addNewCard(PackId)
+      dispatch(getCardsTC(PackId))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
   }
 
 export const editCardTC =
   (CardId: string, packId?: string): AppThunkType =>
   async dispatch => {
-    await cardsApi.editCard(CardId)
-    dispatch(getCardsTC(packId))
+    try {
+      dispatch(setAppStatusAC('loading'))
+      await cardsApi.editCard(CardId)
+      dispatch(getCardsTC(packId))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
   }
 
 export const deleteCardTC =
   (CardId: string, packId?: string): AppThunkType =>
   async dispatch => {
-    await cardsApi.deleteCard(CardId)
-    dispatch(getCardsTC(packId))
+    try {
+      dispatch(setAppStatusAC('loading'))
+      await cardsApi.deleteCard(CardId)
+      dispatch(getCardsTC(packId))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
   }
 
 // types
