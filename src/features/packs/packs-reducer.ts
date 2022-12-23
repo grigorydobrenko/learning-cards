@@ -18,7 +18,7 @@ const InitialState: InitialStateType = {
   isMyPacks: false,
   min: 0,
   max: 20,
-  user_id: null,
+  user_id: '',
   token: '',
   createPackName: 'NEw pack',
 }

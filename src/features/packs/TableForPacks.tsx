@@ -23,6 +23,7 @@ export const TableForPacks = () => {
   }
   const DeleteHandler = (id: string) => {
     dispatch(deletePackTC(id))
+
     console.log('Delete')
   }
   const getDate = (dateString: string) => {

@@ -49,8 +49,10 @@ const RequireAppStatus = () => {
 export const AppRoutes = () => {
   return (
     <Routes>
+      <Route path={PATH.MAIN} element={<Login />} />
       <Route element={<RequireAuth />}>
         {/* <Route index element={<Packs />} /> */}
+        {/*<Route path={PATH.MAIN} element={<Packs />} />*/}
         <Route path={PATH.PACKS} element={<Packs />} />
         <Route path={PATH.PROFILE} element={<Profile />} />
         <Route path={'packs/:pack_id'} element={<Cards />} />
