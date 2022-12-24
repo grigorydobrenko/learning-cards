@@ -32,11 +32,11 @@ export const packsTableAPI = {
     return instance.delete<DeletePackRequestType>(`/cards/pack?id=${id}`)
   },
 
-  updatePack({ cardsPack: { _id, newPackName } }: UpdatePackNameType) {
+  updatePack({ cardsPack: { _id, name } }: UpdatePackNameType) {
     return instance.put<'', AxiosResponse<PacksResponseType>, UpdatePackNameType>(
       // `/cards/pack?id=${id}&name=${newPackName}`
       '/cards/pack',
-      { cardsPack: { _id, newPackName } }
+      { cardsPack: { _id, name } }
     )
   },
 }
@@ -45,7 +45,7 @@ export const packsTableAPI = {
 type UpdatePackNameType = {
   cardsPack: {
     _id: string
-    newPackName: string
+    name: string
   }
 }
 type DeletePackRequestType = {
