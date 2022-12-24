@@ -15,7 +15,7 @@ const InitialState: InitialStateType = {
   pageCount: 50,
   sortPacks: '0updated',
   packName: null,
-  newPackName: 'Pack updated!',
+  updatedPackName: 'Pack updated!',
   isMyPacks: false,
   min: 0,
   max: 20,
@@ -40,7 +40,7 @@ export const packsReducer = (
     case 'packs/SET-SEARCH-DATA':
       return { ...state, packName: action.packName }
     case 'packs/SET-NEW-PACK-NAME':
-      return { ...state, newPackName: action.newPackName }
+      return { ...state, updatedPackName: action.newPackName }
     case 'packs/CHANGE-SORT':
       return { ...state, sortPacks: action.sortData }
     case 'packs/SET-USER-ID':
@@ -141,10 +141,10 @@ export const updatePackTC =
   (_id: string): AppThunkType =>
   async (dispatch, getState) => {
     dispatch(setAppStatusAC('loading'))
-    let newPackName = getState().packs.newPackName
+    let name = getState().packs.updatedPackName
 
     try {
-      await packsTableAPI.updatePack({ cardsPack: { _id, newPackName } })
+      await packsTableAPI.updatePack({ cardsPack: { _id, name } })
       dispatch(getPacksTC())
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -166,7 +166,7 @@ type InitialStateType = {
   pageCount: number
   sortPacks: string
   packName: string | null
-  newPackName: string
+  updatedPackName: string
   isMyPacks: boolean
   min: number
   max: number
