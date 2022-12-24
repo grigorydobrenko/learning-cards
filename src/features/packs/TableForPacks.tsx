@@ -3,28 +3,30 @@ import React from 'react'
 import { DeleteOutlined, EditOutlined, StepForwardOutlined } from '@ant-design/icons'
 import { Col, Row, Table } from 'antd'
 import { Link } from 'react-router-dom'
+import { v4 as uuid4 } from 'uuid'
 
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../common/selectors'
 
 import { CardPacksType } from './packs-api'
-import { deletePackTC } from './packs-reducer'
+import { deletePackTC, updatePackTC } from './packs-reducer'
 
 export const TableForPacks = () => {
   const dispatch = useAppDispatch()
   const userData = useAppSelector(appSelector.user)
   //const { pageCount, page } = useAppSelector(state => state.packs)
 
-  const TeachHandler = () => {
-    console.log('Teach')
+  const TeachHandler = (id: string) => {
+    console.log('Teach. id ->', id)
   }
-  const EditHandler = () => {
-    console.log('Edit')
+  const EditHandler = (id: string) => {
+    dispatch(updatePackTC(id))
+    console.log('Edit. id ->', id)
   }
   const DeleteHandler = (id: string) => {
     dispatch(deletePackTC(id))
 
-    console.log('Delete')
+    console.log('Delete. id ->', id)
   }
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
@@ -34,46 +36,38 @@ export const TableForPacks = () => {
 
   const cardPacks = useAppSelector(packsSelector.cardPacks).map((pack: CardPacksType) => {
     const myActions = [
-      // eslint-disable-next-line react/jsx-key
-      <StepForwardOutlined style={{ fontSize: '15px', margin: '0 5px' }} onClick={TeachHandler} />,
-      // eslint-disable-next-line react/jsx-key
-      <EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} onClick={EditHandler} />,
-      // eslint-disable-next-line react/jsx-key
+      <StepForwardOutlined
+        key={uuid4()}
+        style={{ fontSize: '15px', margin: '0 5px' }}
+        onClick={() => TeachHandler(pack._id)}
+      />,
+      <EditOutlined
+        key={uuid4()}
+        style={{ fontSize: '15px', margin: '0 5px' }}
+        onClick={() => EditHandler(pack._id)}
+      />,
       <DeleteOutlined
-        key={pack._id}
+        key={uuid4()}
         style={{ fontSize: '15px', marginLeft: '5px' }}
         onClick={() => DeleteHandler(pack._id)}
       />,
     ]
 
     const notMyActions = [
-      // eslint-disable-next-line react/jsx-key
       <StepForwardOutlined
-        key={pack._id}
+        key={uuid4()}
         style={{ fontSize: '15px', margin: '0 5px' }}
-        onClick={TeachHandler}
+        onClick={() => TeachHandler(pack._id)}
       />,
     ]
 
-    if (userData && userData._id === pack.user_id) {
-      return {
-        key: pack._id,
-        // name: pack.name,
-        name: <Link to={pack._id}>{pack.name}</Link>,
-        cards: pack.cardsCount,
-        lastUpdated: getDate(pack.updated),
-        createdBy: pack.user_name,
-        actions: myActions,
-      }
-    } else {
-      return {
-        key: pack._id,
-        name: <Link to={pack._id}>{pack.name}</Link>,
-        cards: pack.cardsCount,
-        lastUpdated: getDate(pack.updated),
-        createdBy: pack.user_name,
-        actions: notMyActions,
-      }
+    return {
+      key: pack._id,
+      name: <Link to={pack._id}>{pack.name}</Link>,
+      cards: pack.cardsCount,
+      lastUpdated: getDate(pack.updated),
+      createdBy: pack.user_name,
+      actions: userData && userData._id === pack.user_id ? myActions : notMyActions,
     }
   })
   const columns = [
@@ -81,9 +75,6 @@ export const TableForPacks = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'key',
-      // render: (text: string) => <a>{text}</a>,
-      // render: (text: string) => <Link to={'617ff51fd7b1030004090a1f'}>{text}</Link>,
-      // render: (text: string) => ,
     },
     {
       title: 'Cards',
