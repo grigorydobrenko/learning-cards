@@ -4,7 +4,7 @@ import { useFormik } from 'formik'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type FormikErrorType = {
   question?: string
@@ -13,8 +13,15 @@ type FormikErrorType = {
 type EditCardPropsType = {
   question: string
   answer: string
+  innerButton: ReactNode
+  editCardHandler: (question: string, answer: string) => void
 }
-export const EditCardModal = ({ question, answer }: EditCardPropsType) => {
+export const EditCardModal = ({
+  question,
+  answer,
+  innerButton,
+  editCardHandler,
+}: EditCardPropsType) => {
   const [open, setOpen] = React.useState(false)
   const formik = useFormik({
     validate: values => {
@@ -33,8 +40,9 @@ export const EditCardModal = ({ question, answer }: EditCardPropsType) => {
       format: '',
     },
     onSubmit: values => {
-      console.log(values)
+      editCardHandler(values.question, values.answer)
       setOpen(false)
+      formik.resetForm()
     },
   })
   const handleOpen = () => {
@@ -46,7 +54,12 @@ export const EditCardModal = ({ question, answer }: EditCardPropsType) => {
     formik.resetForm()
   }
   return (
-    <BasicModal open={open} handleClose={handleClose} handleOpen={handleOpen}>
+    <BasicModal
+      open={open}
+      handleClose={handleClose}
+      handleOpen={handleOpen}
+      children2={innerButton}
+    >
       <div className={style.modalHeader}>
         <h6 className={style.modalTitle}>Edit card</h6>
         <IconButton size="small" onClick={handleClose}>

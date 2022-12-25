@@ -12,6 +12,7 @@ import { appSelector, cardsSelector } from '../../common/selectors'
 import { addNewCardTC } from './cards-reducer'
 import s from './Cards.module.css'
 import { TableForCards } from './TableForCards'
+import { AddCardModal } from '../../common/components/Modals/CardModals/AddCardModal'
 
 export const Cards = () => {
   const status = useAppSelector(appSelector.status)
@@ -25,8 +26,8 @@ export const Cards = () => {
 
   const { pack_id } = useParams()
 
-  const addCardHandler = () => {
-    dispatch(addNewCardTC(pack_id))
+  const addCardHandler = (question: string, answer: string) => {
+    dispatch(addNewCardTC(pack_id, question, answer))
   }
 
   return (
@@ -57,9 +58,19 @@ export const Cards = () => {
           </Typography>
 
           {isMyPack ? (
-            <Button className={s.Button} onClick={addCardHandler} disabled={status === 'loading'}>
-              Add new card
-            </Button>
+            <AddCardModal
+              innerButton={
+                <Button
+                  variant="contained"
+                  sx={{ borderRadius: '30px' }}
+                  className={s.Button}
+                  disabled={status === 'loading'}
+                >
+                  Add new card
+                </Button>
+              }
+              addCardHandler={addCardHandler}
+            />
           ) : (
             <NavLink className={s.Button} to={PATH.CARDS}>
               Learn to pack

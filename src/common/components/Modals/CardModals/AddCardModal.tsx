@@ -4,14 +4,17 @@ import { useFormik } from 'formik'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type FormikErrorType = {
   question?: string
   answer?: string
 }
-
-export const AddCardModal = () => {
+type AddCardPropsType = {
+  innerButton: ReactNode
+  addCardHandler: (question: string, answer: string) => void
+}
+export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) => {
   const [open, setOpen] = React.useState(false)
   const formik = useFormik({
     validate: values => {
@@ -30,8 +33,9 @@ export const AddCardModal = () => {
       format: 'Text',
     },
     onSubmit: values => {
-      console.log(values)
+      addCardHandler(values.question, values.answer)
       setOpen(false)
+      formik.resetForm()
     },
   })
   const handleOpen = () => {
@@ -43,7 +47,12 @@ export const AddCardModal = () => {
     formik.resetForm()
   }
   return (
-    <BasicModal open={open} handleClose={handleClose} handleOpen={handleOpen}>
+    <BasicModal
+      open={open}
+      handleClose={handleClose}
+      handleOpen={handleOpen}
+      children2={innerButton}
+    >
       <div className={style.modalHeader}>
         <h6 className={style.modalTitle}>Add new card</h6>
         <IconButton size="small" onClick={handleClose}>

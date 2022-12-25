@@ -2,9 +2,15 @@ import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-export const DeleteCardModal = (props: { name: string }) => {
+type DeleteCardModalPropsType = {
+  question: string
+  innerButton: ReactNode
+  deleteCardHandler: () => void
+}
+
+export const DeleteCardModal = (props: DeleteCardModalPropsType) => {
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => {
     setOpen(true)
@@ -14,11 +20,16 @@ export const DeleteCardModal = (props: { name: string }) => {
     setOpen(false)
   }
   const handleDelete = () => {
-    console.log('Delete Card')
+    props.deleteCardHandler()
     setOpen(false)
   }
   return (
-    <BasicModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
+    <BasicModal
+      open={open}
+      handleOpen={handleOpen}
+      handleClose={handleClose}
+      children2={props.innerButton}
+    >
       <div className={style.modalHeader}>
         <h6 className={style.modalTitle}>Delete pack</h6>
         <IconButton size="small" onClick={handleClose}>
@@ -27,7 +38,7 @@ export const DeleteCardModal = (props: { name: string }) => {
       </div>
       <div className={style.formWrapper}>
         <p>
-          Do you really want to remove {props.name}? <br /> Card will be deleted!
+          Do you really want to remove {props.question}? <br /> Card will be deleted!
         </p>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Button

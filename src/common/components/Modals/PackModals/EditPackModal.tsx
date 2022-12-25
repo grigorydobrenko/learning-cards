@@ -5,7 +5,7 @@ import { useFormik } from 'formik'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type FormikErrorType = {
   packName?: string
@@ -13,9 +13,16 @@ type FormikErrorType = {
 }
 type EditPackPropsType = {
   name: string
-  isPrivate: boolean
+  isPrivate?: boolean
+  innerButton: ReactNode | string
+  editPackHandler: (name: string) => void
 }
-export const EditPackModal = ({ name, isPrivate }: EditPackPropsType) => {
+export const EditPackModal = ({
+  name,
+  isPrivate,
+  innerButton,
+  editPackHandler,
+}: EditPackPropsType) => {
   const [open, setOpen] = React.useState(false)
   const formik = useFormik({
     validate: values => {
@@ -30,7 +37,7 @@ export const EditPackModal = ({ name, isPrivate }: EditPackPropsType) => {
       privatePack: isPrivate,
     },
     onSubmit: values => {
-      console.log(values)
+      editPackHandler(values.packName)
       setOpen(false)
     },
   })
@@ -43,7 +50,12 @@ export const EditPackModal = ({ name, isPrivate }: EditPackPropsType) => {
     formik.resetForm()
   }
   return (
-    <BasicModal open={open} handleClose={handleClose} handleOpen={handleOpen}>
+    <BasicModal
+      open={open}
+      handleClose={handleClose}
+      handleOpen={handleOpen}
+      children2={innerButton}
+    >
       <div className={style.modalHeader}>
         <h6 className={style.modalTitle}>Edit pack</h6>
         <IconButton size="small" onClick={handleClose}>

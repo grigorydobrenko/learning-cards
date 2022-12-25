@@ -99,21 +99,22 @@ export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
   }
 }
 
-export const addNewPackTC = (): AppThunkType => async (dispatch, getState) => {
-  dispatch(setAppStatusAC('loading'))
-  const name = getState().packs.createPackName
+export const addNewPackTC =
+  (name: string): AppThunkType =>
+  async (dispatch, getState) => {
+    dispatch(setAppStatusAC('loading'))
 
-  try {
-    await packsTableAPI.createNewPack({ cardsPack: { name } })
-    dispatch(getPacksTC())
-    dispatch(setAppStatusAC('succeeded'))
-  } catch (e) {
-    const err = e as Error | AxiosError<{ error: string }>
+    try {
+      await packsTableAPI.createNewPack({ cardsPack: { name } })
+      dispatch(getPacksTC())
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
 
-    errorUtils(err, dispatch)
-    dispatch(setAppStatusAC('failed'))
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
   }
-}
 
 export const deletePackTC =
   (id: string): AppThunkType =>

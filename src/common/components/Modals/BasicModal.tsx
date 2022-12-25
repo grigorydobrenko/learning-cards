@@ -4,13 +4,14 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core'
 
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 
 type BasicModalPropsType = {
   open: boolean
   handleClose: () => void
   handleOpen: () => void
   children: ReactNode
-  children2?: ReactNode
+  children2?: ReactNode | string
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -30,14 +31,19 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const BasicModal = ({ children, open, handleClose, handleOpen }: BasicModalPropsType) => {
+export const BasicModal = ({
+  children,
+  open,
+  handleClose,
+  handleOpen,
+  children2,
+}: BasicModalPropsType) => {
   const classes = useStyles()
 
   return (
-    <div>
-      <button type="button" onClick={handleOpen}>
-        Open Modal
-      </button>
+    <div style={{ display: 'inline-block', cursor: 'pointer' }}>
+      <div onClick={handleOpen}>{children2}</div>
+
       <Modal
         open={open}
         onClose={handleClose}

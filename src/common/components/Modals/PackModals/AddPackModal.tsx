@@ -5,14 +5,18 @@ import { useFormik } from 'formik'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type FormikErrorType = {
   packName?: string
   privatePack?: boolean
 }
+type AddPackModalPT = {
+  buttonInner: ReactNode | string
+  addPackHandler: (name: string) => void
+}
 
-export const AddPackModal = () => {
+export const AddPackModal = ({ buttonInner, addPackHandler }: AddPackModalPT) => {
   const [open, setOpen] = React.useState(false)
   const formik = useFormik({
     validate: values => {
@@ -27,7 +31,8 @@ export const AddPackModal = () => {
       privatePack: false,
     },
     onSubmit: values => {
-      console.log(values)
+      addPackHandler(values.packName)
+      setOpen(false)
     },
   })
   const handleOpen = () => {
@@ -39,7 +44,12 @@ export const AddPackModal = () => {
     formik.resetForm()
   }
   return (
-    <BasicModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
+    <BasicModal
+      open={open}
+      handleOpen={handleOpen}
+      handleClose={handleClose}
+      children2={buttonInner}
+    >
       <div className={style.modalHeader}>
         <h6 className={style.modalTitle}>Add new pack</h6>
         <IconButton size="small" onClick={handleClose}>

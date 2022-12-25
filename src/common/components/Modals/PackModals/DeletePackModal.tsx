@@ -2,9 +2,21 @@ import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-export const DeletePackModal = (props: { name: string }) => {
+type DeletePackModalPT = {
+  id: string
+  name: string
+  buttonInner: ReactNode | string
+  deletePackHandler: (id: string) => void
+}
+
+export const DeletePackModal = ({
+  name,
+  buttonInner,
+  deletePackHandler,
+  id,
+}: DeletePackModalPT) => {
   const [open, setOpen] = React.useState(false)
   const handleOpen = () => {
     setOpen(true)
@@ -14,11 +26,16 @@ export const DeletePackModal = (props: { name: string }) => {
     setOpen(false)
   }
   const handleDelete = () => {
-    console.log('Delete Pack')
+    deletePackHandler(id)
     setOpen(false)
   }
   return (
-    <BasicModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
+    <BasicModal
+      open={open}
+      handleOpen={handleOpen}
+      handleClose={handleClose}
+      children2={buttonInner}
+    >
       <div className={style.modalHeader}>
         <h6 className={style.modalTitle}>Delete pack</h6>
         <IconButton size="small" onClick={handleClose}>
@@ -27,7 +44,7 @@ export const DeletePackModal = (props: { name: string }) => {
       </div>
       <div className={style.formWrapper}>
         <p>
-          Do you really want to remove {props.name}? <br /> All cards will be deleted!
+          Do you really want to remove {name}? <br /> All cards will be deleted!
         </p>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Button

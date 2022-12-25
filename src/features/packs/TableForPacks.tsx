@@ -9,6 +9,8 @@ import { appSelector, packsSelector } from '../../common/selectors'
 
 import { CardPacksType } from './packs-api'
 import { deletePackTC } from './packs-reducer'
+import { DeletePackModal } from '../../common/components/Modals/PackModals/DeletePackModal'
+import { EditPackModal } from '../../common/components/Modals/PackModals/EditPackModal'
 
 export const TableForPacks = () => {
   const dispatch = useAppDispatch()
@@ -37,12 +39,19 @@ export const TableForPacks = () => {
       // eslint-disable-next-line react/jsx-key
       <StepForwardOutlined style={{ fontSize: '15px', margin: '0 5px' }} onClick={TeachHandler} />,
       // eslint-disable-next-line react/jsx-key
-      <EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} onClick={EditHandler} />,
+      <EditPackModal
+        editPackHandler={EditHandler}
+        innerButton={<EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} />}
+        name={pack.name}
+      />,
       // eslint-disable-next-line react/jsx-key
-      <DeleteOutlined
-        key={pack._id}
-        style={{ fontSize: '15px', marginLeft: '5px' }}
-        onClick={() => DeleteHandler(pack._id)}
+      <DeletePackModal
+        id={pack._id}
+        buttonInner={
+          <DeleteOutlined key={pack._id} style={{ fontSize: '15px', marginLeft: '5px' }} />
+        }
+        deletePackHandler={DeleteHandler}
+        name={pack.name}
       />,
     ]
 
