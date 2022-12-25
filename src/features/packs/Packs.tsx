@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../common/hooks/customHooks'
 import { Navbar } from './Navbar/Navbar'
 import { addNewPackTC } from './packs-reducer'
 import styles from './Packs.module.css'
-import { TableForPacks } from './TableForPacks'
+import { TableForPacks } from './TableForPacks/TableForPacks'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
