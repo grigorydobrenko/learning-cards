@@ -5,11 +5,10 @@ import { Col, Row, Table } from 'antd'
 import { Link } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
 
-import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
-import { appSelector, packsSelector } from '../../common/selectors'
-
-import { CardPacksType } from './packs-api'
-import { deletePackTC, updatePackTC } from './packs-reducer'
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
+import { appSelector, packsSelector } from '../../../common/selectors'
+import { CardPacksType } from '../packs-api'
+import { deletePackTC, updatePackTC } from '../packs-reducer'
 
 export const TableForPacks = () => {
   const dispatch = useAppDispatch()
@@ -112,7 +111,7 @@ export const TableForPacks = () => {
   // useEffect(() => {
   //   dispatch(getPacksTC())
   // }, [pageCount, page])
-  console.log(cardPacks)
+  console.log('TableForPacks: ', cardPacks)
 
   return (
     <div>
