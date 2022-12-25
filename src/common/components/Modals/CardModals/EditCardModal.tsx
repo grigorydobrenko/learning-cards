@@ -1,5 +1,4 @@
-import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material'
-import FormControlLabel from '@mui/material/FormControlLabel'
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import { BasicModal } from '../BasicModal'
@@ -8,26 +7,30 @@ import closeIcon from '../../../../assets/img/icons/close-icon.svg'
 import React from 'react'
 
 type FormikErrorType = {
-  packName?: string
-  privatePack?: boolean
+  question?: string
+  answer?: string
 }
-type EditPackPropsType = {
-  name: string
-  isPrivate: boolean
+type EditCardPropsType = {
+  question: string
+  answer: string
 }
-export const EditPackModal = ({ name, isPrivate }: EditPackPropsType) => {
+export const EditCardModal = ({ question, answer }: EditCardPropsType) => {
   const [open, setOpen] = React.useState(false)
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
-      if (!values.packName) {
-        errors.packName = 'PackName is required'
+      if (!values.question) {
+        errors.question = 'Question is required'
+      }
+      if (!values.answer) {
+        errors.answer = 'Answer is required'
       }
       return errors
     },
     initialValues: {
-      packName: name,
-      privatePack: isPrivate,
+      question,
+      answer,
+      format: '',
     },
     onSubmit: values => {
       console.log(values)
@@ -45,27 +48,41 @@ export const EditPackModal = ({ name, isPrivate }: EditPackPropsType) => {
   return (
     <BasicModal open={open} handleClose={handleClose} handleOpen={handleOpen}>
       <div className={style.modalHeader}>
-        <h6 className={style.modalTitle}>Edit pack</h6>
+        <h6 className={style.modalTitle}>Edit card</h6>
         <IconButton size="small" onClick={handleClose}>
           <img src={closeIcon} alt="" />
         </IconButton>
       </div>
       <div className={style.formWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
+          <FormControl variant="outlined">
+            <InputLabel id="input-label">Choose a question format</InputLabel>
+            <Select
+              labelId="input-label"
+              {...formik.getFieldProps('format')}
+              onBlur={formik.handleBlur}
+              label="Choose a question format"
+            >
+              <MenuItem value={'Text'}>Text</MenuItem>
+              <MenuItem value={'Image'}>Image</MenuItem>
+            </Select>
+          </FormControl>
           <TextField
             variant="standard"
             className={style.addCardInput}
-            label="Pack name"
-            {...formik.getFieldProps('packName')}
+            label="Question"
+            {...formik.getFieldProps('question')}
             onBlur={formik.handleBlur}
           />
-          {formik.errors.packName && <div style={{ color: 'red' }}>{formik.errors.packName}</div>}
-          <FormControlLabel
-            label={'Private pack'}
-            control={<Checkbox />}
-            {...formik.getFieldProps('privatePack')}
-            checked={formik.values.privatePack}
+          {formik.errors.question && <div style={{ color: 'red' }}>{formik.errors.question}</div>}
+          <TextField
+            variant="standard"
+            className={style.addCardInput}
+            label="Answer"
+            {...formik.getFieldProps('answer')}
+            onBlur={formik.handleBlur}
           />
+          {formik.errors.answer && <div style={{ color: 'red' }}>{formik.errors.answer}</div>}
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
               className={style.modalButton}

@@ -5,7 +5,10 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core'
 import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
 
-type BasicNodalPropsType = {
+type BasicModalPropsType = {
+  open: boolean
+  handleClose: () => void
+  handleOpen: () => void
   children: ReactNode
   children2?: ReactNode
 }
@@ -27,18 +30,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 )
 
-export const BasicModal = ({ children }: BasicNodalPropsType) => {
+export const BasicModal = ({ children, open, handleClose, handleOpen }: BasicModalPropsType) => {
   const classes = useStyles()
-
-  const [open, setOpen] = React.useState(false)
-
-  const handleOpen = () => {
-    setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-  }
 
   return (
     <div>

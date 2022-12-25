@@ -1,10 +1,11 @@
-import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material'
+import { Box, Button, Checkbox, IconButton } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import { BasicModal } from '../BasicModal'
-import style from './Modals.module.css'
-import closeIcon from '../../../assets/img/icons/close-icon.svg'
+import style from '../Modals.module.css'
+import closeIcon from '../../../../assets/img/icons/close-icon.svg'
+import React from 'react'
 
 type FormikErrorType = {
   packName?: string
@@ -12,6 +13,7 @@ type FormikErrorType = {
 }
 
 export const AddPackModal = () => {
+  const [open, setOpen] = React.useState(false)
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
@@ -28,16 +30,19 @@ export const AddPackModal = () => {
       console.log(values)
     },
   })
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+    formik.resetForm()
+  }
   return (
-    <BasicModal>
+    <BasicModal open={open} handleOpen={handleOpen} handleClose={handleClose}>
       <div className={style.modalHeader}>
         <h6 className={style.modalTitle}>Add new pack</h6>
-        <IconButton
-          size="small"
-          onClick={() => {
-            alert('close modal')
-          }}
-        >
+        <IconButton size="small" onClick={handleClose}>
           <img src={closeIcon} alt="" />
         </IconButton>
       </div>
@@ -60,7 +65,7 @@ export const AddPackModal = () => {
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button
               className={style.modalButton}
-              type={'reset'}
+              onClick={handleClose}
               sx={{ width: '113px', color: 'black', borderRadius: '30px' }}
             >
               Cancel

@@ -15,6 +15,7 @@ import { useAppSelector } from '../../common/hooks/customHooks'
 import { appSelector, authSelector } from '../../common/selectors'
 
 import style from './Header.module.css'
+import { AddCardModal } from '../../common/components/Modals/CardModals/AddCardModal'
 
 export const Header = () => {
   const user = useAppSelector(appSelector.user)
@@ -46,6 +47,7 @@ export const Header = () => {
                 {user?.name || 'user name'}
               </NavLink>
               <Avatar alt="user photo" src={userPhoto} />
+              <AddCardModal />
             </Box>
           ) : (
             <NavLink className={style.headerButton} to={PATH.LOGIN}>
