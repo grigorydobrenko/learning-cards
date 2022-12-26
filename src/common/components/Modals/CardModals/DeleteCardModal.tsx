@@ -54,6 +54,7 @@ export const DeleteCardModal = (props: DeleteCardModalPropsType) => {
           <Button
             className={style.modalButton}
             variant={'contained'}
+            color="error"
             onClick={handleDelete}
             sx={{
               width: '127px',
