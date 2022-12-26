@@ -18,6 +18,8 @@ export const ResetSettingsComponent = () => {
     dispatch(setMinCardsCountAC(0))
     dispatch(setMaxCardsCountAC(20))
     dispatch(setSearchDataAC(null))
+    //dispatch(setIsMyPacksAC('all'))
+    //dispatch(getPacksTC())
     console.log('Filters was reset')
   }
 
