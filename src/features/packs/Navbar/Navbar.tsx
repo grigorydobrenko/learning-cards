@@ -6,7 +6,7 @@ import { CardsCountSlider } from './CardsCountSlider/CardsCountSlider'
 import styles from './Navbar.module.css'
 import { RadioButtonComponent } from './RadioButton/RadioButtonComponent'
 import { ResetSettingsComponent } from './ResetSettings/ResetSettingsComponent'
-import { SearchComponent } from './Search/Search'
+import { SearchComponent } from './Search/SearchComponent'
 
 export const Navbar = () => {
   return (
