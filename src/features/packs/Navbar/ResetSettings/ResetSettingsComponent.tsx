@@ -4,6 +4,7 @@ import { ClearOutlined } from '@ant-design/icons'
 
 import { useAppDispatch } from '../../../../common/hooks/customHooks'
 import {
+  setIsMyPacksAC,
   setMaxCardsCountAC,
   setMinCardsCountAC,
   setSearchDataAC,
@@ -18,14 +19,12 @@ export const ResetSettingsComponent = () => {
     dispatch(setMinCardsCountAC(0))
     dispatch(setMaxCardsCountAC(20))
     dispatch(setSearchDataAC(null))
-    //dispatch(setIsMyPacksAC('all'))
-    //dispatch(getPacksTC())
-    console.log('Filters was reset')
+    dispatch(setIsMyPacksAC('all'))
   }
 
   return (
     <div>
-      <ClearOutlined style={{ fontSize: '30px' }} onClick={resetFiltersHandler} />
+      <ClearOutlined style={{ fontSize: '28px' }} onClick={resetFiltersHandler} />
     </div>
   )
 }
