@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 
 import { Box, Button, Checkbox, IconButton } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -18,7 +18,7 @@ type EditPackPropsType = {
   id: string
   isPrivate?: boolean
   innerButton: ReactNode
-  editPackHandler: (name: string) => void
+  editPackHandler: (id: string, updatedName: string) => void
 }
 export const EditPackModal = ({
   id,
@@ -27,7 +27,7 @@ export const EditPackModal = ({
   editPackHandler,
 }: EditPackPropsType) => {
   const pack = useAppSelector(state => state.packs.cardPacks.filter(pack => pack._id === id)[0])
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
@@ -43,7 +43,7 @@ export const EditPackModal = ({
       privatePack: isPrivate,
     },
     onSubmit: values => {
-      editPackHandler(values.packName)
+      editPackHandler(pack._id, values.packName)
       setOpen(false)
     },
   })
