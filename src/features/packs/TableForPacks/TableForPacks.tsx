@@ -20,14 +20,11 @@ export const TableForPacks = () => {
   const TeachHandler = (id: string) => {
     console.log('Teach. id ->', id)
   }
-  const EditHandler = (id: string) => {
-    dispatch(updatePackTC(id))
-    console.log('Edit. id ->', id)
+  const EditHandler = (id: string, updatedName: string) => {
+    dispatch(updatePackTC(id, updatedName))
   }
   const DeleteHandler = (id: string) => {
     dispatch(deletePackTC(id))
-
-    console.log('Delete. id ->', id)
   }
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
@@ -36,23 +33,6 @@ export const TableForPacks = () => {
   }
 
   const cardPacks = useAppSelector(packsSelector.cardPacks).map((pack: CardPacksType) => {
-    // const myActions = [
-    //   <StepForwardOutlined
-    //     key={uuid4()}
-    //     style={{ fontSize: '15px', margin: '0 5px' }}
-    //     onClick={() => TeachHandler(pack._id)}
-    //   />,
-    //   <EditOutlined
-    //     key={uuid4()}
-    //     style={{ fontSize: '15px', margin: '0 5px' }}
-    //     onClick={() => EditHandler(pack._id)}
-    //   />,
-    //   <DeleteOutlined
-    //     key={uuid4()}
-    //     style={{ fontSize: '15px', marginLeft: '5px' }}
-    //     onClick={() => DeleteHandler(pack._id)}
-    //   />,
-    // ]
     const myActions = [
       <PlaySquareOutlined
         key={uuid4()}
