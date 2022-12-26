@@ -1,11 +1,13 @@
+import React, { ReactNode, useEffect } from 'react'
+
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
+
+import closeIcon from '../../../../assets/img/icons/close-icon.svg'
+import { useAppSelector } from '../../../hooks/customHooks'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
-import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React, { ReactNode, useEffect } from 'react'
-import { useAppSelector } from '../../../hooks/customHooks'
 
 type FormikErrorType = {
   question?: string
@@ -22,12 +24,14 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
+
       if (!values.question) {
         errors.question = 'Question is required'
       }
       if (!values.answer) {
         errors.answer = 'Answer is required'
       }
+
       return errors
     },
     initialValues: {
@@ -49,10 +53,12 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
     setOpen(false)
     formik.resetForm()
   }
+
   useEffect(() => {
     formik.initialValues.question = card.question
     formik.initialValues.answer = card.answer
   }, [card.question, card.answer])
+
   return (
     <BasicModal
       open={open}

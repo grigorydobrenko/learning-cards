@@ -1,8 +1,10 @@
-import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material'
+import React, { ReactNode } from 'react'
+
+import { Box, Button, IconButton } from '@mui/material'
+
+import closeIcon from '../../../../assets/img/icons/close-icon.svg'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
-import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React, { ReactNode } from 'react'
 
 type DeletePackModalPT = {
   id: string
@@ -29,6 +31,7 @@ export const DeletePackModal = ({
     deletePackHandler(id)
     setOpen(false)
   }
+
   return (
     <BasicModal
       open={open}

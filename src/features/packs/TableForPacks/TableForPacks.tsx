@@ -1,21 +1,16 @@
 import React from 'react'
 
-import { DeleteOutlined, EditOutlined, StepForwardOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, PlaySquareOutlined } from '@ant-design/icons'
 import { Col, Row, Table } from 'antd'
 import { Link } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
 
+import { DeletePackModal } from '../../../common/components/Modals/PackModals/DeletePackModal'
+import { EditPackModal } from '../../../common/components/Modals/PackModals/EditPackModal'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../../common/selectors'
 import { CardPacksType } from '../packs-api'
 import { deletePackTC, updatePackTC } from '../packs-reducer'
-import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
-import { appSelector, packsSelector } from '../../common/selectors'
-
-import { CardPacksType } from './packs-api'
-import { deletePackTC } from './packs-reducer'
-import { DeletePackModal } from '../../common/components/Modals/PackModals/DeletePackModal'
-import { EditPackModal } from '../../common/components/Modals/PackModals/EditPackModal'
 
 export const TableForPacks = () => {
   const dispatch = useAppDispatch()
@@ -59,27 +54,28 @@ export const TableForPacks = () => {
     //   />,
     // ]
     const myActions = [
-      // eslint-disable-next-line react/jsx-key
-      <StepForwardOutlined style={{ fontSize: '15px', margin: '0 5px' }} onClick={TeachHandler} />,
-      // eslint-disable-next-line react/jsx-key
-      <EditPackModal
-          editPackHandler={EditHandler}
-          innerButton={<EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} />}
-          id={pack._id}
+      <PlaySquareOutlined
+        key={uuid4()}
+        style={{ fontSize: '15px', margin: '0 5px' }}
+        onClick={() => TeachHandler(pack._id)}
       />,
-      // eslint-disable-next-line react/jsx-key
+      <EditPackModal
+        key={uuid4()}
+        editPackHandler={EditHandler}
+        innerButton={<EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} />}
+        id={pack._id}
+      />,
       <DeletePackModal
-          id={pack._id}
-          buttonInner={
-            <DeleteOutlined key={pack._id} style={{ fontSize: '15px', marginLeft: '5px' }} />
-          }
-          deletePackHandler={DeleteHandler}
-          name={pack.name}
+        key={uuid4()}
+        id={pack._id}
+        buttonInner={<DeleteOutlined style={{ fontSize: '15px', marginLeft: '5px' }} />}
+        deletePackHandler={DeleteHandler}
+        name={pack.name}
       />,
     ]
 
     const notMyActions = [
-      <StepForwardOutlined
+      <PlaySquareOutlined
         key={uuid4()}
         style={{ fontSize: '15px', margin: '0 5px' }}
         onClick={() => TeachHandler(pack._id)}
@@ -100,7 +96,6 @@ export const TableForPacks = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'key',
-
     },
     {
       title: 'Cards',

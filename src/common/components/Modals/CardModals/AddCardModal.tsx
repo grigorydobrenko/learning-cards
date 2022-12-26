@@ -1,10 +1,12 @@
+import React, { ReactNode } from 'react'
+
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
+
+import closeIcon from '../../../../assets/img/icons/close-icon.svg'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
-import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React, { ReactNode } from 'react'
 
 type FormikErrorType = {
   question?: string
@@ -19,12 +21,14 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
+
       if (!values.question) {
         errors.question = 'Question is required'
       }
       if (!values.answer) {
         errors.answer = 'Answer is required'
       }
+
       return errors
     },
     initialValues: {
@@ -46,6 +50,7 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
     setOpen(false)
     formik.resetForm()
   }
+
   return (
     <BasicModal
       open={open}

@@ -1,18 +1,17 @@
 import React from 'react'
 
-import { Button, Col, Divider, Row } from 'antd'
+import { Button, CircularProgress } from '@mui/material'
+import { Col, Divider, Row } from 'antd'
 import Title from 'antd/lib/typography/Title'
 
-import { useAppDispatch } from '../../common/hooks/customHooks'
+import { AddPackModal } from '../../common/components/Modals/PackModals/AddPackModal'
+import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
+import { appSelector } from '../../common/selectors'
 
 import { Navbar } from './Navbar/Navbar'
 import { addNewPackTC } from './packs-reducer'
 import styles from './Packs.module.css'
 import { TableForPacks } from './TableForPacks/TableForPacks'
-
-import { AddPackModal } from '../../common/components/Modals/PackModals/AddPackModal'
-import { Button, CircularProgress } from '@mui/material'
-import { appSelector } from '../../common/selectors'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()

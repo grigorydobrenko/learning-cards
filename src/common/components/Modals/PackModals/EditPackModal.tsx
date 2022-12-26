@@ -1,12 +1,14 @@
+import React, { ReactNode, useEffect } from 'react'
+
 import { Box, Button, Checkbox, IconButton } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
+
+import closeIcon from '../../../../assets/img/icons/close-icon.svg'
+import { useAppSelector } from '../../../hooks/customHooks'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
-import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React, { ReactNode, useEffect } from 'react'
-import { useAppSelector } from '../../../hooks/customHooks'
 
 type FormikErrorType = {
   packName?: string
@@ -29,9 +31,11 @@ export const EditPackModal = ({
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
+
       if (!values.packName) {
         errors.packName = 'PackName is required'
       }
+
       return errors
     },
     initialValues: {
@@ -51,9 +55,11 @@ export const EditPackModal = ({
     setOpen(false)
     formik.resetForm()
   }
+
   useEffect(() => {
     formik.initialValues.packName = pack.name
   }, [pack.name])
+
   return (
     <BasicModal
       open={open}

@@ -1,8 +1,10 @@
+import React, { ReactNode } from 'react'
+
 import { Box, Button, IconButton } from '@mui/material'
+
+import closeIcon from '../../../../assets/img/icons/close-icon.svg'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
-import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React, { ReactNode } from 'react'
 
 type DeleteCardModalPropsType = {
   question: string
@@ -23,6 +25,7 @@ export const DeleteCardModal = (props: DeleteCardModalPropsType) => {
     props.deleteCardHandler()
     setOpen(false)
   }
+
   return (
     <BasicModal
       open={open}
