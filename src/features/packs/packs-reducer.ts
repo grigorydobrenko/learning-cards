@@ -16,7 +16,7 @@ const InitialState: InitialStateType = {
   sortPacks: '0updated',
   packName: null,
   updatedPackName: 'Pack updated!',
-  isMyPacks: false,
+  isMyPacks: 'all',
   min: 0,
   max: 20,
   user_id: '',
@@ -71,7 +71,7 @@ export const setNewPackNameAC = (newPackName: string) =>
   ({ type: 'packs/SET-NEW-PACK-NAME', newPackName } as const)
 export const changeSortAC = (sortData: string) => ({ type: 'packs/CHANGE-SORT', sortData } as const)
 export const setUserIdAC = (user_id: string) => ({ type: 'packs/SET-USER-ID', user_id } as const)
-export const setIsMyPacksAC = (isMyPacks: boolean) =>
+export const setIsMyPacksAC = (isMyPacks: string) =>
   ({ type: 'packs/SET-IS-MY-PACKS', isMyPacks } as const)
 export const setPagePacksCountAC = (pageCount: number, page: number) =>
   ({ type: 'packs/SET-PAGE-PACKS-COUNT', pageCount, page } as const)
@@ -167,7 +167,7 @@ type InitialStateType = {
   sortPacks: string
   packName: string | null
   updatedPackName: string
-  isMyPacks: boolean
+  isMyPacks: string
   min: number
   max: number
   user_id: string
