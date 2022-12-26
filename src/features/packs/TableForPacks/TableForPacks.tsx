@@ -15,7 +15,6 @@ import { deletePackTC, updatePackTC } from '../packs-reducer'
 export const TableForPacks = () => {
   const dispatch = useAppDispatch()
   const userData = useAppSelector(appSelector.user)
-  //const { pageCount, page } = useAppSelector(state => state.packs)
 
   const TeachHandler = (id: string) => {
     console.log('Teach. id ->', id)
@@ -100,20 +99,6 @@ export const TableForPacks = () => {
       render: (myActions: any) => myActions,
     },
   ]
-  // const pagination = {
-  //   defaultPageSize: pageCount,
-  //   showSizeChanger: true,
-  //   total: page,
-  //   pageSizeOptions: [2, 5, 7, 10, 15, 20],
-  //   onChange: (page: number, pageSize: number) => {
-  //     dispatch(setPagePacksCountAC(pageSize, page))
-  //   },
-  // }
-
-  // useEffect(() => {
-  //   dispatch(getPacksTC())
-  // }, [pageCount, page])
-  console.log('TableForPacks: ', cardPacks)
 
   return (
     <div>
