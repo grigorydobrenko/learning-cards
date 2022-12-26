@@ -42,7 +42,7 @@ export const TableForPacks = () => {
       <EditPackModal
         editPackHandler={EditHandler}
         innerButton={<EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} />}
-        name={pack.name}
+        id={pack._id}
       />,
       // eslint-disable-next-line react/jsx-key
       <DeletePackModal

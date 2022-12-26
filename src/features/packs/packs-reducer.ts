@@ -101,7 +101,7 @@ export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
 
 export const addNewPackTC =
   (name: string): AppThunkType =>
-  async (dispatch, getState) => {
+  async dispatch => {
     dispatch(setAppStatusAC('loading'))
 
     try {

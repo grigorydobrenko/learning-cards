@@ -1,10 +1,13 @@
 import { Box, Button, Checkbox, IconButton } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import TextField from '@mui/material/TextField'
+
 import { useFormik } from 'formik'
+
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
+
 import React, { ReactNode } from 'react'
 
 type FormikErrorType = {
@@ -33,6 +36,7 @@ export const AddPackModal = ({ buttonInner, addPackHandler }: AddPackModalPT) =>
     onSubmit: values => {
       addPackHandler(values.packName)
       setOpen(false)
+      formik.resetForm()
     },
   })
   const handleOpen = () => {
@@ -56,11 +60,10 @@ export const AddPackModal = ({ buttonInner, addPackHandler }: AddPackModalPT) =>
           <img src={closeIcon} alt="" />
         </IconButton>
       </div>
-      <div className={style.formWrapper}>
+      <div className={style.contentWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
           <TextField
             variant="standard"
-            className={style.addCardInput}
             label="Pack name"
             {...formik.getFieldProps('packName')}
             onBlur={formik.handleBlur}

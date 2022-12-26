@@ -3,17 +3,19 @@ import React from 'react'
 import { Col, Divider, Row } from 'antd'
 import Title from 'antd/lib/typography/Title'
 
-import { useAppDispatch } from '../../common/hooks/customHooks'
+import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 
 import { Navbar } from './Navbar/Navbar'
 import { addNewPackTC } from './packs-reducer'
 import styles from './Packs.module.css'
 import { TableForPacks } from './TableForPacks'
 import { AddPackModal } from '../../common/components/Modals/PackModals/AddPackModal'
-import { Button } from '@mui/material'
+import { Button, CircularProgress } from '@mui/material'
+import { appSelector } from '../../common/selectors'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
+  const status = useAppSelector(appSelector.status)
 
   const addNewPackHandler = (name: string) => {
     dispatch(addNewPackTC(name))
@@ -37,7 +39,11 @@ export const Packs = () => {
       <div>
         <Row>
           <Col xs={24}>
-            <TableForPacks />
+            {status === 'loading' ? (
+              <CircularProgress size="30px" className="circularProgress" />
+            ) : (
+              <TableForPacks />
+            )}
           </Col>
         </Row>
       </div>

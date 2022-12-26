@@ -4,24 +4,20 @@ import { useFormik } from 'formik'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
+import { useAppSelector } from '../../../hooks/customHooks'
 
 type FormikErrorType = {
   question?: string
   answer?: string
 }
 type EditCardPropsType = {
-  question: string
-  answer: string
+  cardId: string
   innerButton: ReactNode
-  editCardHandler: (question: string, answer: string) => void
+  editCardHandler: (id: string, question: string, answer: string) => void
 }
-export const EditCardModal = ({
-  question,
-  answer,
-  innerButton,
-  editCardHandler,
-}: EditCardPropsType) => {
+export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCardPropsType) => {
+  const card = useAppSelector(state => state.cards.cards.filter(c => c._id === cardId)[0])
   const [open, setOpen] = React.useState(false)
   const formik = useFormik({
     validate: values => {
@@ -35,12 +31,12 @@ export const EditCardModal = ({
       return errors
     },
     initialValues: {
-      question,
-      answer,
+      question: card.question,
+      answer: card.answer,
       format: '',
     },
     onSubmit: values => {
-      editCardHandler(values.question, values.answer)
+      editCardHandler(card._id, values.question, values.answer)
       setOpen(false)
       formik.resetForm()
     },
@@ -53,6 +49,10 @@ export const EditCardModal = ({
     setOpen(false)
     formik.resetForm()
   }
+  useEffect(() => {
+    formik.initialValues.question = card.question
+    formik.initialValues.answer = card.answer
+  }, [card.question, card.answer])
   return (
     <BasicModal
       open={open}
@@ -66,7 +66,7 @@ export const EditCardModal = ({
           <img src={closeIcon} alt="" />
         </IconButton>
       </div>
-      <div className={style.formWrapper}>
+      <div className={style.contentWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
           <FormControl variant="outlined">
             <InputLabel id="input-label">Choose a question format</InputLabel>
@@ -82,7 +82,6 @@ export const EditCardModal = ({
           </FormControl>
           <TextField
             variant="standard"
-            className={style.addCardInput}
             label="Question"
             {...formik.getFieldProps('question')}
             onBlur={formik.handleBlur}
@@ -90,7 +89,6 @@ export const EditCardModal = ({
           {formik.errors.question && <div style={{ color: 'red' }}>{formik.errors.question}</div>}
           <TextField
             variant="standard"
-            className={style.addCardInput}
             label="Answer"
             {...formik.getFieldProps('answer')}
             onBlur={formik.handleBlur}

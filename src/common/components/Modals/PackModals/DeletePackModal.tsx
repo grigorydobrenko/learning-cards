@@ -7,7 +7,7 @@ import React, { ReactNode } from 'react'
 type DeletePackModalPT = {
   id: string
   name: string
-  buttonInner: ReactNode | string
+  buttonInner: ReactNode
   deletePackHandler: (id: string) => void
 }
 
@@ -42,7 +42,7 @@ export const DeletePackModal = ({
           <img src={closeIcon} alt="" />
         </IconButton>
       </div>
-      <div className={style.formWrapper}>
+      <div className={style.contentWrapper}>
         <p>
           Do you really want to remove {name}? <br /> All cards will be deleted!
         </p>

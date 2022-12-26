@@ -1,17 +1,15 @@
-import React, { ReactNode } from 'react'
+import { ReactNode } from 'react'
 
 import { createStyles, makeStyles, Theme } from '@material-ui/core'
-
-import Modal from '@mui/material/Modal'
 import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
+import Modal from '@mui/material/Modal'
 
 type BasicModalPropsType = {
   open: boolean
   handleClose: () => void
   handleOpen: () => void
   children: ReactNode
-  children2?: ReactNode | string
+  children2?: ReactNode
 }
 
 const useStyles = makeStyles((theme: Theme) =>

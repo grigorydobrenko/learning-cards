@@ -1,28 +1,30 @@
-import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material'
+import { Box, Button, Checkbox, IconButton } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useEffect } from 'react'
+import { useAppSelector } from '../../../hooks/customHooks'
 
 type FormikErrorType = {
   packName?: string
   privatePack?: boolean
 }
 type EditPackPropsType = {
-  name: string
+  id: string
   isPrivate?: boolean
-  innerButton: ReactNode | string
+  innerButton: ReactNode
   editPackHandler: (name: string) => void
 }
 export const EditPackModal = ({
-  name,
+  id,
   isPrivate,
   innerButton,
   editPackHandler,
 }: EditPackPropsType) => {
+  const pack = useAppSelector(state => state.packs.cardPacks.filter(pack => pack._id === id)[0])
   const [open, setOpen] = React.useState(false)
   const formik = useFormik({
     validate: values => {
@@ -33,7 +35,7 @@ export const EditPackModal = ({
       return errors
     },
     initialValues: {
-      packName: name,
+      packName: pack.name,
       privatePack: isPrivate,
     },
     onSubmit: values => {
@@ -49,6 +51,9 @@ export const EditPackModal = ({
     setOpen(false)
     formik.resetForm()
   }
+  useEffect(() => {
+    formik.initialValues.packName = pack.name
+  }, [pack.name])
   return (
     <BasicModal
       open={open}
@@ -62,11 +67,10 @@ export const EditPackModal = ({
           <img src={closeIcon} alt="" />
         </IconButton>
       </div>
-      <div className={style.formWrapper}>
+      <div className={style.contentWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
           <TextField
             variant="standard"
-            className={style.addCardInput}
             label="Pack name"
             {...formik.getFieldProps('packName')}
             onBlur={formik.handleBlur}

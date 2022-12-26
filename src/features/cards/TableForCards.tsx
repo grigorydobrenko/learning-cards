@@ -51,11 +51,10 @@ export const TableForCards = ({ isMyPack }: props) => {
         <RateStars rating={card.grade} />
         <EditCardModal
           innerButton={<EditOutlined className={s.CardSettingElement} />}
-          editCardHandler={(question: string, answer: string) =>
-            editCardHandler(card._id, question, answer)
+          editCardHandler={(id: string, question: string, answer: string) =>
+            editCardHandler(id, question, answer)
           }
-          question={card.question}
-          answer={card.answer}
+          cardId={card._id}
         />
         <DeleteCardModal
           deleteCardHandler={() => deleteCardHandler(card._id)}

@@ -59,7 +59,7 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
           <img src={closeIcon} alt="" />
         </IconButton>
       </div>
-      <div className={style.formWrapper}>
+      <div className={style.contentWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
           <FormControl variant="outlined">
             <InputLabel id="input-label">Choose a question format</InputLabel>
@@ -74,7 +74,6 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
           </FormControl>
           <TextField
             variant="standard"
-            className={style.addCardInput}
             label="Question"
             {...formik.getFieldProps('question')}
             onBlur={formik.handleBlur}

@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, IconButton, Typography } from '@mui/material'
+import { Box, Button, IconButton } from '@mui/material'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
@@ -36,7 +36,7 @@ export const DeleteCardModal = (props: DeleteCardModalPropsType) => {
           <img src={closeIcon} alt="" />
         </IconButton>
       </div>
-      <div className={style.formWrapper}>
+      <div className={style.contentWrapper}>
         <p>
           Do you really want to remove {props.question}? <br /> Card will be deleted!
         </p>
