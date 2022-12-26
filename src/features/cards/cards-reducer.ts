@@ -86,11 +86,11 @@ export const getCardsTC =
   }
 
 export const addNewCardTC =
-  (PackId?: string): AppThunkType =>
+  (PackId?: string, question?: string, answer?: string): AppThunkType =>
   async dispatch => {
     try {
       dispatch(setAppStatusAC('loading'))
-      await cardsApi.addNewCard(PackId)
+      await cardsApi.addNewCard(PackId, question, answer)
       dispatch(getCardsTC(PackId))
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -102,13 +102,13 @@ export const addNewCardTC =
   }
 
 export const editCardTC =
-  (CardId: string, packId?: string): AppThunkType =>
+  (CardId: string, packId?: string, question?: string, answer?: string): AppThunkType =>
   async dispatch => {
     try {
       dispatch(setAppStatusAC('loading'))
       dispatch(changeCardEntityStatusAC(CardId, 'loading'))
 
-      await cardsApi.editCard(CardId)
+      await cardsApi.editCard(CardId, question, answer)
 
       dispatch(getCardsTC(packId))
       dispatch(setAppStatusAC('succeeded'))

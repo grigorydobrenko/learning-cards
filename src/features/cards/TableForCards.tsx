@@ -18,6 +18,8 @@ import {
 } from './cards-reducer'
 import s from './Cards.module.css'
 import { RateStars } from './RateStars'
+import { DeleteCardModal } from '../../common/components/Modals/CardModals/DeleteCardModal'
+import { EditCardModal } from '../../common/components/Modals/CardModals/EditCardModal'
 
 export const TableForCards = ({ isMyPack }: props) => {
   const { cards, cardsTotalCount, page, pageCount, sort } = useAppSelector(cardsSelector.cards)
@@ -31,8 +33,8 @@ export const TableForCards = ({ isMyPack }: props) => {
   const dispatch = useAppDispatch()
   const { pack_id } = useParams()
 
-  const editCardHandler = (CardId: string) => {
-    dispatch(editCardTC(CardId, pack_id))
+  const editCardHandler = (CardId: string, question: string, answer: string) => {
+    dispatch(editCardTC(CardId, pack_id, question, answer))
   }
 
   const deleteCardHandler = (CardId: string) => {
@@ -47,10 +49,17 @@ export const TableForCards = ({ isMyPack }: props) => {
     grade: isMyPack ? (
       <div className={card.entityStatus === 'loading' ? s.disabledButton : ''}>
         <RateStars rating={card.grade} />
-        <EditOutlined onClick={() => editCardHandler(card._id)} className={s.CardSettingElement} />
-        <DeleteOutlined
-          onClick={() => deleteCardHandler(card._id)}
-          className={s.CardDeleteElement}
+        <EditCardModal
+          innerButton={<EditOutlined className={s.CardSettingElement} />}
+          editCardHandler={(id: string, question: string, answer: string) =>
+            editCardHandler(id, question, answer)
+          }
+          cardId={card._id}
+        />
+        <DeleteCardModal
+          deleteCardHandler={() => deleteCardHandler(card._id)}
+          question={card.question}
+          innerButton={<DeleteOutlined className={s.CardDeleteElement} />}
         />
       </div>
     ) : (

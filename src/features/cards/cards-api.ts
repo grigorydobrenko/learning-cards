@@ -28,21 +28,24 @@ export const cardsApi = {
       },
     })
   },
-  addNewCard(id?: string) {
+  addNewCard(id?: string, question?: string, answer?: string) {
     const data = {
       card: {
         cardsPack_id: id,
+        question,
+        answer,
       },
     }
 
     return instance.post('/cards/card', data)
   },
 
-  editCard(id: string) {
+  editCard(id: string, question?: string, answer?: string) {
     const data = {
       card: {
         _id: id,
-        question: 'update question',
+        question,
+        answer,
       },
     }
 
