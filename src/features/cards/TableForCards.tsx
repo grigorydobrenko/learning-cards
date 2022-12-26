@@ -5,6 +5,8 @@ import { ConfigProvider, Empty, Table } from 'antd'
 import Search from 'antd/lib/input/Search'
 import { useParams } from 'react-router-dom'
 
+import { DeleteCardModal } from '../../common/components/Modals/CardModals/DeleteCardModal'
+import { EditCardModal } from '../../common/components/Modals/CardModals/EditCardModal'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { useDebounce } from '../../common/hooks/useDebounce'
 import { cardsSelector } from '../../common/selectors'
@@ -18,8 +20,6 @@ import {
 } from './cards-reducer'
 import s from './Cards.module.css'
 import { RateStars } from './RateStars'
-import { DeleteCardModal } from '../../common/components/Modals/CardModals/DeleteCardModal'
-import { EditCardModal } from '../../common/components/Modals/CardModals/EditCardModal'
 
 export const TableForCards = ({ isMyPack }: props) => {
   const { cards, cardsTotalCount, page, pageCount, sort } = useAppSelector(cardsSelector.cards)

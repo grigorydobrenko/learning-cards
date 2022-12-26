@@ -15,7 +15,6 @@ import { useAppSelector } from '../../common/hooks/customHooks'
 import { appSelector, authSelector } from '../../common/selectors'
 
 import style from './Header.module.css'
-import { AddCardModal } from '../../common/components/Modals/CardModals/AddCardModal'
 
 export const Header = () => {
   const user = useAppSelector(appSelector.user)
