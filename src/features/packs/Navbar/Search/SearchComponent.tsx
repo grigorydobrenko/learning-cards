@@ -37,7 +37,7 @@ export const SearchComponent = () => {
         placeholder={searchValue ? searchValue : 'input search text'}
         allowClear
         onChange={onSearchHandler}
-        style={{ width: 250 }}
+        //style={{ width: 250 }}
       />
     </>
   )

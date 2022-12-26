@@ -39,17 +39,17 @@ export const CardsCountSlider = () => {
 
   return (
     <>
-      <Col span={2}>
+      <Col xs={1} md={{ span: 1, offset: 1 }}>
         <Input value={minCards} />
       </Col>
-      <Col span={6}>
+      <Col xs={8} md={{ span: 8 }}>
         <Slider
           range={{ draggableTrack: true }}
           value={[minCards, maxCards]}
           onChange={onChangeCardsCountSlider}
         />
       </Col>
-      <Col span={3}>
+      <Col xs={1} md={{ span: 1 }}>
         <Input value={maxCards} />
       </Col>
     </>
