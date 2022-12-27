@@ -4,7 +4,7 @@ import { setAppStatusAC } from '../../app/app-reducer'
 import { AppThunkType } from '../../app/store'
 import { errorUtils } from '../../common/utils/error-utils'
 
-import { CardPacksType, PacksResponseType, packsTableAPI } from './packs-api'
+import { PacksResponseType, packsTableAPI } from './packs-api'
 
 const InitialState: InitialStateType = {
   cardPacks: [],
@@ -25,8 +25,13 @@ export const packsReducer = (
   switch (action.type) {
     case 'packs/SET-PACKS':
       return { ...state, ...action.data }
-    case 'packs/SET-MY-PACKS':
-      return { ...state, cardPacks: action.myPacks }
+    case 'packs/CHANGE-PACK-ENTITY-STATUS':
+      return {
+        ...state,
+        cardPacks: state.cardPacks.map(pack =>
+          pack._id === action.packId ? { ...pack, entityStatus: action.entityStatus } : pack
+        ),
+      }
     case 'packs/SET-MIN-CARDS-COUNT':
       return { ...state, min: action.minCount }
     case 'packs/SET-MAX-CARDS-COUNT':
@@ -47,8 +52,8 @@ export const packsReducer = (
 
 export const setPacksDataAC = (data: PacksResponseType) =>
   ({ type: 'packs/SET-PACKS', data } as const)
-export const setMyPacksDataAC = (myPacks: Array<CardPacksType>) =>
-  ({ type: 'packs/SET-MY-PACKS', myPacks } as const)
+export const changePackEntityStatusAC = (packId: string, entityStatus: EntityStatusType) =>
+  ({ type: 'packs/CHANGE-PACK-ENTITY-STATUS', entityStatus, packId } as const)
 export const setMinCardsCountAC = (minCount: number) =>
   ({ type: 'packs/SET-MIN-CARDS-COUNT', minCount } as const)
 export const setMaxCardsCountAC = (maxCount: number) =>
@@ -62,9 +67,9 @@ export const setIsMyPacksAC = (isMyPacks: string) =>
 //THUNKS =========================================
 
 export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
-  dispatch(setAppStatusAC('loading'))
   let { pageCount, page, packName, min, max, user_id } = getState().packs
 
+  dispatch(setAppStatusAC('loading'))
   try {
     const response = await packsTableAPI.getPacks({
       packName,
@@ -93,24 +98,7 @@ export const addNewPackTC =
 
     try {
       await packsTableAPI.createNewPack({ cardsPack: { name } })
-      dispatch(getPacksTC())
-      dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-      const err = e as Error | AxiosError<{ error: string }>
-
-      errorUtils(err, dispatch)
-      dispatch(setAppStatusAC('failed'))
-    }
-  }
-
-export const deletePackTC =
-  (id: string): AppThunkType =>
-  async dispatch => {
-    dispatch(setAppStatusAC('loading'))
-
-    try {
-      await packsTableAPI.deletePack(id)
-      dispatch(getPacksTC())
+      await dispatch(getPacksTC())
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
@@ -124,16 +112,38 @@ export const updatePackTC =
   (_id: string, name: string): AppThunkType =>
   async dispatch => {
     dispatch(setAppStatusAC('loading'))
-
+    dispatch(changePackEntityStatusAC(_id, 'loading'))
     try {
       await packsTableAPI.updatePack({ cardsPack: { _id, name } })
-      dispatch(getPacksTC())
+      await dispatch(getPacksTC())
       dispatch(setAppStatusAC('succeeded'))
+      dispatch(changePackEntityStatusAC(_id, 'succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
 
       errorUtils(err, dispatch)
       dispatch(setAppStatusAC('failed'))
+      dispatch(changePackEntityStatusAC(_id, 'failed'))
+    }
+  }
+
+export const deletePackTC =
+  (id: string): AppThunkType =>
+  async dispatch => {
+    dispatch(setAppStatusAC('loading'))
+    dispatch(changePackEntityStatusAC(id, 'loading'))
+
+    try {
+      await packsTableAPI.deletePack(id)
+      await dispatch(getPacksTC())
+      dispatch(setAppStatusAC('succeeded'))
+      dispatch(changePackEntityStatusAC(id, 'succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+      dispatch(changePackEntityStatusAC(id, 'failed'))
     }
   }
 
@@ -150,17 +160,38 @@ type InitialStateType = {
   max: number
   user_id: string
 }
+export type CardPacksType = {
+  cardsCount: number
+  created: string
+  deckCover: null | number
+  grade: number
+  more_id: string
+  name: string
+  path: string
+  private: boolean
+  rating: number
+  shots: number
+  type: string
+  updated: string
+  user_id: string
+  user_name: string
+  __v: number
+  _id: string
+  entityStatus: EntityStatusType
+}
+
+type EntityStatusType = 'loading' | 'succeeded' | 'idle' | 'failed'
 
 export type packsReducerActionType =
   | setPacksDataACType
-  | setMyPacksDataACType
+  | setEntityStatusACType
   | setMinCardsCountACType
   | setMaxCardsCountACType
   | setSearchDataACType
   | setUserIdACType
   | setIsMyPacksACType
 export type setPacksDataACType = ReturnType<typeof setPacksDataAC>
-export type setMyPacksDataACType = ReturnType<typeof setMyPacksDataAC>
+export type setEntityStatusACType = ReturnType<typeof changePackEntityStatusAC>
 export type setMinCardsCountACType = ReturnType<typeof setMinCardsCountAC>
 export type setMaxCardsCountACType = ReturnType<typeof setMaxCardsCountAC>
 export type setSearchDataACType = ReturnType<typeof setSearchDataAC>
