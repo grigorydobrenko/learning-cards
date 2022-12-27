@@ -4,7 +4,7 @@ import { Col, Input, Slider } from 'antd'
 
 import { useAppDispatch, useAppSelector } from '../../../../common/hooks/customHooks'
 import { useDebounce } from '../../../../common/hooks/useDebounce'
-import { packsSelector } from '../../../../common/selectors'
+import { appSelector, packsSelector } from '../../../../common/selectors'
 import { setMaxCardsCountAC, setMinCardsCountAC } from '../../packs-reducer'
 
 export const CardsCountSlider = () => {
@@ -12,6 +12,7 @@ export const CardsCountSlider = () => {
 
   const min = useAppSelector(packsSelector.min)
   const max = useAppSelector(packsSelector.max)
+  const status = useAppSelector(appSelector.status)
 
   const [minCards, setMinCards] = useState<number>(min)
   const [maxCards, setMaxCards] = useState<number>(max)
@@ -47,6 +48,7 @@ export const CardsCountSlider = () => {
           range={{ draggableTrack: true }}
           value={[minCards, maxCards]}
           onChange={onChangeCardsCountSlider}
+          disabled={status === 'loading'}
         />
       </Col>
       <Col xs={1} md={{ span: 1 }}>
