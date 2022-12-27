@@ -2,7 +2,8 @@ import React from 'react'
 
 import { ClearOutlined } from '@ant-design/icons'
 
-import { useAppDispatch } from '../../../../common/hooks/customHooks'
+import { useAppDispatch, useAppSelector } from '../../../../common/hooks/customHooks'
+import { appSelector } from '../../../../common/selectors'
 import {
   setIsMyPacksAC,
   setMaxCardsCountAC,
@@ -11,8 +12,11 @@ import {
   setUserIdAC,
 } from '../../packs-reducer'
 
+import s from './ResetSettings.module.css'
+
 export const ResetSettingsComponent = () => {
   const dispatch = useAppDispatch()
+  const status = useAppSelector(appSelector.status)
 
   const resetFiltersHandler = () => {
     dispatch(setUserIdAC(''))
@@ -23,7 +27,7 @@ export const ResetSettingsComponent = () => {
   }
 
   return (
-    <div>
+    <div className={status === 'loading' ? s.disabledButton : ''}>
       <ClearOutlined style={{ fontSize: '28px' }} onClick={resetFiltersHandler} />
     </div>
   )
