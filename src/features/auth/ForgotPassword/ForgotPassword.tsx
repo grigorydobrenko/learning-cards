@@ -3,14 +3,15 @@ import React from 'react'
 import { Box, Button, Container, CssBaseline, Grid, Paper, Typography } from '@mui/material'
 import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
-import { Link, Navigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import { PATH } from '../../../common/components/Routing/Routes'
-import { Copyright } from '../../../common/components/ui/Copyright/Copyright'
-import InputEmail from '../../../common/components/ui/Input/InputEmail'
-import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { sendEmailToSetNewPasswordTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
+
+import { PATH } from 'common/components/Routing/Routes'
+import { Copyright } from 'common/components/ui/Copyright/Copyright'
+import InputEmail from 'common/components/ui/Input/InputEmail'
+import { useAppDispatch } from 'common/hooks/customHooks'
 
 export const ForgotPassword = () => {
   const dispatch = useAppDispatch()

@@ -2,8 +2,6 @@ import React from 'react'
 
 import { ClearOutlined } from '@ant-design/icons'
 
-import { useAppDispatch, useAppSelector } from '../../../../common/hooks/customHooks'
-import { appSelector } from '../../../../common/selectors'
 import {
   setIsMyPacksAC,
   setMaxCardsCountAC,
@@ -13,6 +11,9 @@ import {
 } from '../../packs-reducer'
 
 import s from './ResetSettings.module.css'
+
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { appSelector } from 'common/selectors'
 
 export const ResetSettingsComponent = () => {
   const dispatch = useAppDispatch()

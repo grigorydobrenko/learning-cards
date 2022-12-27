@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react'
 
 import { Col, Input, Slider } from 'antd'
 
-import { useAppDispatch, useAppSelector } from '../../../../common/hooks/customHooks'
-import { useDebounce } from '../../../../common/hooks/useDebounce'
-import { appSelector, packsSelector } from '../../../../common/selectors'
 import { setMaxCardsCountAC, setMinCardsCountAC } from '../../packs-reducer'
+
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { useDebounce } from 'common/hooks/useDebounce'
+import { appSelector, packsSelector } from 'common/selectors'
 
 export const CardsCountSlider = () => {
   const dispatch = useAppDispatch()

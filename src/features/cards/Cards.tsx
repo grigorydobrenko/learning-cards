@@ -4,15 +4,15 @@ import { Button, Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { Link, NavLink, useParams } from 'react-router-dom'
 
-import arrowIcon from '../../assets/img/icons/arrow-left.svg'
-import { AddCardModal } from '../../common/components/Modals/CardModals/AddCardModal'
-import { PATH } from '../../common/components/Routing/Routes'
-import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
-import { appSelector, cardsSelector } from '../../common/selectors'
-
 import { addNewCardTC } from './cards-reducer'
 import s from './Cards.module.css'
 import { TableForCards } from './TableForCards'
+
+import arrowIcon from 'assets/img/icons/arrow-left.svg'
+import { AddCardModal } from 'common/components/Modals/CardModals/AddCardModal'
+import { PATH } from 'common/components/Routing/Routes'
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { appSelector, cardsSelector } from 'common/selectors'
 
 export const Cards = () => {
   const status = useAppSelector(appSelector.status)

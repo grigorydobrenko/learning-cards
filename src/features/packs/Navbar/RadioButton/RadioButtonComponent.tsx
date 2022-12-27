@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 
 import { Button, Radio } from 'antd'
 
-import { useAppDispatch, useAppSelector } from '../../../../common/hooks/customHooks'
-import { appSelector, packsSelector } from '../../../../common/selectors'
 import { setIsMyPacksAC, setUserIdAC } from '../../packs-reducer'
 
 import s from './RadioButton.module.css'
+
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { appSelector, packsSelector } from 'common/selectors'
 
 export const RadioButtonComponent = () => {
   const dispatch = useAppDispatch()

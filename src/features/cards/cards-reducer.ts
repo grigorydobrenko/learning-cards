@@ -1,10 +1,10 @@
 import { AxiosError } from 'axios'
 
-import { RequestStatusType, setAppStatusAC } from '../../app/app-reducer'
-import { AppThunkType } from '../../app/store'
-import { errorUtils } from '../../common/utils/error-utils'
-
 import { cardsApi } from './cards-api'
+
+import { RequestStatusType, setAppStatusAC } from 'app/app-reducer'
+import { AppThunkType } from 'app/store'
+import { errorUtils } from 'common/utils/error-utils'
 
 const InitialState: InitialStateType = {
   cards: [],

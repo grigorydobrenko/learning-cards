@@ -5,13 +5,14 @@ import { Col, Row, Table } from 'antd'
 import { Link } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
 
-import { DeletePackModal } from '../../../common/components/Modals/PackModals/DeletePackModal'
-import { EditPackModal } from '../../../common/components/Modals/PackModals/EditPackModal'
-import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
-import { appSelector, packsSelector } from '../../../common/selectors'
 import { CardPacksType, deletePackTC, updatePackTC } from '../packs-reducer'
 
 import s from './TableForPacks.module.css'
+
+import { DeletePackModal } from 'common/components/Modals/PackModals/DeletePackModal'
+import { EditPackModal } from 'common/components/Modals/PackModals/EditPackModal'
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { appSelector, packsSelector } from 'common/selectors'
 
 export const TableForPacks = () => {
   const dispatch = useAppDispatch()

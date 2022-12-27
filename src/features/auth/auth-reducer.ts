@@ -1,10 +1,10 @@
 import axios, { AxiosError } from 'axios'
 
-import { setAppFeedbackAC, setAppStatusAC, setUserDataAC } from '../../app/app-reducer'
-import { AppThunkType } from '../../app/store'
-import { errorUtils } from '../../common/utils/error-utils'
-
 import { authAPI, ForgotPasswordType, LoginPayloadType } from './auth-api'
+
+import { setAppFeedbackAC, setAppStatusAC, setUserDataAC } from 'app/app-reducer'
+import { AppThunkType } from 'app/store'
+import { errorUtils } from 'common/utils/error-utils'
 
 const InitialState: InitialStateType = {
   isLoggedIn: false,

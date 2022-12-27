@@ -2,10 +2,11 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { Input } from 'antd'
 
-import { useAppDispatch, useAppSelector } from '../../../../common/hooks/customHooks'
-import { appSelector, packsSelector } from '../../../../common/selectors'
-import { useDebounce } from '../../../../common/utils/debounce'
 import { setSearchDataAC } from '../../packs-reducer'
+
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { appSelector, packsSelector } from 'common/selectors'
+import { useDebounce } from 'common/utils/debounce'
 
 export const SearchComponent = () => {
   const dispatch = useAppDispatch()

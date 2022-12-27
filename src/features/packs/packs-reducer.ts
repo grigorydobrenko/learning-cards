@@ -1,10 +1,10 @@
 import { AxiosError } from 'axios'
 
-import { setAppStatusAC } from '../../app/app-reducer'
-import { AppThunkType } from '../../app/store'
-import { errorUtils } from '../../common/utils/error-utils'
-
 import { PacksResponseType, packsTableAPI } from './packs-api'
+
+import { setAppStatusAC } from 'app/app-reducer'
+import { AppThunkType } from 'app/store'
+import { errorUtils } from 'common/utils/error-utils'
 
 const InitialState: InitialStateType = {
   cardPacks: [],

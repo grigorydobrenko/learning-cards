@@ -1,18 +1,9 @@
 import React from 'react'
 
 import EmailIcon from '@mui/icons-material/Email'
-import {
-  Box,
-  Button,
-  Container,
-  createTheme,
-  CssBaseline,
-  Grid,
-  Paper,
-  Typography,
-} from '@mui/material'
+import { Box, Button, Container, CssBaseline, Grid, Paper, Typography } from '@mui/material'
 
-import { PATH } from '../../../common/components/Routing/Routes'
+import { PATH } from 'common/components/Routing/Routes'
 
 export const CheckEmail = () => {
   return (
