@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from 'axios'
 
+import { CardPacksType } from './packs-reducer'
+
 export const instance = axios.create({
   // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
   baseURL: 'https://neko-back.herokuapp.com/2.0/',
@@ -66,24 +68,7 @@ export type PacksResponseType = {
   pageCount: number
   tokenDeathTime: number | null
 }
-export type CardPacksType = {
-  cardsCount: number
-  created: string
-  deckCover: null | number
-  grade: number
-  more_id: string
-  name: string
-  path: string
-  private: boolean
-  rating: number
-  shots: number
-  type: string
-  updated: string
-  user_id: string
-  user_name: string
-  __v: number
-  _id: string
-}
+
 export type PacksPayloadType = {
   packName: string | null
   min: number | null
