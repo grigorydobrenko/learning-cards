@@ -10,3 +10,11 @@
   color: #000000;
   text-decoration: none;
 }
+
+.bold {
+  font-weight: 600;
+}
+
+.black {
+  color: #000000;
+}
