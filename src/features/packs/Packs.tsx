@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Button, CircularProgress } from '@mui/material'
+import { Button } from '@mui/material'
 import { Col, Divider, Row } from 'antd'
 import Title from 'antd/lib/typography/Title'
 
@@ -20,6 +20,7 @@ export const Packs = () => {
   const max = useAppSelector(packsSelector.max)
   const packName = useAppSelector(packsSelector.packName)
   const user_id = useAppSelector(packsSelector.user_id)
+  const isMyPacks = useAppSelector(packsSelector.isMyPacks)
 
   const addNewPackHandler = (name: string) => {
     dispatch(addNewPackTC(name))
@@ -33,25 +34,23 @@ export const Packs = () => {
     <div className={styles.mainContainer}>
       <Divider />
       <div className={styles.head}>
-        <Title level={2}>Packs list</Title>
-        <AddPackModal
-          addPackHandler={addNewPackHandler}
-          buttonInner={
-            <Button variant="contained" sx={{ borderRadius: '30px' }}>
-              Add new pack
-            </Button>
-          }
-        />
+        <Title level={2}>{isMyPacks === 'all' ? 'Packs list' : 'My packs'}</Title>
+        <div className={status === 'loading' ? styles.disabledButton : ''}>
+          <AddPackModal
+            addPackHandler={addNewPackHandler}
+            buttonInner={
+              <Button variant="contained" sx={{ borderRadius: '30px' }}>
+                Add new pack
+              </Button>
+            }
+          />
+        </div>
       </div>
       <Navbar />
       <div>
         <Row>
           <Col xs={24}>
-            {status === 'loading' ? (
-              <CircularProgress size="30px" className="circularProgress" />
-            ) : (
-              <TableForPacks />
-            )}
+            <TableForPacks />
           </Col>
         </Row>
       </div>
