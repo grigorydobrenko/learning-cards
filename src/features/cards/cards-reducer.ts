@@ -143,6 +143,23 @@ export const deleteCardTC =
     }
   }
 
+export const rateCardTC =
+  (grade: number, card_id: string): AppThunkType =>
+  async dispatch => {
+    try {
+      dispatch(setAppStatusAC('loading'))
+
+      await cardsApi.rateCard(grade, card_id)
+
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
+  }
+
 // types
 
 type setCardsACType = ReturnType<typeof setCardsAC>

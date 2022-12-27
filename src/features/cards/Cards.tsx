@@ -30,8 +30,6 @@ export const Cards = () => {
     dispatch(addNewCardTC(pack_id, question, answer))
   }
 
-  // const learnCardHandler = () => {}
-
   return (
     <div>
       <Container

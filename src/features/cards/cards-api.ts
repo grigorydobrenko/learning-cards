@@ -55,6 +55,9 @@ export const cardsApi = {
   deleteCard(id: string) {
     return instance.delete(`/cards/card?id=${id}`)
   },
+  rateCard(grade: number, card_id: string) {
+    return instance.put(`/cards/grade`, { grade, card_id })
+  },
 }
 
 // type CardsPayloadType = {

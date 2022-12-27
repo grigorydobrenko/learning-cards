@@ -57,8 +57,6 @@ export const Login = () => {
     },
   })
 
-  //nya-admin@nya.nya
-  //1qazxcvBG
   useEffect(() => {
     if (isLoggedIn) {
       navigate('/packs')
