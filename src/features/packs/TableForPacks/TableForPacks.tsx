@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DeleteOutlined, EditOutlined, PlaySquareOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, PlaySquareOutlined, SyncOutlined } from '@ant-design/icons'
 import { Col, Row, Table } from 'antd'
 import { Link } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
@@ -9,13 +9,14 @@ import { DeletePackModal } from '../../../common/components/Modals/PackModals/De
 import { EditPackModal } from '../../../common/components/Modals/PackModals/EditPackModal'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { appSelector, packsSelector } from '../../../common/selectors'
-import { CardPacksType } from '../packs-api'
-import { deletePackTC, updatePackTC } from '../packs-reducer'
+import { CardPacksType, deletePackTC, updatePackTC } from '../packs-reducer'
+
+import s from './TableForPacks.module.css'
 
 export const TableForPacks = () => {
   const dispatch = useAppDispatch()
   const userData = useAppSelector(appSelector.user)
-
+  const status = useAppSelector(appSelector.status)
   const TeachHandler = (id: string) => {
     console.log('Teach. id ->', id)
   }
@@ -41,13 +42,25 @@ export const TableForPacks = () => {
       <EditPackModal
         key={uuid4()}
         editPackHandler={EditHandler}
-        innerButton={<EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} />}
+        innerButton={
+          pack.entityStatus === 'loading' ? (
+            <SyncOutlined spin style={{ fontSize: '15px', marginLeft: '5px' }} />
+          ) : (
+            <EditOutlined style={{ fontSize: '15px', margin: '0 5px' }} />
+          )
+        }
         id={pack._id}
       />,
       <DeletePackModal
         key={uuid4()}
         id={pack._id}
-        buttonInner={<DeleteOutlined style={{ fontSize: '15px', marginLeft: '5px' }} />}
+        buttonInner={
+          pack.entityStatus === 'loading' ? (
+            <SyncOutlined spin style={{ fontSize: '15px', marginLeft: '5px' }} />
+          ) : (
+            <DeleteOutlined style={{ fontSize: '15px', marginLeft: '5px' }} />
+          )
+        }
         deletePackHandler={DeleteHandler}
         name={pack.name}
       />,
@@ -63,7 +76,12 @@ export const TableForPacks = () => {
 
     return {
       key: pack._id,
-      name: <Link to={pack._id}>{pack.name}</Link>,
+      name:
+        pack.entityStatus === 'loading' ? (
+          <SyncOutlined spin style={{ fontSize: '15px', marginLeft: '5px' }} />
+        ) : (
+          <Link to={pack._id}>{pack.name}</Link>
+        ),
       cards: pack.cardsCount,
       lastUpdated: getDate(pack.updated),
       createdBy: pack.user_name,
@@ -96,12 +114,12 @@ export const TableForPacks = () => {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'key',
-      render: (myActions: any) => myActions,
+      render: (actions: any) => actions,
     },
   ]
 
   return (
-    <div>
+    <div className={status === 'loading' ? s.disabledButton : ''}>
       <Row>
         <Col xs={24} span={12}>
           <Table
