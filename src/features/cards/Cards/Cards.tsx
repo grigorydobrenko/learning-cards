@@ -4,15 +4,16 @@ import { Button, Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { Link, NavLink, useParams } from 'react-router-dom'
 
-import arrowIcon from '../../assets/img/icons/arrow-left.svg'
-import { AddCardModal } from '../../common/components/Modals/CardModals/AddCardModal'
-import { PATH } from '../../common/components/Routing/Routes'
-import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
-import { appSelector, cardsSelector } from '../../common/selectors'
+import arrowIcon from '../../../assets/img/icons/arrow-left.svg'
+import { AddCardModal } from '../../../common/components/Modals/CardModals/AddCardModal'
+import { MyPackMenu } from '../../../common/components/Modals/Menu/MyPackMenu'
+import { PATH } from '../../../common/components/Routing/Routes'
+import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
+import { appSelector, cardsSelector } from '../../../common/selectors'
+import { addNewCardTC } from '../cards-reducer'
+import { TableForCards } from '../TableForCards'
 
-import { addNewCardTC } from './cards-reducer'
 import s from './Cards.module.css'
-import { TableForCards } from './TableForCards'
 
 export const Cards = () => {
   const status = useAppSelector(appSelector.status)
@@ -53,8 +54,19 @@ export const Cards = () => {
             pb: 3,
           }}
         >
-          <Typography variant="h6" component="h2" sx={{ fontWeight: '600' }} gutterBottom>
+          <Typography
+            variant="h6"
+            component="h2"
+            sx={{
+              display: 'flex',
+              gap: '30px',
+              fontWeight: '600',
+              alignItems: 'center',
+            }}
+            gutterBottom
+          >
             {packName}
+            <MyPackMenu />
           </Typography>
 
           {isMyPack ? (
@@ -72,11 +84,7 @@ export const Cards = () => {
               addCardHandler={addCardHandler}
             />
           ) : (
-            <NavLink
-              className={s.Button}
-              to={PATH.LEARN}
-              // onClick={learnCardHandler}
-            >
+            <NavLink className={s.Button} to={PATH.LEARN}>
               Learn to pack
             </NavLink>
           )}

@@ -15,8 +15,9 @@ import { Link } from 'react-router-dom'
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { BpRadio } from '../../common/components/ui/Radio/Radio'
-import { useAppSelector } from '../../common/hooks/customHooks'
+import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { cardsSelector } from '../../common/selectors'
+import { rateCardTC } from '../cards/cards-reducer'
 
 import s from './Learn.module.css'
 
@@ -29,13 +30,15 @@ const Learn = () => {
 
   const rateCardHandler = (grade: number, card_id: string) => {}
 
+  const dispatch = useAppDispatch()
+
   const formik = useFormik({
     initialValues: {
       picked: 1,
     },
     onSubmit: (values: any) => {
       console.log(values)
-      // dispatch(rateCardTC(grade, card_id))
+      dispatch(rateCardTC(values.picked, cards.cards[0]._id))
     },
   })
 
@@ -95,41 +98,14 @@ const Learn = () => {
                       name="customized-radios"
                     >
                       <Radio value={1} label="Did not know" handleChange={formik.handleChange} />
-                      {/*<FormControlLabel*/}
-                      {/*  name="picked"*/}
-                      {/*  value={1}*/}
-                      {/*  control={<BpRadio />}*/}
-                      {/*  onChange={formik.handleChange}*/}
-                      {/*  label="Did not know"*/}
-                      {/*/>*/}
-                      <FormControlLabel
-                        name="picked"
-                        value={2}
-                        control={<BpRadio />}
-                        onChange={formik.handleChange}
-                        label="Forgot"
-                      />
-                      <FormControlLabel
-                        name="picked"
+                      <Radio value={2} label="Forgot" handleChange={formik.handleChange} />
+                      <Radio
                         value={3}
-                        control={<BpRadio />}
-                        onChange={formik.handleChange}
                         label="A lot of thought"
+                        handleChange={formik.handleChange}
                       />
-                      <FormControlLabel
-                        name="picked"
-                        value={4}
-                        control={<BpRadio />}
-                        onChange={formik.handleChange}
-                        label="Сonfused"
-                      />
-                      <FormControlLabel
-                        name="picked"
-                        value={5}
-                        control={<BpRadio />}
-                        onChange={formik.handleChange}
-                        label="Knew the answer"
-                      />
+                      <Radio value={4} label="Сonfused" handleChange={formik.handleChange} />
+                      <Radio value={5} label="Knew the answer" handleChange={formik.handleChange} />
                     </RadioGroup>
                   </FormControl>
                   <Button variant="contained" sx={{ borderRadius: 30 }} fullWidth type={'submit'}>
