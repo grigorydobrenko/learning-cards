@@ -6,11 +6,14 @@ import { useAppDispatch, useAppSelector } from '../../../../common/hooks/customH
 import { appSelector, packsSelector } from '../../../../common/selectors'
 import { setIsMyPacksAC, setUserIdAC } from '../../packs-reducer'
 
+import s from './RadioButton.module.css'
+
 export const RadioButtonComponent = () => {
   const dispatch = useAppDispatch()
 
   const userData = useAppSelector(appSelector.user)
   const isMyPacks = useAppSelector(packsSelector.isMyPacks)
+  const status = useAppSelector(appSelector.status)
 
   const [choosePacks, setChoosePacks] = useState<string>(isMyPacks)
 
@@ -28,7 +31,7 @@ export const RadioButtonComponent = () => {
   }
 
   return (
-    <>
+    <div className={status === 'loading' ? s.disabledButton : ''}>
       <Radio.Group optionType="button">
         <Button disabled={isMyPacks === 'my'} onClick={myPacksHandler}>
           My
@@ -37,6 +40,6 @@ export const RadioButtonComponent = () => {
           All
         </Button>
       </Radio.Group>
-    </>
+    </div>
   )
 }
