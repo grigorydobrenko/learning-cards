@@ -31,7 +31,7 @@ export const Header = () => {
             variant="h1"
             noWrap
             component="a"
-            href="https://it-incubator.io/"
+            href="#"
             sx={{
               flexGrow: 1,
               mr: 2,
