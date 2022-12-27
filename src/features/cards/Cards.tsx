@@ -30,6 +30,8 @@ export const Cards = () => {
     dispatch(addNewCardTC(pack_id, question, answer))
   }
 
+  // const learnCardHandler = () => {}
+
   return (
     <div>
       <Container
@@ -72,7 +74,11 @@ export const Cards = () => {
               addCardHandler={addCardHandler}
             />
           ) : (
-            <NavLink className={s.Button} to={PATH.CARDS}>
+            <NavLink
+              className={s.Button}
+              to={PATH.LEARN}
+              // onClick={learnCardHandler}
+            >
               Learn to pack
             </NavLink>
           )}
