@@ -5,8 +5,8 @@ import { Input } from 'antd'
 import { setSearchDataAC } from '../../packs-reducer'
 
 import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { useDebounce } from 'common/hooks/useDebounce'
 import { appSelector, packsSelector } from 'common/selectors'
-import { useDebounce } from 'common/utils/debounce'
 
 export const SearchComponent = () => {
   const dispatch = useAppDispatch()
