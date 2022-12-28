@@ -36,7 +36,7 @@ export const cardsReducer = (
       return {
         ...state,
         cards: state.cards.map(card =>
-          card._id === action.cardId ? { ...card, entityStatus: 'loading' } : card
+          card._id === action.cardId ? { ...card, entityStatus: action.status } : card
         ),
       }
     }
@@ -91,7 +91,7 @@ export const addNewCardTC =
     try {
       dispatch(setAppStatusAC('loading'))
       await cardsApi.addNewCard(PackId, question, answer)
-      dispatch(getCardsTC(PackId))
+      await dispatch(getCardsTC(PackId))
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
@@ -110,7 +110,7 @@ export const editCardTC =
 
       await cardsApi.editCard(CardId, question, answer)
 
-      dispatch(getCardsTC(packId))
+      await dispatch(getCardsTC(packId))
       dispatch(setAppStatusAC('succeeded'))
       dispatch(changeCardEntityStatusAC(CardId, 'succeeded'))
     } catch (e) {
@@ -131,7 +131,7 @@ export const deleteCardTC =
 
       await cardsApi.deleteCard(CardId)
 
-      dispatch(getCardsTC(packId))
+      await dispatch(getCardsTC(packId))
       dispatch(setAppStatusAC('succeeded'))
       dispatch(changeCardEntityStatusAC(CardId, 'succeeded'))
     } catch (e) {
