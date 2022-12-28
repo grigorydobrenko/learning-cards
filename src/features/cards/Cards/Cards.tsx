@@ -7,7 +7,6 @@ import { Link, NavLink, useParams } from 'react-router-dom'
 import arrowIcon from '../../../assets/img/icons/arrow-left.svg'
 import { AddCardModal } from '../../../common/components/Modals/CardModals/AddCardModal'
 import { MyPackMenu } from '../../../common/components/Modals/Menu/MyPackMenu'
-import { PATH } from '../../../common/components/Routing/Routes'
 import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
 import { appSelector, cardsSelector } from '../../../common/selectors'
 import { addNewCardTC } from '../cards-reducer'
@@ -28,7 +27,9 @@ export const Cards = () => {
   const { pack_id } = useParams()
 
   const addCardHandler = (question: string, answer: string) => {
-    dispatch(addNewCardTC(pack_id, question, answer))
+    if (pack_id) {
+      dispatch(addNewCardTC(pack_id, question, answer))
+    }
   }
 
   return (

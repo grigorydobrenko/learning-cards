@@ -17,7 +17,6 @@ const InitialState: InitialStateType = {
   search: '',
   packUserId: '',
   packName: 'My Pack',
-  isMyPack: true,
 }
 
 export const cardsReducer = (
@@ -99,7 +98,7 @@ export const getCardsTC =
   }
 
 export const addNewCardTC =
-  (PackId?: string, question?: string, answer?: string): AppThunkType =>
+  (PackId: string, question?: string, answer?: string): AppThunkType =>
   async dispatch => {
     try {
       dispatch(setAppStatusAC('loading'))
@@ -166,11 +165,6 @@ export const rateCardTC =
       const gradeResponse = response.data.updatedGrade.grade
       const shots = response.data.updatedGrade.shots
 
-      console.log(
-        'grade:' + response.data.updatedGrade.grade,
-        'shots:' + response.data.updatedGrade.shots
-      )
-      // response.data.
       dispatch(changeGradeShotsAC(gradeResponse, shots, card_id))
 
       dispatch(setAppStatusAC('succeeded'))
@@ -208,10 +202,9 @@ type InitialStateType = {
   packName: string
   sort: string
   search: string
-  isMyPack: boolean | null
 }
 
-type ResponseGetCardsType = Omit<InitialStateType, 'sort' | 'search' | 'isMyPack'>
+export type ResponseGetCardsType = Omit<InitialStateType, 'sort' | 'search'>
 
 export type CardType = {
   answer: string

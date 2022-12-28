@@ -1,4 +1,6 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
+
+import { ResponseGetCardsType } from './cards-reducer'
 
 const instance = axios.create({
   baseURL: 'https://neko-back.herokuapp.com/2.0/',
@@ -13,22 +15,18 @@ export const cardsApi = {
     pack_id?: string,
     debouncedSearchValue?: string
   ) {
-    return instance.get('/cards/card', {
+    return instance.get<ResponseGetCardsType>('/cards/card', {
       params: {
-        // cardAnswer: 'english',
         cardQuestion: debouncedSearchValue,
         cardsPack_id: pack_id,
-        // cardsPack_id: cardsPack_id,
-
-        // min: 1,
-        // max: 4,
         sortCards: sort,
         page: page,
         pageCount: pageCount,
       },
     })
   },
-  addNewCard(id?: string, question?: string, answer?: string) {
+
+  addNewCard(id: string, question?: string, answer?: string) {
     const data = {
       card: {
         cardsPack_id: id,
@@ -37,7 +35,7 @@ export const cardsApi = {
       },
     }
 
-    return instance.post('/cards/card', data)
+    return instance.post<'', '', AddCardPayload>('/cards/card', data)
   },
 
   editCard(id: string, question?: string, answer?: string) {
@@ -49,25 +47,53 @@ export const cardsApi = {
       },
     }
 
-    return instance.put(`/cards/card`, data)
+    return instance.put<'', '', UpdateCardPayload>(`/cards/card`, data)
   },
 
   deleteCard(id: string) {
     return instance.delete(`/cards/card?id=${id}`)
   },
+
   rateCard(grade: number, card_id: string) {
-    return instance.put(`/cards/grade`, { grade, card_id })
+    return instance.put<'', AxiosResponse<UpdateGradeResponse>, UpdateGradePayload>(
+      `/cards/grade`,
+      { grade, card_id }
+    )
   },
 }
 
-// type CardsPayloadType = {
-//     ?cardAnswer=english // не обязательно
-//     &cardQuestion=english // не обязательно
-//     &cardsPack_id=5eb6a2f72f849402d46c6ac7
-//     &min=1 // не обязательно
-//     &max=4 // не обязательно
-//     &sortCards=0grade // не обязательно
-//     &page=1 // не обязательно
-//     &pageCount=7 // не обязательно
-//
-// }
+// types
+
+type AddCardPayload = {
+  card: AddPaylod
+}
+
+type UpdateCardPayload = {
+  card: UpdatePaylod
+}
+
+type Paylod = {
+  _id: string
+  cardsPack_id: string
+  question?: string
+  answer?: string
+}
+
+type AddPaylod = Omit<Paylod, '_id'>
+type UpdatePaylod = Omit<Paylod, 'cardsPack_id'>
+
+type UpdateGradePayload = {
+  grade: number
+  card_id: string
+}
+
+type UpdateGradeResponse = {
+  updatedGrade: {
+    _id: string
+    cardsPack_id: string
+    card_id: string
+    user_id: string
+    grade: number
+    shots: number
+  }
+}
