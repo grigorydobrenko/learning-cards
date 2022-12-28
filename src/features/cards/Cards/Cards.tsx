@@ -60,14 +60,13 @@ export const Cards = () => {
             component="h2"
             sx={{
               display: 'flex',
-              gap: '30px',
               fontWeight: '600',
               alignItems: 'center',
             }}
             gutterBottom
           >
             {packName}
-            <MyPackMenu pack_id={pack_id} />
+            {isMyPack && <MyPackMenu pack_id={pack_id} />}
           </Typography>
 
           {isMyPack ? (
