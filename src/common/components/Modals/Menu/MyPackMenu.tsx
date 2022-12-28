@@ -10,7 +10,7 @@ import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { useNavigate } from 'react-router-dom'
 
-export const MyPackMenu = () => {
+export const MyPackMenu = ({ pack_id }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -24,7 +24,7 @@ export const MyPackMenu = () => {
   }
 
   const onLearnHandler = () => {
-    navigate('/learn')
+    navigate(`../../learn/${pack_id}`)
   }
 
   return (
@@ -66,4 +66,8 @@ export const MyPackMenu = () => {
       </Menu>
     </div>
   )
+}
+
+type Props = {
+  pack_id?: string
 }

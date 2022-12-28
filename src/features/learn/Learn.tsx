@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { Button } from '@mui/material'
 import Card from '@mui/material/Card'
@@ -10,16 +10,19 @@ import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 import { Container } from '@mui/system'
 import { useFormik } from 'formik'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
 
+import { AppRootState } from '../../app/store'
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { BpRadio } from '../../common/components/ui/Radio/Radio'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { cardsSelector } from '../../common/selectors'
-import { rateCardTC } from '../cards/cards-reducer'
+import { CardType, getCardsTC, rateCardTC } from '../cards/cards-reducer'
 
 import s from './Learn.module.css'
+import { getCard } from './Randomizer'
 
 const Learn = () => {
   const [showAnswer, setShowAnswer] = React.useState(false)
@@ -28,9 +31,53 @@ const Learn = () => {
 
   const cards = useAppSelector(cardsSelector.cards)
 
-  const rateCardHandler = (grade: number, card_id: string) => {}
+  // const onNext = (grade: number, card_id: string) => {}
 
   const dispatch = useAppDispatch()
+
+  const [first, setFirst] = useState<boolean>(true)
+  // const [first, setFirst] = useState<boolean>(0);
+  const { id } = useParams()
+
+  const [card, setCard] = useState<CardType>({
+    _id: 'fake',
+    cardsPack_id: '',
+
+    answer: 'answer fake',
+    question: 'question fake',
+    grade: 0,
+    shots: 0,
+    user_id: '',
+    created: '',
+    updated: '',
+  })
+
+  useEffect(() => {
+    console.log('LearnContainer useEffect')
+
+    if (first) {
+      dispatch(getCardsTC(id))
+      setFirst(false)
+    }
+
+    console.log('cards', cards)
+    if (cards.cards.length > 0) setCard(getCard(cards.cards))
+
+    return () => {
+      console.log('LearnContainer useEffect off')
+    }
+  }, [dispatch, id, cards, first])
+
+  const onNext = () => {
+    // setIsChecked(false)
+
+    if (cards.cards.length > 0) {
+      // dispatch
+      setCard(getCard(cards.cards))
+    }
+    // else {
+    // }
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -61,12 +108,11 @@ const Learn = () => {
           <CardContent sx={{ padding: '33px' }}>
             <Typography sx={{ fontSize: 16, mb: 1.8 }}>
               <span className={s.bold}>Question: </span>
-              {cards.cards[0]?.question}
+              {card.question}
             </Typography>
 
             <Typography sx={{ mb: 4 }} color="text.secondary">
-              Количество попыток ответов на вопрос:{' '}
-              <span className={s.bold}>{cards.cards[0]?.shots}</span>
+              Количество попыток ответов на вопрос: <span className={s.bold}>{card.shots}</span>
             </Typography>
 
             {!showAnswer && (
@@ -84,7 +130,7 @@ const Learn = () => {
               <FormGroup>
                 <Typography sx={{ fontSize: 16, mb: 1.8 }}>
                   <span className={s.bold}>Answer: </span>
-                  {cards.cards[0]?.answer}
+                  {card.answer}
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
                   <FormControl sx={{ mb: 4 }}>
@@ -108,7 +154,13 @@ const Learn = () => {
                       <Radio value={5} label="Knew the answer" handleChange={formik.handleChange} />
                     </RadioGroup>
                   </FormControl>
-                  <Button variant="contained" sx={{ borderRadius: 30 }} fullWidth type={'submit'}>
+                  <Button
+                    variant="contained"
+                    sx={{ borderRadius: 30 }}
+                    fullWidth
+                    type={'submit'}
+                    onClick={onNext}
+                  >
                     Next
                   </Button>
                 </form>

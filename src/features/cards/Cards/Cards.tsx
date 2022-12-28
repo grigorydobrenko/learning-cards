@@ -66,7 +66,7 @@ export const Cards = () => {
             gutterBottom
           >
             {packName}
-            <MyPackMenu />
+            <MyPackMenu pack_id={pack_id} />
           </Typography>
 
           {isMyPack ? (
@@ -84,7 +84,7 @@ export const Cards = () => {
               addCardHandler={addCardHandler}
             />
           ) : (
-            <NavLink className={s.Button} to={PATH.LEARN}>
+            <NavLink className={s.Button} to={`../../learn/${pack_id}`}>
               Learn to pack
             </NavLink>
           )}

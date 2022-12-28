@@ -52,7 +52,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={PATH.MAIN} element={<Login />} />
-      <Route path={PATH.LEARN} element={<Learn />} />
+      <Route path={'learn/:pack_id'} element={<Learn />} />
       <Route element={<RequireAuth />}>
         {/* <Route index element={<Packs />} /> */}
         {/*<Route path={PATH.MAIN} element={<Packs />} />*/}
