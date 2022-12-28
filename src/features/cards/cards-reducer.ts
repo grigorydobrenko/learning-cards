@@ -36,7 +36,7 @@ export const cardsReducer = (
       return {
         ...state,
         cards: state.cards.map(card =>
-          card._id === action.cardId ? { ...card, entityStatus: 'loading' } : card
+          card._id === action.cardId ? { ...card, entityStatus: action.status } : card
         ),
       }
     }

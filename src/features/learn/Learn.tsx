@@ -10,16 +10,14 @@ import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 import { Container } from '@mui/system'
 import { useFormik } from 'formik'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
 
-import { AppRootState } from '../../app/store'
 import arrowIcon from '../../assets/img/icons/arrow-left.svg'
 import { PATH } from '../../common/components/Routing/Routes'
 import { BpRadio } from '../../common/components/ui/Radio/Radio'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { cardsSelector } from '../../common/selectors'
-import { CardType, getCardsTC, rateCardTC } from '../cards/cards-reducer'
+import { CardType, getCardsTC } from '../cards/cards-reducer'
 
 import s from './Learn.module.css'
 import { getCard } from './Randomizer'
@@ -37,7 +35,7 @@ const Learn = () => {
 
   const [first, setFirst] = useState<boolean>(true)
   // const [first, setFirst] = useState<boolean>(0);
-  const { id } = useParams()
+  const { pack_id } = useParams()
 
   const [card, setCard] = useState<CardType>({
     _id: 'fake',
@@ -53,39 +51,51 @@ const Learn = () => {
   })
 
   useEffect(() => {
-    console.log('LearnContainer useEffect')
-
     if (first) {
-      dispatch(getCardsTC(id))
+      dispatch(getCardsTC(pack_id))
       setFirst(false)
     }
 
-    console.log('cards', cards)
     if (cards.cards.length > 0) setCard(getCard(cards.cards))
+  }, [dispatch, pack_id, cards, first])
 
-    return () => {
-      console.log('LearnContainer useEffect off')
-    }
-  }, [dispatch, id, cards, first])
+  // const onNext = () => {
+  //   if (cards.cards.length > 0) {
+  //     // dispatch
+  //     setCard(getCard(cards.cards))
+  //   }
+  //   // else {
+  //   // }
+  // }
 
-  const onNext = () => {
-    // setIsChecked(false)
+  const [value, setValue] = React.useState('')
 
-    if (cards.cards.length > 0) {
-      // dispatch
-      setCard(getCard(cards.cards))
-    }
-    // else {
-    // }
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value)
   }
 
   const formik = useFormik({
     initialValues: {
-      picked: 1,
+      picked: value,
+    },
+    validate: (values: any) => {
+      const errors: any = {}
+
+      if (!values.picked) {
+        errors.picked = 'Pick your answer'
+      }
+
+      return errors
     },
     onSubmit: (values: any) => {
       console.log(values)
-      dispatch(rateCardTC(values.picked, cards.cards[0]._id))
+      if (cards.cards.length > 0) {
+        // dispatch
+        setCard(getCard(cards.cards))
+      }
+      formik.resetForm()
+      setValue('')
+      // dispatch(rateCardTC(values.picked, cards.cards[0]._id))
     },
   })
 
@@ -139,7 +149,9 @@ const Learn = () => {
                     </Typography>
 
                     <RadioGroup
-                      defaultValue={1}
+                      // defaultValue={defaultValue}
+                      value={value}
+                      onChange={handleChange}
                       aria-labelledby="demo-customized-radios"
                       name="customized-radios"
                     >
@@ -153,13 +165,16 @@ const Learn = () => {
                       <Radio value={4} label="Сonfused" handleChange={formik.handleChange} />
                       <Radio value={5} label="Knew the answer" handleChange={formik.handleChange} />
                     </RadioGroup>
+                    {formik.errors.picked && (
+                      <div style={{ marginTop: '15px', color: 'red' }}>{formik.errors.picked}</div>
+                    )}
                   </FormControl>
                   <Button
                     variant="contained"
                     sx={{ borderRadius: 30 }}
                     fullWidth
                     type={'submit'}
-                    onClick={onNext}
+                    // onClick={onNext}
                   >
                     Next
                   </Button>
