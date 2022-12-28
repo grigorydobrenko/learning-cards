@@ -78,13 +78,9 @@ export const getCardsTC =
       dispatch(setAppStatusAC('loading'))
       const { pageCount, page, sort } = getState().cards
 
-      let res
-
-      if (debouncedSearchValue) {
-        res = await cardsApi.getCards(pageCount, page, sort, pack_id, debouncedSearchValue)
-      } else {
-        res = await cardsApi.getCards(pageCount, page, sort, pack_id)
-      }
+      const res = debouncedSearchValue
+        ? await cardsApi.getCards(pageCount, page, sort, pack_id, debouncedSearchValue)
+        : await cardsApi.getCards(pageCount, page, sort, pack_id)
 
       dispatch(setCardsAC(res?.data))
 
