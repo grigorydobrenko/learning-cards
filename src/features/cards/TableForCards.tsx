@@ -19,10 +19,11 @@ import { DeleteCardModal } from 'common/components/Modals/CardModals/DeleteCardM
 import { EditCardModal } from 'common/components/Modals/CardModals/EditCardModal'
 import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
 import { useDebounce } from 'common/hooks/useDebounce'
-import { cardsSelector } from 'common/selectors'
+import { appSelector, cardsSelector } from 'common/selectors'
 
 export const TableForCards = ({ isMyPack }: props) => {
   const { cards, cardsTotalCount, page, pageCount, sort } = useAppSelector(cardsSelector.cards)
+  const status = useAppSelector(appSelector.status)
 
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))
@@ -146,14 +147,24 @@ export const TableForCards = ({ isMyPack }: props) => {
         className={s.Search}
       />
       <ConfigProvider
-        renderEmpty={() => (
-          <Empty
-            style={{ color: 'black' }}
-            description="В данной колоде нету карточек удовлетворяющих поиску"
-          />
-        )}
+        renderEmpty={dataSource =>
+          !dataSource ? (
+            dataSource
+          ) : (
+            <Empty
+              style={{ color: 'black' }}
+              description="В данной колоде нету карточек удовлетворяющих поиску"
+            />
+          )
+        }
       >
-        <Table dataSource={dataSource} columns={columns} pagination={pagination} locale={locale} />
+        <Table
+          loading={status === 'loading' ? { spinning: true, size: 'large' } : false}
+          dataSource={dataSource}
+          columns={columns}
+          pagination={pagination}
+          locale={locale}
+        />
       </ConfigProvider>
     </div>
   )
