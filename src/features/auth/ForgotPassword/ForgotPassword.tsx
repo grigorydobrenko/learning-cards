@@ -20,7 +20,6 @@ export const ForgotPassword = () => {
       email: '',
     },
     onSubmit: values => {
-      console.log(JSON.stringify(values))
       dispatch(sendEmailToSetNewPasswordTC(values))
     },
     validate: values => {
