@@ -11,7 +11,7 @@ export const RateStars = (props: Props) => {
 
   return (
     <>
-      <Rate allowHalf defaultValue={rating} />
+      <Rate allowHalf defaultValue={rating} disabled />
     </>
   )
 }

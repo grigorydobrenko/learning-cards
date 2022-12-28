@@ -32,6 +32,14 @@ export const cardsReducer = (
     case 'cards/TOGGLE-SORT': {
       return { ...state, sort: Number(action.sort).toString() + 'grade' }
     }
+    case 'cards/CHANGE-GRADE-SHOTS': {
+      return {
+        ...state,
+        cards: state.cards.map(card =>
+          card._id === action.card_id ? { ...card, grade: action.grade, shots: action.shots } : card
+        ),
+      }
+    }
     case 'cards/CHANGE-ENTITY-STATUS': {
       return {
         ...state,
@@ -59,6 +67,9 @@ export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sor
 export const changeCardEntityStatusAC = (cardId: string, status: RequestStatusType) =>
   ({ type: 'cards/CHANGE-ENTITY-STATUS', cardId, status } as const)
 
+export const changeGradeShotsAC = (grade: number, shots: number, card_id: string) =>
+  ({ type: 'cards/CHANGE-GRADE-SHOTS', grade, shots, card_id } as const)
+
 // thunks
 
 export const getCardsTC =
@@ -75,7 +86,9 @@ export const getCardsTC =
       } else {
         res = await cardsApi.getCards(pageCount, page, sort, pack_id)
       }
+
       dispatch(setCardsAC(res?.data))
+
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
@@ -149,7 +162,16 @@ export const rateCardTC =
     try {
       dispatch(setAppStatusAC('loading'))
 
-      await cardsApi.rateCard(grade, card_id)
+      const response = await cardsApi.rateCard(grade, card_id)
+      const gradeResponse = response.data.updatedGrade.grade
+      const shots = response.data.updatedGrade.shots
+
+      console.log(
+        'grade:' + response.data.updatedGrade.grade,
+        'shots:' + response.data.updatedGrade.shots
+      )
+      // response.data.
+      dispatch(changeGradeShotsAC(gradeResponse, shots, card_id))
 
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -166,12 +188,14 @@ type setCardsACType = ReturnType<typeof setCardsAC>
 type setPagePageCountACType = ReturnType<typeof setPagePageCountAC>
 type toggleSortACType = ReturnType<typeof toggleSortAC>
 type changeCardEntityStatusACType = ReturnType<typeof changeCardEntityStatusAC>
+type changeGradeShotsACType = ReturnType<typeof changeGradeShotsAC>
 
 export type cardsReducerActionsType =
   | setCardsACType
   | setPagePageCountACType
   | toggleSortACType
   | changeCardEntityStatusACType
+  | changeGradeShotsACType
 
 type InitialStateType = {
   cards: CardType[]

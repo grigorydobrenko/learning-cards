@@ -17,7 +17,7 @@ import { PATH } from '../../common/components/Routing/Routes'
 import { BpRadio } from '../../common/components/ui/Radio/Radio'
 import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
 import { cardsSelector } from '../../common/selectors'
-import { CardType, getCardsTC } from '../cards/cards-reducer'
+import { CardType, getCardsTC, rateCardTC } from '../cards/cards-reducer'
 
 import s from './Learn.module.css'
 import { getCard } from './Randomizer'
@@ -26,7 +26,6 @@ const Learn = () => {
   const [showAnswer, setShowAnswer] = React.useState(false)
 
   const packName = useAppSelector(cardsSelector.packName)
-
   const cards = useAppSelector(cardsSelector.cards)
 
   // const onNext = (grade: number, card_id: string) => {}
@@ -90,12 +89,11 @@ const Learn = () => {
     onSubmit: (values: any) => {
       console.log(values)
       if (cards.cards.length > 0) {
-        // dispatch
+        dispatch(rateCardTC(values.picked, card._id))
         setCard(getCard(cards.cards))
       }
       formik.resetForm()
       setValue('')
-      // dispatch(rateCardTC(values.picked, cards.cards[0]._id))
     },
   })
 
