@@ -11,7 +11,7 @@ const InitialState: InitialStateType = {
   page: 1,
   pageCount: 50,
   sortPacks: '0updated',
-  packName: null,
+  packName: '',
   isMyPacks: 'all',
   min: 0,
   max: 20,
@@ -58,7 +58,7 @@ export const setMinCardsCountAC = (minCount: number) =>
   ({ type: 'packs/SET-MIN-CARDS-COUNT', minCount } as const)
 export const setMaxCardsCountAC = (maxCount: number) =>
   ({ type: 'packs/SET-MAX-CARDS-COUNT', maxCount } as const)
-export const setSearchDataAC = (packName: string | null) =>
+export const setSearchDataAC = (packName: string) =>
   ({ type: 'packs/SET-SEARCH-DATA', packName } as const)
 export const setUserIdAC = (user_id: string) => ({ type: 'packs/SET-USER-ID', user_id } as const)
 export const setIsMyPacksAC = (isMyPacks: string) =>
@@ -154,7 +154,7 @@ type InitialStateType = {
   page: number
   pageCount: number
   sortPacks: string
-  packName: string | null
+  packName: string
   isMyPacks: string
   min: number
   max: number
