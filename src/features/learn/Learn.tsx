@@ -136,15 +136,13 @@ const Learn = () => {
 
             {showAnswer && (
               <FormGroup>
-                <Typography sx={{ fontSize: 16, mb: 1.8 }}>
+                <Typography sx={{ fontSize: 16, mb: 4 }}>
                   <span className={s.bold}>Answer: </span>
                   {card.answer}
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
                   <FormControl sx={{ mb: 4 }}>
-                    <Typography id="demo-customized-radios" sx={{ mb: 1.5 }}>
-                      Rate yourself:
-                    </Typography>
+                    <Typography id="demo-customized-radios">Rate yourself:</Typography>
 
                     <RadioGroup
                       // defaultValue={defaultValue}
