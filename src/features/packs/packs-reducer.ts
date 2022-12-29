@@ -139,14 +139,14 @@ export const deletePackTC =
   }
 
 export const updatePackTC =
-  (_id: string): AppThunkType =>
-  async (dispatch, getState) => {
+  (_id: string, name: string): AppThunkType =>
+  async dispatch => {
     dispatch(setAppStatusAC('loading'))
-    let name = getState().packs.updatedPackName
+    // let name = getState().packs.updatedPackName
 
     try {
       await packsTableAPI.updatePack({ cardsPack: { _id, name } })
-      dispatch(getPacksTC())
+      await dispatch(getPacksTC())
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>

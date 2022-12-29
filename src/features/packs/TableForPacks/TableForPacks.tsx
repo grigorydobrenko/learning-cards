@@ -23,10 +23,12 @@ export const TableForPacks = () => {
     navigate(`../../learn/${id}`)
     console.log('Teach. id ->', id)
   }
-  const EditHandler = (id: string) => {
-    dispatch(updatePackTC(id))
+
+  const EditHandler = (packName: string, id: string) => {
+    dispatch(updatePackTC(id, packName))
     console.log('Edit. id ->', id)
   }
+
   const DeleteHandler = (id: string) => {
     dispatch(deletePackTC(id))
 

@@ -18,7 +18,7 @@ type EditPackPropsType = {
   id: string
   isPrivate?: boolean
   innerButton: ReactNode
-  editPackHandler: (name: string) => void
+  editPackHandler: (name: string, id: string) => void
   onClick?: () => void
 }
 export const EditPackModal = ({
@@ -45,7 +45,8 @@ export const EditPackModal = ({
       privatePack: isPrivate,
     },
     onSubmit: values => {
-      editPackHandler(values.packName)
+      debugger
+      editPackHandler(values.packName, id)
       setOpen(false)
     },
   })

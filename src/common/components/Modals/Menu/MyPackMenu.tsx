@@ -31,8 +31,8 @@ export const MyPackMenu = ({ pack_id, packName }: Props) => {
 
   const dispatch = useAppDispatch()
 
-  const EditHandler = (id: string) => {
-    dispatch(updatePackTC(id))
+  const EditHandler = (packName: string, id: string) => {
+    dispatch(updatePackTC(id, packName))
     console.log('Edit. id ->', id)
   }
 

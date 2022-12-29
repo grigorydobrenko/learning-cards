@@ -26,6 +26,7 @@ export const Cards = () => {
 
   const { pack_id } = useParams()
 
+  console.log(packName)
   const addCardHandler = (question: string, answer: string) => {
     if (pack_id) {
       dispatch(addNewCardTC(pack_id, question, answer))
