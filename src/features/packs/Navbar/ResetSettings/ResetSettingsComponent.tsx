@@ -23,7 +23,7 @@ export const ResetSettingsComponent = () => {
     dispatch(setUserIdAC(''))
     dispatch(setMinCardsCountAC(0))
     dispatch(setMaxCardsCountAC(20))
-    dispatch(setSearchDataAC(null))
+    dispatch(setSearchDataAC(''))
     dispatch(setIsMyPacksAC('all'))
   }
 
