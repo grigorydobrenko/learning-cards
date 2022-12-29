@@ -1,15 +1,23 @@
-// export function restoreStateFromLocalStorage<T>(key: string, defaultState: T) {
-//   let state = defaultState
-//   const stateAsString = localStorage.getItem(key)
-//
-//   if (stateAsString !== null) state = JSON.parse(stateAsString) as T
-//
-//   return state
-// }
+export function restoreStateFromLocalStorage<T>(key: string, defaultState: T) {
+  let state = defaultState
+  const stateAsString = localStorage.getItem(key)
 
-export const loadState = () => {
+  if (stateAsString !== null) {
+    state = JSON.parse(stateAsString) as T
+    //dispatch(setUserIdAC(state))
+  }
+
+  return state
+}
+
+export const loadState = (key: string) => {
   try {
-    const serializedState = localStorage.getItem('state')
+    // let localStorageValue = localStorage.getItem(key)
+    //
+    // if (localStorageValue) {
+    //   dispatch(setUserIdAC(localStorageValue))
+    // }
+    const serializedState = localStorage.getItem(key)
 
     if (serializedState === null) {
       return undefined
