@@ -27,6 +27,13 @@ export const Packs = () => {
   }
 
   useEffect(() => {
+    // let localStorageValue = restoreStateFromLocalStorage<string>('userId', '')
+    // let localStorageValue = loadState('userId')
+    //
+    // if (localStorageValue) {
+    //   dispatch(setUserIdAC(localStorageValue))
+    // }
+
     dispatch(getPacksTC())
   }, [min, max, packName, user_id])
 
