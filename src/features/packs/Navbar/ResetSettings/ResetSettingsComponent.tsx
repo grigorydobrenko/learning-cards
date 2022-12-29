@@ -2,6 +2,7 @@ import React from 'react'
 
 import { ClearOutlined } from '@ant-design/icons'
 
+import { clearLocalStorage } from '../../../../common/localStorage/clearLocalStorage'
 import {
   setIsMyPacksAC,
   setMaxCardsCountAC,
@@ -24,7 +25,8 @@ export const ResetSettingsComponent = () => {
     dispatch(setMinCardsCountAC(0))
     dispatch(setMaxCardsCountAC(20))
     dispatch(setSearchDataAC(''))
-    dispatch(setIsMyPacksAC('all'))
+    dispatch(setIsMyPacksAC(null))
+    clearLocalStorage('userId')
   }
 
   return (
