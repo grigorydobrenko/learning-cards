@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
-import Search from 'antd/lib/input/Search'
+import { Input } from 'antd'
 
 import { setSearchDataAC } from '../../packs-reducer'
 
@@ -13,7 +13,7 @@ export const SearchComponent = () => {
   const packName = useAppSelector(packsSelector.packName)
   const status = useAppSelector(appSelector.status)
 
-  const [searchValue, setSearchValue] = useState<string | null>(packName)
+  const [searchValue, setSearchValue] = useState<string>(packName)
 
   const debouncedSearchValue = useDebounce(searchValue, 700)
   const onSearchHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -25,20 +25,22 @@ export const SearchComponent = () => {
     if (searchValue) {
       dispatch(setSearchDataAC(searchValue))
     } else {
-      dispatch(setSearchDataAC(null))
+      dispatch(setSearchDataAC(''))
     }
   }, [debouncedSearchValue])
 
   useEffect(() => {
-    if (packName === null) {
-      setSearchValue(null)
+    if (packName === '') {
+      setSearchValue('')
     }
   }, [packName])
 
   return (
     <>
-      <Search
+      <Input.Search
+        loading={status === 'loading'}
         placeholder="input search text"
+        value={searchValue}
         allowClear
         onChange={onSearchHandler}
         disabled={status === 'loading'}
