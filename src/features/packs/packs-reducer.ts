@@ -12,7 +12,7 @@ const InitialState: InitialStateType = {
   pageCount: 50,
   sortPacks: '0updated',
   packName: '',
-  isMyPacks: 'all',
+  isMyPacks: '',
   min: 0,
   max: 20,
   user_id: '',
