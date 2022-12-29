@@ -12,7 +12,7 @@ const InitialState: InitialStateType = {
   pageCount: 50,
   sortPacks: '0updated',
   packName: '',
-  isMyPacks: '',
+  isMyPacks: null,
   min: 0,
   max: 20,
   user_id: '',
@@ -61,7 +61,7 @@ export const setMaxCardsCountAC = (maxCount: number) =>
 export const setSearchDataAC = (packName: string) =>
   ({ type: 'packs/SET-SEARCH-DATA', packName } as const)
 export const setUserIdAC = (user_id: string) => ({ type: 'packs/SET-USER-ID', user_id } as const)
-export const setIsMyPacksAC = (isMyPacks: string) =>
+export const setIsMyPacksAC = (isMyPacks: string | null) =>
   ({ type: 'packs/SET-IS-MY-PACKS', isMyPacks } as const)
 
 //THUNKS =========================================
@@ -155,7 +155,7 @@ type InitialStateType = {
   pageCount: number
   sortPacks: string
   packName: string
-  isMyPacks: string
+  isMyPacks: string | null
   min: number
   max: number
   user_id: string
