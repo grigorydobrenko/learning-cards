@@ -66,7 +66,7 @@ export const Cards = () => {
             gutterBottom
           >
             {packName}
-            {isMyPack && <MyPackMenu pack_id={pack_id} />}
+            {isMyPack && <MyPackMenu pack_id={pack_id} packName={packName} />}
           </Typography>
 
           {isMyPack ? (
