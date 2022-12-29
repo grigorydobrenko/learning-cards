@@ -18,6 +18,7 @@ export const TableForPacks = () => {
   const dispatch = useAppDispatch()
   const userData = useAppSelector(appSelector.user)
   const status = useAppSelector(appSelector.status)
+  const packName = useAppSelector(packsSelector.packName)
   const TeachHandler = (id: string) => {
     console.log('Teach. id ->', id)
   }
@@ -133,7 +134,7 @@ export const TableForPacks = () => {
         <Col xs={24} span={12}>
           <ConfigProvider
             renderEmpty={cardPacks =>
-              !cardPacks ? (
+              cardPacks && !packName ? (
                 cardPacks
               ) : (
                 <Empty
