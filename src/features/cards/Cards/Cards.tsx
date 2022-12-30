@@ -4,18 +4,14 @@ import { Button, Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { Link, NavLink, useParams } from 'react-router-dom'
 
-
-import { AddCardModal } from '../../../common/components/Modals/CardModals/AddCardModal'
 import { MyPackMenu } from '../../../common/components/Modals/Menu/MyPackMenu'
-'
+import { addNewCardTC } from '../cards-reducer'
 import { TableForCards } from '../TableForCards'
 
-import { addNewCardTC } from './cards-reducer'
 import s from './Cards.module.css'
 
 import arrowIcon from 'assets/img/icons/arrow-left.svg'
 import { AddCardModal } from 'common/components/Modals/CardModals/AddCardModal'
-
 import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
 import { appSelector, cardsSelector } from 'common/selectors'
 

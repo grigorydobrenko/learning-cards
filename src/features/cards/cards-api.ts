@@ -1,7 +1,8 @@
-import { instance } from 'common/instance/instance'
 import { AxiosResponse } from 'axios'
 
 import { ResponseGetCardsType } from './cards-reducer'
+
+import { instance } from 'common/instance/instance'
 
 export const cardsApi = {
   getCards(

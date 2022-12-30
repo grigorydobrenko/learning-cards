@@ -109,44 +109,44 @@ export const addNewPackTC =
   }
 
 export const updatePackTC =
-    (_id: string, name: string): AppThunkType =>
-        async dispatch => {
-          dispatch(setAppStatusAC('loading'))
-          dispatch(changePackEntityStatusAC(_id, 'loading'))
+  (_id: string, name: string): AppThunkType =>
+  async dispatch => {
+    dispatch(setAppStatusAC('loading'))
+    dispatch(changePackEntityStatusAC(_id, 'loading'))
 
-          try {
-            await packsTableAPI.updatePack({ cardsPack: { _id, name } })
-            await dispatch(getPacksTC())
-            dispatch(setAppStatusAC('succeeded'))
-            dispatch(changePackEntityStatusAC(_id, 'succeeded'))
-          } catch (e) {
-            const err = e as Error | AxiosError<{ error: string }>
+    try {
+      await packsTableAPI.updatePack({ cardsPack: { _id, name } })
+      await dispatch(getPacksTC())
+      dispatch(setAppStatusAC('succeeded'))
+      dispatch(changePackEntityStatusAC(_id, 'succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
 
-            errorUtils(err, dispatch)
-            dispatch(setAppStatusAC('failed'))
-            dispatch(changePackEntityStatusAC(_id, 'failed')
-          }
-        }
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+      dispatch(changePackEntityStatusAC(_id, 'failed'))
+    }
+  }
 
 export const deletePackTC =
-    (id: string): AppThunkType =>
-        async dispatch => {
-          dispatch(setAppStatusAC('loading'))
-          dispatch(changePackEntityStatusAC(id, 'loading'))
+  (id: string): AppThunkType =>
+  async dispatch => {
+    dispatch(setAppStatusAC('loading'))
+    dispatch(changePackEntityStatusAC(id, 'loading'))
 
-          try {
-            await packsTableAPI.deletePack(id)
-            await dispatch(getPacksTC())
-            dispatch(setAppStatusAC('succeeded'))
-            dispatch(changePackEntityStatusAC(id, 'succeeded'))
-          } catch (e) {
-            const err = e as Error | AxiosError<{ error: string }>
+    try {
+      await packsTableAPI.deletePack(id)
+      await dispatch(getPacksTC())
+      dispatch(setAppStatusAC('succeeded'))
+      dispatch(changePackEntityStatusAC(id, 'succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
 
-            errorUtils(err, dispatch)
-            dispatch(setAppStatusAC('failed'))
-            dispatch(changePackEntityStatusAC(id, 'failed'))
-          }
-        }
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+      dispatch(changePackEntityStatusAC(id, 'failed'))
+    }
+  }
 
 //TYPES ==========================================
 

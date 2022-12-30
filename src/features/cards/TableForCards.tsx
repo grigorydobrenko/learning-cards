@@ -5,10 +5,7 @@ import { ConfigProvider, Empty, Table } from 'antd'
 import Search from 'antd/lib/input/Search'
 import { useParams } from 'react-router-dom'
 
-import { DeleteCardModal } from '../../common/components/Modals/CardModals/DeleteCardModal'
-import { EditCardModal } from '../../common/components/Modals/CardModals/EditCardModal'
 import { RateStars } from '../../common/components/ui/Stars/RateStars'
-
 
 import {
   deleteCardTC,

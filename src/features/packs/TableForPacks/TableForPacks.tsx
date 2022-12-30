@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { DeleteOutlined, EditOutlined, PlaySquareOutlined,SyncOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, PlaySquareOutlined, SyncOutlined } from '@ant-design/icons'
 import { Col, ConfigProvider, Empty, Row, Table } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
