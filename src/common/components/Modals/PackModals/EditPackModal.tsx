@@ -45,7 +45,6 @@ export const EditPackModal = ({
       privatePack: isPrivate,
     },
     onSubmit: values => {
-      debugger
       editPackHandler(values.packName, id)
       setOpen(false)
     },
