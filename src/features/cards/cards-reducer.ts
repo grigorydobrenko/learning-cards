@@ -17,7 +17,6 @@ const InitialState: InitialStateType = {
   search: '',
   packUserId: '',
   packName: 'My Pack',
-  isMyPack: true,
 }
 
 export const cardsReducer = (
@@ -32,11 +31,19 @@ export const cardsReducer = (
     case 'cards/TOGGLE-SORT': {
       return { ...state, sort: Number(action.sort).toString() + 'grade' }
     }
+    case 'cards/CHANGE-GRADE-SHOTS': {
+      return {
+        ...state,
+        cards: state.cards.map(card =>
+          card._id === action.card_id ? { ...card, grade: action.grade, shots: action.shots } : card
+        ),
+      }
+    }
     case 'cards/CHANGE-ENTITY-STATUS': {
       return {
         ...state,
         cards: state.cards.map(card =>
-          card._id === action.cardId ? { ...card, entityStatus: 'loading' } : card
+          card._id === action.cardId ? { ...card, entityStatus: action.status } : card
         ),
       }
     }
@@ -59,6 +66,9 @@ export const toggleSortAC = (sort: boolean) => ({ type: 'cards/TOGGLE-SORT', sor
 export const changeCardEntityStatusAC = (cardId: string, status: RequestStatusType) =>
   ({ type: 'cards/CHANGE-ENTITY-STATUS', cardId, status } as const)
 
+export const changeGradeShotsAC = (grade: number, shots: number, card_id: string) =>
+  ({ type: 'cards/CHANGE-GRADE-SHOTS', grade, shots, card_id } as const)
+
 // thunks
 
 export const getCardsTC =
@@ -68,14 +78,12 @@ export const getCardsTC =
       dispatch(setAppStatusAC('loading'))
       const { pageCount, page, sort } = getState().cards
 
-      let res
+      const res = debouncedSearchValue
+        ? await cardsApi.getCards(pageCount, page, sort, pack_id, debouncedSearchValue)
+        : await cardsApi.getCards(pageCount, page, sort, pack_id)
 
-      if (debouncedSearchValue) {
-        res = await cardsApi.getCards(pageCount, page, sort, pack_id, debouncedSearchValue)
-      } else {
-        res = await cardsApi.getCards(pageCount, page, sort, pack_id)
-      }
       dispatch(setCardsAC(res?.data))
+
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
@@ -86,7 +94,7 @@ export const getCardsTC =
   }
 
 export const addNewCardTC =
-  (PackId?: string, question?: string, answer?: string): AppThunkType =>
+  (PackId: string, question?: string, answer?: string): AppThunkType =>
   async dispatch => {
     try {
       dispatch(setAppStatusAC('loading'))
@@ -143,18 +151,41 @@ export const deleteCardTC =
     }
   }
 
+export const rateCardTC =
+  (grade: number, card_id: string): AppThunkType =>
+  async dispatch => {
+    try {
+      dispatch(setAppStatusAC('loading'))
+
+      const response = await cardsApi.rateCard(grade, card_id)
+      const gradeResponse = response.data.updatedGrade.grade
+      const shots = response.data.updatedGrade.shots
+
+      dispatch(changeGradeShotsAC(gradeResponse, shots, card_id))
+
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
+  }
+
 // types
 
 type setCardsACType = ReturnType<typeof setCardsAC>
 type setPagePageCountACType = ReturnType<typeof setPagePageCountAC>
 type toggleSortACType = ReturnType<typeof toggleSortAC>
 type changeCardEntityStatusACType = ReturnType<typeof changeCardEntityStatusAC>
+type changeGradeShotsACType = ReturnType<typeof changeGradeShotsAC>
 
 export type cardsReducerActionsType =
   | setCardsACType
   | setPagePageCountACType
   | toggleSortACType
   | changeCardEntityStatusACType
+  | changeGradeShotsACType
 
 type InitialStateType = {
   cards: CardType[]
@@ -167,10 +198,9 @@ type InitialStateType = {
   packName: string
   sort: string
   search: string
-  isMyPack: boolean | null
 }
 
-type ResponseGetCardsType = Omit<InitialStateType, 'sort' | 'search' | 'isMyPack'>
+export type ResponseGetCardsType = Omit<InitialStateType, 'sort' | 'search'>
 
 export type CardType = {
   answer: string

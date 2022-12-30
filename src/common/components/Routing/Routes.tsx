@@ -7,7 +7,8 @@ import { CreateNewPassword } from '../../../features/auth/ForgotPassword/CreateN
 import { ForgotPassword } from '../../../features/auth/ForgotPassword/ForgotPassword'
 import { Login } from '../../../features/auth/Login/Login'
 import { Register } from '../../../features/auth/Register/Register'
-import { Cards } from '../../../features/cards/Cards'
+import { Cards } from '../../../features/cards/Cards/Cards'
+import Learn from '../../../features/learn/Learn'
 import { Packs } from '../../../features/packs/Packs'
 import { Profile } from '../../../features/profile/Profile'
 import { useAppSelector } from '../../hooks/customHooks'
@@ -26,6 +27,7 @@ export const PATH = {
   NOT_FOUND: '/404',
   PACKS: '/packs',
   CARDS: '/cards',
+  LEARN: '/learn',
 }
 
 const RequireToken = () => {
@@ -50,6 +52,7 @@ export const AppRoutes = () => {
   return (
     <Routes>
       <Route path={PATH.MAIN} element={<Login />} />
+      <Route path={'learn/:pack_id'} element={<Learn />} />
       <Route element={<RequireAuth />}>
         {/* <Route index element={<Packs />} /> */}
         {/*<Route path={PATH.MAIN} element={<Packs />} />*/}

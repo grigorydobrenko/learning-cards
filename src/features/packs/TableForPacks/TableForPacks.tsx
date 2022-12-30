@@ -2,7 +2,7 @@ import React from 'react'
 
 import { DeleteOutlined, EditOutlined, PlaySquareOutlined } from '@ant-design/icons'
 import { Col, Row, Table } from 'antd'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
 
 import { DeletePackModal } from '../../../common/components/Modals/PackModals/DeletePackModal'
@@ -17,13 +17,18 @@ export const TableForPacks = () => {
   const userData = useAppSelector(appSelector.user)
   //const { pageCount, page } = useAppSelector(state => state.packs)
 
+  const navigate = useNavigate()
+
   const TeachHandler = (id: string) => {
+    navigate(`../../learn/${id}`)
     console.log('Teach. id ->', id)
   }
-  const EditHandler = (id: string) => {
-    dispatch(updatePackTC(id))
+
+  const EditHandler = (packName: string, id: string) => {
+    dispatch(updatePackTC(id, packName))
     console.log('Edit. id ->', id)
   }
+
   const DeleteHandler = (id: string) => {
     dispatch(deletePackTC(id))
 

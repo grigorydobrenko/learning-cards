@@ -18,13 +18,15 @@ type EditPackPropsType = {
   id: string
   isPrivate?: boolean
   innerButton: ReactNode
-  editPackHandler: (name: string) => void
+  editPackHandler: (name: string, id: string) => void
+  onClick?: () => void
 }
 export const EditPackModal = ({
   id,
   isPrivate,
   innerButton,
   editPackHandler,
+  onClick,
 }: EditPackPropsType) => {
   const pack = useAppSelector(state => state.packs.cardPacks.filter(pack => pack._id === id)[0])
   const [open, setOpen] = React.useState(false)
@@ -43,7 +45,8 @@ export const EditPackModal = ({
       privatePack: isPrivate,
     },
     onSubmit: values => {
-      editPackHandler(values.packName)
+      debugger
+      editPackHandler(values.packName, id)
       setOpen(false)
     },
   })
@@ -53,6 +56,7 @@ export const EditPackModal = ({
 
   const handleClose = () => {
     setOpen(false)
+    onClick && onClick()
     formik.resetForm()
   }
 
@@ -98,6 +102,7 @@ export const EditPackModal = ({
               Cancel
             </Button>
             <Button
+              onClick={onClick ? onClick : () => {}}
               className={style.modalButton}
               type={'submit'}
               variant={'contained'}
