@@ -4,12 +4,13 @@ import { Box, Button, Container, CssBaseline, Grid, Paper, Typography } from '@m
 import { useFormik } from 'formik'
 import { Navigate, useParams } from 'react-router-dom'
 
-import { PATH } from '../../../common/components/Routing/Routes'
-import InputConfirmPassword from '../../../common/components/ui/Input/InputConfirmPassword'
-import InputPassword from '../../../common/components/ui/Input/InputPassword'
-import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
-import { authSelector } from '../../../common/selectors'
 import { setNewPasswordTC } from '../auth-reducer'
+
+import { PATH } from 'common/components/Routing/Routes'
+import InputConfirmPassword from 'common/components/ui/Input/InputConfirmPassword'
+import InputPassword from 'common/components/ui/Input/InputPassword'
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { authSelector } from 'common/selectors'
 
 export const CreateNewPassword = () => {
   let { token } = useParams()
@@ -21,7 +22,6 @@ export const CreateNewPassword = () => {
       confirmPassword: '',
     },
     onSubmit: values => {
-      console.log(JSON.stringify(values))
       console.log(token)
       if (!token) {
         token = ''

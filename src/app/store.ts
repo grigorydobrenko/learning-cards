@@ -14,7 +14,16 @@ const rootReducer = combineReducers({
   cards: cardsReducer,
 })
 
-const store = createStore(rootReducer, applyMiddleware(thunk))
+const store = createStore(
+  rootReducer,
+  // restoreStateFromLocalStorage('userId', {}),
+  // loadState('userId'),
+  applyMiddleware(thunk)
+)
+
+// store.subscribe(() => {
+//   //saveStateToLocalStorage('isMyPack', store.getState().packs.isMyPacks)
+// })
 
 export default store
 

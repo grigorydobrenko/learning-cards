@@ -8,19 +8,20 @@ import CardContent from '@mui/material/CardContent'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import { Container } from '@mui/system'
-import { Link, Navigate, NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
-import arrowIcon from '../../assets/img/icons/arrow-left.svg'
-import logoutIcon from '../../assets/img/icons/logout-icon.svg'
-import photoIcon from '../../assets/img/icons/photo-icon.svg'
-import userPhoto from '../../assets/img/user-photo.png'
-import { EditableSpan } from '../../common/components/EditableSpan/EditableSpan'
-import { PATH } from '../../common/components/Routing/Routes'
-import { useAppDispatch, useAppSelector } from '../../common/hooks/customHooks'
-import { appSelector, authSelector } from '../../common/selectors'
 import { logoutTC, updateUserDataTC } from '../auth/auth-reducer'
 
 import style from './Profile.module.css'
+
+import arrowIcon from 'assets/img/icons/arrow-left.svg'
+import logoutIcon from 'assets/img/icons/logout-icon.svg'
+import photoIcon from 'assets/img/icons/photo-icon.svg'
+import userPhoto from 'assets/img/user-photo.png'
+import { EditableSpan } from 'common/components/EditableSpan/EditableSpan'
+import { PATH } from 'common/components/Routing/Routes'
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { appSelector } from 'common/selectors'
 
 export const Profile = () => {
   const user = useAppSelector(appSelector.user)
@@ -79,7 +80,7 @@ export const Profile = () => {
           </CardContent>
           <CardActions>
             <NavLink className={style.profileButton} to={PATH.LOGIN} onClick={logOutHandler}>
-              <img src={logoutIcon} />
+              <img src={logoutIcon} alt={''} />
               <span>Log out</span>
             </NavLink>
           </CardActions>

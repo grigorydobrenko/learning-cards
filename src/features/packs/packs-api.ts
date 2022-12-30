@@ -1,19 +1,13 @@
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 
-export const instance = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-  baseURL: 'https://neko-back.herokuapp.com/2.0/',
-  // process.env.NODE_ENV === 'development'
-  //   ? 'http://localhost:7542/2.0/'
-  //   : 'https://neko-back.herokuapp.com/2.0/',
-  withCredentials: true,
-})
+import { CardPacksType } from './packs-reducer'
+
+import { instance } from 'common/instance/instance'
 
 export const packsTableAPI = {
-  getPacks({ sortPacks, packName, pageCount, page, min, max, user_id }: PacksPayloadType) {
+  getPacks({ packName, pageCount, page, min, max, user_id }: PacksPayloadType) {
     return instance.get<'', AxiosResponse<PacksResponseType>, PacksPayloadType>('cards/pack', {
       params: {
-        sortPacks,
         packName,
         pageCount,
         page,
@@ -67,26 +61,8 @@ export type PacksResponseType = {
   pageCount: number
   tokenDeathTime: number | null
 }
-export type CardPacksType = {
-  cardsCount: number
-  created: string
-  deckCover: null | number
-  grade: number
-  more_id: string
-  name: string
-  path: string
-  private: boolean
-  rating: number
-  shots: number
-  type: string
-  updated: string
-  user_id: string
-  user_name: string
-  __v: number
-  _id: string
-}
+
 export type PacksPayloadType = {
-  sortPacks: string | null
   packName: string | null
   min: number | null
   max: number | null

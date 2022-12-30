@@ -1,13 +1,6 @@
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 
-export const instance = axios.create({
-  // baseURL: process.env.REACT_APP_BACK_URL || 'http://localhost:7542/2.0/',
-  baseURL: 'https://neko-back.herokuapp.com/2.0/',
-  // process.env.NODE_ENV === 'development'
-  //   ? 'http://localhost:7542/2.0/'
-  //   : 'https://neko-back.herokuapp.com/2.0/',
-  withCredentials: true,
-})
+import { instance } from 'common/instance/instance'
 
 export const authAPI = {
   login(data: LoginPayloadType) {
@@ -30,17 +23,17 @@ export const authAPI = {
 
 export const registrationAPI = {
   registration(data: RegistrationDataType) {
-    return instance.post<'', '', RegistrationDataType>('/auth/register', data)
+    return instance.post<RegistrationDataType>('/auth/register', data)
   },
   forgotPassword(data: ForgotPasswordType) {
-    return instance.post<'', '', ForgotPasswordType>('/auth/forgot', data)
+    return instance.post<ForgotPasswordResponseType>('/auth/forgot', data)
   },
   setNewPassword(data: SetNewPasswordType) {
-    return instance.post<'', '', SetNewPasswordType>('/auth/set-new-password', data)
+    return instance.post<{ info: string }>('/auth/set-new-password', data)
   },
 }
 
-//TYPES
+//TYPES ==================================
 
 export type LoginPayloadType = {
   email: string
@@ -58,6 +51,7 @@ export type UserResponseType = {
   updated: string
   avatar: string
 }
+
 export type UpdateUserDataResponseType = {
   updatedUser: UserResponseType
   error?: string
@@ -73,6 +67,14 @@ export type ForgotPasswordType = {
   from: string
   message: string
 }
+
+export type ForgotPasswordResponseType = {
+  answer: boolean
+  html: boolean
+  info: string
+  success: boolean
+}
+
 export type SetNewPasswordType = {
   password: string
   resetPasswordToken: string

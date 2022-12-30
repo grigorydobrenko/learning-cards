@@ -8,13 +8,13 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { NavLink } from 'react-router-dom'
 
-import logo from '../../assets/img/incubator-logo.svg'
-import userPhoto from '../../assets/img/user-photo.png'
-import { PATH } from '../../common/components/Routing/Routes'
-import { useAppSelector } from '../../common/hooks/customHooks'
-import { appSelector, authSelector } from '../../common/selectors'
-
 import style from './Header.module.css'
+
+import logo from 'assets/img/incubator-logo.svg'
+import userPhoto from 'assets/img/user-photo.png'
+import { PATH } from 'common/components/Routing/Routes'
+import { useAppSelector } from 'common/hooks/customHooks'
+import { appSelector, authSelector } from 'common/selectors'
 
 export const Header = () => {
   const user = useAppSelector(appSelector.user)
@@ -31,7 +31,7 @@ export const Header = () => {
             variant="h1"
             noWrap
             component="a"
-            href="https://it-incubator.io/"
+            href="#"
             sx={{
               flexGrow: 1,
               mr: 2,

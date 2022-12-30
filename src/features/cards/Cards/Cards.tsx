@@ -4,15 +4,20 @@ import { Button, Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
 import { Link, NavLink, useParams } from 'react-router-dom'
 
-import arrowIcon from '../../../assets/img/icons/arrow-left.svg'
+
 import { AddCardModal } from '../../../common/components/Modals/CardModals/AddCardModal'
 import { MyPackMenu } from '../../../common/components/Modals/Menu/MyPackMenu'
-import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
-import { appSelector, cardsSelector } from '../../../common/selectors'
-import { addNewCardTC } from '../cards-reducer'
+'
 import { TableForCards } from '../TableForCards'
 
+import { addNewCardTC } from './cards-reducer'
 import s from './Cards.module.css'
+
+import arrowIcon from 'assets/img/icons/arrow-left.svg'
+import { AddCardModal } from 'common/components/Modals/CardModals/AddCardModal'
+
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { appSelector, cardsSelector } from 'common/selectors'
 
 export const Cards = () => {
   const status = useAppSelector(appSelector.status)
@@ -26,7 +31,6 @@ export const Cards = () => {
 
   const { pack_id } = useParams()
 
-  console.log(packName)
   const addCardHandler = (question: string, answer: string) => {
     if (pack_id) {
       dispatch(addNewCardTC(pack_id, question, answer))

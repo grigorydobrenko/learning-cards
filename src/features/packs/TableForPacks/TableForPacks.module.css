@@ -1,0 +1,10 @@
+.mainContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.disabledButton {
+    pointer-events: none;
+
+    opacity: 0.5;
+}

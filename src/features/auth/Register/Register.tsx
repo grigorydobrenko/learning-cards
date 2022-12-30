@@ -6,17 +6,18 @@ import FormGroup from '@mui/material/FormGroup'
 import { useFormik } from 'formik'
 import { Link, Navigate } from 'react-router-dom'
 
-import { PATH } from '../../../common/components/Routing/Routes'
-import { Copyright } from '../../../common/components/ui/Copyright/Copyright'
-import InputConfirmPassword from '../../../common/components/ui/Input/InputConfirmPassword'
-import InputEmail from '../../../common/components/ui/Input/InputEmail'
-import InputFirstName from '../../../common/components/ui/Input/InputFirstName'
-import InputLastName from '../../../common/components/ui/Input/InputLastName'
-import InputPassword from '../../../common/components/ui/Input/InputPassword'
-import { useAppDispatch, useAppSelector } from '../../../common/hooks/customHooks'
-import { authSelector } from '../../../common/selectors'
 import { registrationTC } from '../auth-reducer'
 import styles from '../authCommonStyle.module.css'
+
+import { PATH } from 'common/components/Routing/Routes'
+import { Copyright } from 'common/components/ui/Copyright/Copyright'
+import InputConfirmPassword from 'common/components/ui/Input/InputConfirmPassword'
+import InputEmail from 'common/components/ui/Input/InputEmail'
+import InputFirstName from 'common/components/ui/Input/InputFirstName'
+import InputLastName from 'common/components/ui/Input/InputLastName'
+import InputPassword from 'common/components/ui/Input/InputPassword'
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { authSelector } from 'common/selectors'
 
 export const Register = () => {
   const dispatch = useAppDispatch()

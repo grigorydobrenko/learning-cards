@@ -1,11 +1,7 @@
-import axios, { AxiosResponse } from 'axios'
+import { instance } from 'common/instance/instance'
+import { AxiosResponse } from 'axios'
 
 import { ResponseGetCardsType } from './cards-reducer'
-
-const instance = axios.create({
-  baseURL: 'https://neko-back.herokuapp.com/2.0/',
-  withCredentials: true,
-})
 
 export const cardsApi = {
   getCards(

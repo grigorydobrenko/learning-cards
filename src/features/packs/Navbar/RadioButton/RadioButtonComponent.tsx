@@ -1,55 +1,50 @@
 import React, { useState } from 'react'
 
-import { Radio, RadioChangeEvent } from 'antd'
+import { Button, Radio } from 'antd'
 
-import { useAppDispatch, useAppSelector } from '../../../../common/hooks/customHooks'
-import { appSelector, packsSelector } from '../../../../common/selectors'
-import { getPacksTC, setUserIdAC } from '../../packs-reducer'
+import { clearLocalStorage } from '../../../../common/localStorage/clearLocalStorage'
+import { saveStateToLocalStorage } from '../../../../common/localStorage/saveStateToLocalStorage'
+import { setIsMyPacksAC, setUserIdAC } from '../../packs-reducer'
+
+import s from './RadioButton.module.css'
+
+import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { appSelector, packsSelector } from 'common/selectors'
 
 export const RadioButtonComponent = () => {
   const dispatch = useAppDispatch()
 
   const userData = useAppSelector(appSelector.user)
   const isMyPacks = useAppSelector(packsSelector.isMyPacks)
+  const status = useAppSelector(appSelector.status)
 
-  const [choosePacks, setChoosePacks] = useState<string>(isMyPacks)
-  const onChangeFilterHandler = (e: RadioChangeEvent) => {
-    console.log('radio checked', e.target.value)
-    setChoosePacks(e.target.value)
+  const [choosePacks, setChoosePacks] = useState<string | null>(isMyPacks)
+
+  const myPacksHandler = () => {
     if (choosePacks !== 'my' && userData) {
       dispatch(setUserIdAC(userData._id))
-      //dispatch(setIsMyPacksAC(true))
-    } else {
-      dispatch(setUserIdAC(''))
-      //dispatch(setIsMyPacksAC(false))
+      setChoosePacks('all')
+      saveStateToLocalStorage('userId', userData._id)
+      dispatch(setIsMyPacksAC('my'))
     }
-    dispatch(getPacksTC())
   }
-  // const options = [
-  //   { label: 'My', value: true },
-  //   { label: 'All', value: false },
-  // ]
-
-  // useEffect(() => {
-  //   dispatch(getPacksTC())
-  //   console.log('useEffect [user_id] in RadioButtonComponent worked')
-  // }, [isMyPacks])
+  const allPacksHandler = () => {
+    dispatch(setUserIdAC(''))
+    setChoosePacks('all')
+    clearLocalStorage('userId')
+    dispatch(setIsMyPacksAC('all'))
+  }
 
   return (
-    <>
-      <Radio.Group
-        // options={options}
-        onChange={onChangeFilterHandler}
-        // value={choosePacks}
-        // optionType="button"
-      >
-        <Radio.Button checked={choosePacks !== 'all'} value="my">
+    <div className={status === 'loading' ? s.disabledButton : ''}>
+      <Radio.Group optionType="button">
+        <Button disabled={isMyPacks === 'my'} onClick={myPacksHandler}>
           My
-        </Radio.Button>
-        <Radio.Button checked={choosePacks !== 'my'} value="all">
+        </Button>
+        <Button disabled={isMyPacks === 'all'} onClick={allPacksHandler}>
           All
-        </Radio.Button>
+        </Button>
       </Radio.Group>
-    </>
+    </div>
   )
 }

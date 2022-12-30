@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
-import { setAppErrorAC, setAppErrorACType } from '../../app/app-reducer'
+import { setAppErrorAC, setAppErrorACType } from 'app/app-reducer'
 
 export const errorUtils = (
   err: Error | AxiosError<{ error: string }>,

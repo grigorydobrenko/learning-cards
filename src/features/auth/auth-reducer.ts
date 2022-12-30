@@ -1,10 +1,10 @@
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 
-import { setAppFeedbackAC, setAppStatusAC, setUserDataAC } from '../../app/app-reducer'
-import { AppThunkType } from '../../app/store'
-import { errorUtils } from '../../common/utils/error-utils'
+import { authAPI, ForgotPasswordType, LoginPayloadType, registrationAPI } from './auth-api'
 
-import { authAPI, ForgotPasswordType, LoginPayloadType } from './auth-api'
+import { setAppFeedbackAC, setAppStatusAC, setUserDataAC } from 'app/app-reducer'
+import { AppThunkType } from 'app/store'
+import { errorUtils } from 'common/utils/error-utils'
 
 const InitialState: InitialStateType = {
   isLoggedIn: false,
@@ -28,6 +28,8 @@ export const authReducer = (
   }
 }
 
+//ACTIONS =============================================
+
 export const setIsLoggedInAC = (isLoggedIn: boolean) =>
   ({
     type: 'login/SET-IS-LOGGED-IN',
@@ -38,6 +40,8 @@ export const setIsRegisteredInAC = (value: boolean) =>
   ({ type: 'login/SET-IS-REGISTERED-IN', value } as const)
 export const setIsNewPasswordSetAC = (value: boolean) =>
   ({ type: 'login/IS-NEW-PASSWORD-SET', value } as const)
+
+//THUNKS ==============================================
 
 export const loginTC =
   (data: LoginPayloadType): AppThunkType =>
@@ -57,6 +61,7 @@ export const loginTC =
       dispatch(setAppStatusAC('failed'))
     }
   }
+
 export const updateUserDataTC =
   (data: { name?: string; avatar?: string }): AppThunkType =>
   (dispatch, getState) => {
@@ -86,6 +91,7 @@ export const updateUserDataTC =
         dispatch(setAppStatusAC('failed'))
       })
   }
+
 export const logoutTC = (): AppThunkType => dispatch => {
   dispatch(setAppStatusAC('loading'))
   authAPI
@@ -112,17 +118,12 @@ export const registrationTC =
     }
 
     try {
-      // registrationAPI
-      //   .registration(dataForServer)
-      const response = await axios.post(
-        'https://neko-back.herokuapp.com/2.0/auth/register',
-        dataForServer
-      )
+      const response = await registrationAPI.registration(dataForServer)
 
       console.log(response)
       dispatch(setIsRegisteredInAC(true))
       dispatch(setAppStatusAC('succeeded'))
-      dispatch(setAppFeedbackAC('Congratulations you are registered!'))
+      dispatch(setAppFeedbackAC('Congratulations! You is registered!'))
     } catch (error) {
       const err = error as Error | AxiosError<{ error: string }>
 
@@ -151,10 +152,7 @@ link</a>
     }
 
     try {
-      const response = await axios.post(
-        'https://neko-back.herokuapp.com/2.0/auth/forgot',
-        dataToChangePassword
-      )
+      let response = await registrationAPI.forgotPassword(dataToChangePassword)
 
       dispatch(setAppStatusAC('succeeded'))
       dispatch(setIsRegisteredInAC(false))
@@ -166,8 +164,6 @@ link</a>
 
       errorUtils(err, dispatch)
       dispatch(setAppStatusAC('failed'))
-
-      console.log(error)
     }
   }
 
@@ -175,13 +171,8 @@ export const setNewPasswordTC =
   (data: setNewPasswordType): AppThunkType =>
   async dispatch => {
     dispatch(setAppStatusAC('loading'))
-    // registrationAPI
-    //   .setNewPassword(data)
     try {
-      const response = await axios.post(
-        'https://neko-back.herokuapp.com/2.0/auth/set-new-password',
-        data
-      )
+      const response = await registrationAPI.setNewPassword(data)
 
       dispatch(setIsNewPasswordSetAC(true))
       dispatch(setIsRegisteredInAC(false))
@@ -195,7 +186,7 @@ export const setNewPasswordTC =
     }
   }
 
-//TYPES
+//TYPES ========================================
 
 export type setNewPasswordType = {
   password: string
@@ -205,6 +196,7 @@ export type setNewPasswordType = {
 type dataFromForgotPasswordType = {
   email: string
 }
+
 export type ValuesFromRegistrationType = {
   fistName: string
   lastName: string
@@ -213,6 +205,7 @@ export type ValuesFromRegistrationType = {
   confirmPassword: string
   allowExtraEmails: boolean
 }
+
 type InitialStateType = {
   isRegisteredIn: boolean
   isLoggedIn: boolean

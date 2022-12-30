@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 
 import { Box, Button, Checkbox, IconButton } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -29,7 +29,7 @@ export const EditPackModal = ({
   onClick,
 }: EditPackPropsType) => {
   const pack = useAppSelector(state => state.packs.cardPacks.filter(pack => pack._id === id)[0])
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
