@@ -136,7 +136,7 @@ export const deletePackTC =
 
     try {
       await packsTableAPI.deletePack(id)
-      await dispatch(getPacksTC())
+      // await dispatch(getPacksTC())
       dispatch(setAppStatusAC('succeeded'))
       dispatch(changePackEntityStatusAC(id, 'succeeded'))
     } catch (e) {

@@ -37,8 +37,8 @@ export const MyPackMenu = ({ pack_id, packName }: Props) => {
   }
 
   const DeleteHandler = async (id: string) => {
-    await dispatch(deletePackTC(id))
     navigate(`../../packs`)
+    await dispatch(deletePackTC(id))
     console.log('Delete. id ->', id)
   }
 

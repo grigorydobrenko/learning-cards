@@ -5,7 +5,7 @@ import { Col, ConfigProvider, Empty, Row, Table } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
 
-import { CardPacksType, deletePackTC, updatePackTC } from '../packs-reducer'
+import { CardPacksType, deletePackTC, getPacksTC, updatePackTC } from '../packs-reducer'
 
 import s from './TableForPacks.module.css'
 
@@ -30,8 +30,9 @@ export const TableForPacks = () => {
     dispatch(updatePackTC(id, packName))
   }
 
-  const DeleteHandler = (id: string) => {
-    dispatch(deletePackTC(id))
+  const DeleteHandler = async (id: string) => {
+    await dispatch(deletePackTC(id))
+    dispatch(getPacksTC())
   }
   const getDate = (dateString: string) => {
     let date = new Date(Date.parse(dateString))

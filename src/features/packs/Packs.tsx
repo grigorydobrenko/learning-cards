@@ -33,7 +33,6 @@ export const Packs = () => {
     // if (localStorageValue) {
     //   dispatch(setUserIdAC(localStorageValue))
     // }
-
     dispatch(getPacksTC())
   }, [min, max, packName, user_id])
 

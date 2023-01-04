@@ -41,7 +41,7 @@ export const EditPackModal = ({
       return errors
     },
     initialValues: {
-      packName: pack.name,
+      packName: pack?.name,
       privatePack: isPrivate,
     },
     onSubmit: values => {
