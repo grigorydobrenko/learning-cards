@@ -9,6 +9,8 @@ import closeIcon from '../../../../assets/img/icons/close-icon.svg'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 
+import { InputTypeFile } from './InputTypeFile'
+
 type FormikErrorType = {
   packName?: string
   privatePack?: boolean
@@ -19,7 +21,7 @@ type AddPackModalPT = {
 }
 
 export const AddPackModal = ({ buttonInner, addPackHandler }: AddPackModalPT) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
@@ -64,6 +66,7 @@ export const AddPackModal = ({ buttonInner, addPackHandler }: AddPackModalPT) =>
       </div>
       <div className={style.contentWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
+          <InputTypeFile />
           <TextField
             variant="standard"
             label="Pack name"
