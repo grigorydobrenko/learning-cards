@@ -18,8 +18,8 @@ export const packsTableAPI = {
     })
   },
 
-  createNewPack({ cardsPack: { name } }: CreatePacksRequestType) {
-    return instance.post<CreatePacksRequestType>('/cards/pack', { cardsPack: { name } })
+  createNewPack({ cardsPack: { name, deckCover } }: CreatePacksRequestType) {
+    return instance.post<CreatePacksRequestType>('/cards/pack', { cardsPack: { name, deckCover } })
   },
 
   deletePack(id: string) {
