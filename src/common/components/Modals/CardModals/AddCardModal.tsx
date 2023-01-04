@@ -1,6 +1,16 @@
-import React, { ReactNode } from 'react'
+import React, { ChangeEvent, ReactNode, useState } from 'react'
 
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material'
+import {
+  Box,
+  Button,
+  FormControl,
+  IconButton,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
@@ -18,6 +28,8 @@ type AddCardPropsType = {
 }
 export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) => {
   const [open, setOpen] = React.useState(false)
+  const [selectedValue, setSelectedValue] = React.useState('Text')
+
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
@@ -51,6 +63,42 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
     formik.resetForm()
   }
 
+  const handleChange = (event: SelectChangeEvent) => {
+    setSelectedValue(event.target.value as string)
+  }
+
+  //operate with image
+
+  const [img, setImg] = useState('')
+
+  const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length) {
+      const file = e.target.files[0]
+
+      console.log('file: ', file)
+
+      if (file.size < 4000000) {
+        convertFileToBase64(file, (file64: string) => {
+          console.log('file64: ', file64)
+        })
+      } else {
+        console.error('Error: ', 'Файл слишком большого размера')
+      }
+    }
+  }
+
+  const convertFileToBase64 = (file: File, callBack: (value: string) => void) => {
+    const reader = new FileReader()
+
+    reader.onloadend = () => {
+      const file64 = reader.result as string
+
+      setImg(file64)
+      callBack(file64)
+    }
+    reader.readAsDataURL(file)
+  }
+
   return (
     <BasicModal
       open={open}
@@ -71,21 +119,55 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
             <Select
               labelId="input-label"
               {...formik.getFieldProps('format')}
+              value={selectedValue}
+              onChange={handleChange}
               label="Choose a question format"
             >
               <MenuItem value={'Text'}>Text</MenuItem>
               <MenuItem value={'Image'}>Image</MenuItem>
             </Select>
           </FormControl>
-          <TextField
-            variant="standard"
-            label="Question"
-            {...formik.getFieldProps('question')}
-            onBlur={formik.handleBlur}
-          />
+
+          {selectedValue === 'Text' ? (
+            <TextField
+              variant="standard"
+              label="Question"
+              {...formik.getFieldProps('question')}
+              onBlur={formik.handleBlur}
+            />
+          ) : (
+            <>
+              <div className={style.selectImageHeader}>
+                <div className={style.selectImageTitle}>Question</div>
+                <label>
+                  <input type="file" onChange={uploadHandler} style={{ display: 'none' }} />
+                  <Button
+                    sx={{
+                      fontFamily: 'Montserrat',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      fontStyle: 'normal',
+                      lineHeight: '20px',
+                      color: '#366eff',
+                      textDecorationLine: 'underline',
+                    }}
+                    component="span"
+                  >
+                    Change cover
+                  </Button>
+                </label>
+              </div>
+
+              <Paper variant="outlined" className={style.imageContainer}>
+                <img src={img} alt={'question'} className={style.image} />
+              </Paper>
+            </>
+          )}
+
           {formik.errors.question && formik.touched.question ? (
             <div style={{ color: 'red' }}>{formik.errors.question}</div>
           ) : null}
+
           <TextField
             variant="standard"
             className={style.addCardInput}
