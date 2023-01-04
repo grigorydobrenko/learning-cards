@@ -16,6 +16,8 @@ const InitialState: InitialStateType = {
   min: 0,
   max: 20,
   user_id: '',
+  maxCardsCount: 0,
+  minCardsCount: 0,
 }
 
 export const packsReducer = (
@@ -160,6 +162,8 @@ type InitialStateType = {
   min: number
   max: number
   user_id: string
+  maxCardsCount: number
+  minCardsCount: number
 }
 export type CardPacksType = {
   cardsCount: number
