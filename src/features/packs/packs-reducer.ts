@@ -109,14 +109,14 @@ export const addNewPackTC =
   }
 
 export const updatePackTC =
-  (_id: string, name: string): AppThunkType =>
+  (_id: string, name: string, isMenuModal: boolean): AppThunkType =>
   async dispatch => {
     dispatch(setAppStatusAC('loading'))
     dispatch(changePackEntityStatusAC(_id, 'loading'))
 
     try {
       await packsTableAPI.updatePack({ cardsPack: { _id, name } })
-      await dispatch(getPacksTC())
+      !isMenuModal && (await dispatch(getPacksTC()))
       dispatch(setAppStatusAC('succeeded'))
       dispatch(changePackEntityStatusAC(_id, 'succeeded'))
     } catch (e) {

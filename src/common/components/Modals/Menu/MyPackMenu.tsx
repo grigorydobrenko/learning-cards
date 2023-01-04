@@ -11,6 +11,7 @@ import MenuItem from '@mui/material/MenuItem'
 import { useNavigate } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
 
+import { getCardsTC } from '../../../../features/cards/cards-reducer'
 import { deletePackTC, updatePackTC } from '../../../../features/packs/packs-reducer'
 import { useAppDispatch } from '../../../hooks/customHooks'
 import { DeletePackModal } from '../PackModals/DeletePackModal'
@@ -18,6 +19,7 @@ import { EditPackModal } from '../PackModals/EditPackModal'
 
 export const MyPackMenu = ({ pack_id, packName }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+
   const open = Boolean(anchorEl)
 
   const navigate = useNavigate()
@@ -31,8 +33,10 @@ export const MyPackMenu = ({ pack_id, packName }: Props) => {
 
   const dispatch = useAppDispatch()
 
-  const EditHandler = (packName: string, id: string) => {
-    dispatch(updatePackTC(id, packName))
+  const EditHandler = async (packName: string, id: string) => {
+    await dispatch(updatePackTC(id, packName, true))
+    await dispatch(getCardsTC(pack_id))
+    handleClose()
     console.log('Edit. id ->', id)
   }
 

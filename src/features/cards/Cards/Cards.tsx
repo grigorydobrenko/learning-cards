@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { Button, Container } from '@mui/material'
 import Typography from '@mui/material/Typography'
@@ -20,7 +20,6 @@ export const Cards = () => {
   const packName = useAppSelector(cardsSelector.packName)
   const _id = useAppSelector(state => state.app.userData?._id)
   const packUserId = useAppSelector(cardsSelector.packUserId)
-
   const isMyPack = _id === packUserId
 
   const dispatch = useAppDispatch()

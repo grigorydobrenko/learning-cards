@@ -27,7 +27,7 @@ export const TableForPacks = () => {
   }
 
   const EditHandler = (packName: string, id: string) => {
-    dispatch(updatePackTC(id, packName))
+    dispatch(updatePackTC(id, packName, false))
   }
 
   const DeleteHandler = async (id: string) => {
