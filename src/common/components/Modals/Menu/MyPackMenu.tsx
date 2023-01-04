@@ -17,7 +17,9 @@ import { useAppDispatch } from '../../../hooks/customHooks'
 import { DeletePackModal } from '../PackModals/DeletePackModal'
 import { EditPackModal } from '../PackModals/EditPackModal'
 
-export const MyPackMenu = ({ pack_id, packName }: Props) => {
+import s from './../../../../features/packs/TableForPacks/TableForPacks.module.css'
+
+export const MyPackMenu = ({ pack_id, packName, packLength }: Props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const open = Boolean(anchorEl)
@@ -76,7 +78,7 @@ export const MyPackMenu = ({ pack_id, packName }: Props) => {
           editPackHandler={EditHandler}
           onClick={handleClose}
           innerButton={
-            <MenuItem>
+            <MenuItem className={packName}>
               <ListItemIcon>
                 <BorderColorIcon fontSize="small" />
               </ListItemIcon>
@@ -100,7 +102,7 @@ export const MyPackMenu = ({ pack_id, packName }: Props) => {
           deletePackHandler={DeleteHandler}
           name={packName}
         />
-        <MenuItem onClick={onLearnHandler}>
+        <MenuItem onClick={onLearnHandler} className={packLength === 0 ? s.disabledButton : ''}>
           <ListItemIcon>
             <SchoolIcon fontSize="small" />
           </ListItemIcon>
@@ -114,4 +116,5 @@ export const MyPackMenu = ({ pack_id, packName }: Props) => {
 type Props = {
   pack_id?: string
   packName: string
+  packLength: number
 }
