@@ -91,7 +91,7 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
 
       console.log('file: ', file)
 
-      if (file.size < 4000000) {
+      if (file.size < 1000000) {
         convertFileToBase64(file, callBack)
       } else {
         console.error('Error: ', 'Файл слишком большого размера')

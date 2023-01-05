@@ -35,8 +35,13 @@ export const TableForCards = ({ isMyPack }: props) => {
   const dispatch = useAppDispatch()
   const { pack_id } = useParams()
 
-  const editCardHandler = (CardId: string, question: string, answer: string) => {
-    dispatch(editCardTC(CardId, pack_id, question, answer))
+  const editCardHandler = (
+    CardId: string,
+    question: string,
+    answer: string,
+    questionImg?: string
+  ) => {
+    dispatch(editCardTC(CardId, pack_id, question, answer, questionImg))
   }
 
   const deleteCardHandler = (CardId: string) => {
@@ -45,7 +50,11 @@ export const TableForCards = ({ isMyPack }: props) => {
 
   const dataSource = cards.map(card => ({
     key: card._id,
-    question: card.questionImg ? <Image width={200} src={card.questionImg} /> : card.question,
+    question: card.questionImg ? (
+      <Image width={200} height={200} src={card.questionImg} />
+    ) : (
+      card.question
+    ),
     answer: card.answer,
     lastUpdated: getDate(card.updated),
     grade: isMyPack ? (
@@ -53,8 +62,8 @@ export const TableForCards = ({ isMyPack }: props) => {
         <RateStars rating={card.grade} />
         <EditCardModal
           innerButton={<EditOutlined className={s.CardSettingElement} />}
-          editCardHandler={(id: string, question: string, answer: string) =>
-            editCardHandler(id, question, answer)
+          editCardHandler={(id: string, question: string, answer: string, questionImg?: string) =>
+            editCardHandler(id, question, answer, questionImg)
           }
           cardId={card._id}
         />
@@ -76,12 +85,14 @@ export const TableForCards = ({ isMyPack }: props) => {
       title: 'Question',
       dataIndex: 'question',
       key: 'question',
-      width: '30%',
+      width: '25%',
     },
     {
       title: 'Answer',
       dataIndex: 'answer',
       key: 'answer',
+      width: '40%',
+      ellipsis: true,
     },
     {
       title: 'Last Updated',

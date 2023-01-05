@@ -17,7 +17,7 @@ type FormikErrorType = {
 type EditCardPropsType = {
   cardId: string
   innerButton: ReactNode
-  editCardHandler: (id: string, question: string, answer: string) => void
+  editCardHandler: (id: string, question: string, answer: string, questionImg?: string) => void
 }
 export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCardPropsType) => {
   const card = useAppSelector(state => state.cards.cards.filter(c => c._id === cardId)[0])
@@ -41,7 +41,12 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
       format: '',
     },
     onSubmit: values => {
-      editCardHandler(card._id, values.question, values.answer)
+      if (updatedImg) {
+        editCardHandler(card._id, values.question, values.answer, updatedImg)
+      } else {
+        editCardHandler(card._id, values.question, values.answer)
+      }
+
       setOpen(false)
       formik.resetForm()
     },
@@ -77,7 +82,7 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
 
       console.log('file: ', file)
 
-      if (file.size < 4000000) {
+      if (file.size < 100000) {
         convertFileToBase64(file, callBack)
       } else {
         console.error('Error: ', 'Файл слишком большого размера')
