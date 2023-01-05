@@ -10,6 +10,8 @@ import { useAppSelector } from '../../../hooks/customHooks'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 
+import { InputTypeFile } from './InputTypeFile/InputTypeFile'
+
 type FormikErrorType = {
   packName?: string
   privatePack?: boolean
@@ -78,6 +80,7 @@ export const EditPackModal = ({
       </div>
       <div className={style.contentWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
+          <InputTypeFile id={id} />
           <TextField
             variant="standard"
             label="Pack name"
