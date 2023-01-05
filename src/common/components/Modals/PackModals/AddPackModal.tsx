@@ -9,7 +9,7 @@ import closeIcon from '../../../../assets/img/icons/close-icon.svg'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 
-import { InputTypeFile } from './InputTypeFile'
+import { InputTypeFile } from './InputTypeFile/InputTypeFile'
 
 type FormikErrorType = {
   packName?: string
