@@ -8,3 +8,20 @@
 
     opacity: 0.5;
 }
+
+.nameContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: baseline;
+    /*height: 50px;*/
+}
+
+.deckCover {
+    height: 55px;
+    width: 70px;
+    /*//padding-right: 10px;*/
+}
+.namePack {
+    margin-left: 10px;
+}
