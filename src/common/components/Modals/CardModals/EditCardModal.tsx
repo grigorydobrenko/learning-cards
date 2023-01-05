@@ -4,8 +4,9 @@ import { Box, Button, IconButton, Paper } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
+import { setAppErrorAC } from '../../../../app/app-reducer'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import { useAppSelector } from '../../../hooks/customHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/customHooks'
 import { convertFileToBase64 } from '../../../utils/baseTo64Converter'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
@@ -38,7 +39,6 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
     initialValues: {
       question: card.question,
       answer: card.answer,
-      format: '',
     },
     onSubmit: values => {
       if (updatedImg) {
@@ -70,6 +70,8 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
   const [updatedImg, setUpdatedImg] = useState('')
   const [isUpdated, setIsUpdated] = useState(false)
 
+  const dispatch = useAppDispatch()
+
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
     let callBack = (file64: string) => {
       console.log('file64: ', file64)
@@ -84,8 +86,9 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
 
       if (file.size < 100000) {
         convertFileToBase64(file, callBack)
+        dispatch(setAppErrorAC(null))
       } else {
-        console.error('Error: ', 'Файл слишком большого размера')
+        dispatch(setAppErrorAC('Файл слишком большого размера'))
       }
     }
   }
