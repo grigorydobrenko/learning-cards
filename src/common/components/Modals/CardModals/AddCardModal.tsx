@@ -15,6 +15,7 @@ import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
+import { convertFileToBase64 } from '../../../utils/baseTo64Converter'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 
@@ -51,7 +52,7 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
     },
     onSubmit: values => {
       console.log(values)
-
+      //
       if (img) {
         addCardHandler(values.question, values.answer, img)
       } else {
@@ -80,31 +81,22 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
   const [img, setImg] = useState('')
 
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    let callBack = (file64: string) => {
+      console.log('file64: ', file64)
+      setImg(file64)
+    }
+
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0]
 
       console.log('file: ', file)
 
       if (file.size < 4000000) {
-        convertFileToBase64(file, (file64: string) => {
-          console.log('file64: ', file64)
-        })
+        convertFileToBase64(file, callBack)
       } else {
         console.error('Error: ', 'Файл слишком большого размера')
       }
     }
-  }
-
-  const convertFileToBase64 = (file: File, callBack: (value: string) => void) => {
-    const reader = new FileReader()
-
-    reader.onloadend = () => {
-      const file64 = reader.result as string
-
-      setImg(file64)
-      callBack(file64)
-    }
-    reader.readAsDataURL(file)
   }
 
   return (
