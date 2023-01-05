@@ -85,7 +85,8 @@ export const TableForCards = ({ isMyPack }: props) => {
       title: 'Question',
       dataIndex: 'question',
       key: 'question',
-      width: '25%',
+      width: '30%',
+      ellipsis: true,
     },
     {
       title: 'Answer',
