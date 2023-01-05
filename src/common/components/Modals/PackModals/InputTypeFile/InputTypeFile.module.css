@@ -1,0 +1,14 @@
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.describeContainer {
+
+}
+
+.pictureContainer img {
+    width: 100%;
+}
