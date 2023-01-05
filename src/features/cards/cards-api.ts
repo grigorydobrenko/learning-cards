@@ -23,12 +23,13 @@ export const cardsApi = {
     })
   },
 
-  addNewCard(id: string, question?: string, answer?: string) {
+  addNewCard(id: string, question?: string, answer?: string, questionImg?: string) {
     const data = {
       card: {
         cardsPack_id: id,
         question,
         answer,
+        questionImg,
       },
     }
 
@@ -74,10 +75,11 @@ type Paylod = {
   cardsPack_id: string
   question?: string
   answer?: string
+  questionImg?: string
 }
 
 type AddPaylod = Omit<Paylod, '_id'>
-type UpdatePaylod = Omit<Paylod, 'cardsPack_id'>
+type UpdatePaylod = Omit<Paylod, 'cardsPack_id' | 'questionImg'>
 
 type UpdateGradePayload = {
   grade: number

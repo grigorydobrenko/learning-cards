@@ -18,3 +18,7 @@
 .black {
   color: #000000;
 }
+
+.imageContainer {
+  margin: 15px 0;
+}

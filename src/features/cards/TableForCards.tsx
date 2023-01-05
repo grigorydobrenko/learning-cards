@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { ConfigProvider, Empty, Table } from 'antd'
+import { ConfigProvider, Empty, Image, Table } from 'antd'
 import Search from 'antd/lib/input/Search'
 import { useParams } from 'react-router-dom'
 
@@ -45,7 +45,7 @@ export const TableForCards = ({ isMyPack }: props) => {
 
   const dataSource = cards.map(card => ({
     key: card._id,
-    question: card.question,
+    question: card.questionImg ? <Image width={200} src={card.questionImg} /> : card.question,
     answer: card.answer,
     lastUpdated: getDate(card.updated),
     grade: isMyPack ? (
@@ -76,7 +76,7 @@ export const TableForCards = ({ isMyPack }: props) => {
       title: 'Question',
       dataIndex: 'question',
       key: 'question',
-      width: '20%',
+      width: '30%',
     },
     {
       title: 'Answer',

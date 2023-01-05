@@ -20,11 +20,12 @@ import style from '../Modals.module.css'
 
 type FormikErrorType = {
   question?: string
+  questionImg?: string
   answer?: string
 }
 type AddCardPropsType = {
   innerButton: ReactNode
-  addCardHandler: (question: string, answer: string) => void
+  addCardHandler: (question: string, answer: string, img?: string) => void
 }
 export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) => {
   const [open, setOpen] = React.useState(false)
@@ -34,7 +35,7 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
     validate: values => {
       const errors: FormikErrorType = {}
 
-      if (!values.question) {
+      if (!values.question && selectedValue !== 'Image') {
         errors.question = 'Question is required'
       }
       if (!values.answer) {
@@ -46,10 +47,17 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
     initialValues: {
       question: '',
       answer: '',
-      format: 'Text',
+      // format: 'Text',
     },
     onSubmit: values => {
-      addCardHandler(values.question, values.answer)
+      console.log(values)
+
+      if (img) {
+        addCardHandler(values.question, values.answer, img)
+      } else {
+        addCardHandler(values.question, values.answer)
+      }
+
       setOpen(false)
       formik.resetForm()
     },
@@ -140,7 +148,13 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
               <div className={style.selectImageHeader}>
                 <div className={style.selectImageTitle}>Question</div>
                 <label>
-                  <input type="file" onChange={uploadHandler} style={{ display: 'none' }} />
+                  <input
+                    name={'questionImg'}
+                    type="file"
+                    onChange={uploadHandler}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                  />
                   <Button
                     sx={{
                       fontFamily: 'Montserrat',
@@ -159,7 +173,7 @@ export const AddCardModal = ({ innerButton, addCardHandler }: AddCardPropsType) 
               </div>
 
               <Paper variant="outlined" className={style.imageContainer}>
-                <img src={img} alt={'question'} className={style.image} />
+                <img src={img} className={style.image} />
               </Paper>
             </>
           )}

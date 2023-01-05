@@ -9,6 +9,7 @@ import FormGroup from '@mui/material/FormGroup'
 import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 import { Container } from '@mui/system'
+import { Image } from 'antd'
 import { useFormik } from 'formik'
 import { Link, useParams } from 'react-router-dom'
 
@@ -27,13 +28,12 @@ const Learn = () => {
 
   const packName = useAppSelector(cardsSelector.packName)
   const cards = useAppSelector(cardsSelector.cards)
-
-  // const onNext = (grade: number, card_id: string) => {}
+  // const questionImg = useAppSelector(state => state.cards.)
 
   const dispatch = useAppDispatch()
 
   const [first, setFirst] = useState<boolean>(true)
-  // const [first, setFirst] = useState<boolean>(0);
+
   const { pack_id } = useParams()
 
   const [card, setCard] = useState<CardType>({
@@ -57,15 +57,6 @@ const Learn = () => {
 
     if (cards.cards.length > 0) setCard(getCard(cards.cards))
   }, [dispatch, pack_id, cards, first])
-
-  // const onNext = () => {
-  //   if (cards.cards.length > 0) {
-  //     // dispatch
-  //     setCard(getCard(cards.cards))
-  //   }
-  //   // else {
-  //   // }
-  // }
 
   const [value, setValue] = React.useState('')
 
@@ -101,7 +92,7 @@ const Learn = () => {
     <>
       <Container
         maxWidth="lg"
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '40px' }}
+        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px' }}
       >
         <Link className={s.profileLink} to={PATH.PACKS}>
           <img src={arrowIcon} alt="arrow icon" />
@@ -116,10 +107,16 @@ const Learn = () => {
           <CardContent sx={{ padding: '33px' }}>
             <Typography sx={{ fontSize: 16, mb: 1.8 }}>
               <span className={s.bold}>Question: </span>
-              {card.question}
+              {card.questionImg ? (
+                <div className={s.imageContainer}>
+                  <Image width={380} src={card.questionImg} />
+                </div>
+              ) : (
+                card.question
+              )}
             </Typography>
 
-            <Typography sx={{ mb: 4 }} color="text.secondary">
+            <Typography sx={{ mb: 2.5 }} color="text.secondary">
               Количество попыток ответов на вопрос: <span className={s.bold}>{card.shots}</span>
             </Typography>
 
@@ -136,12 +133,12 @@ const Learn = () => {
 
             {showAnswer && (
               <FormGroup>
-                <Typography sx={{ fontSize: 16, mb: 4 }}>
+                <Typography sx={{ fontSize: 16, mb: 2.5 }}>
                   <span className={s.bold}>Answer: </span>
                   {card.answer}
                 </Typography>
                 <form onSubmit={formik.handleSubmit}>
-                  <FormControl sx={{ mb: 4 }}>
+                  <FormControl sx={{ mb: 2.5 }}>
                     <Typography id="demo-customized-radios">Rate yourself:</Typography>
 
                     <RadioGroup

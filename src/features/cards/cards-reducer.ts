@@ -94,11 +94,11 @@ export const getCardsTC =
   }
 
 export const addNewCardTC =
-  (PackId: string, question?: string, answer?: string): AppThunkType =>
+  (PackId: string, question?: string, answer?: string, img?: string): AppThunkType =>
   async dispatch => {
     try {
       dispatch(setAppStatusAC('loading'))
-      await cardsApi.addNewCard(PackId, question, answer)
+      await cardsApi.addNewCard(PackId, question, answer, img)
       await dispatch(getCardsTC(PackId))
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -205,6 +205,7 @@ export type ResponseGetCardsType = Omit<InitialStateType, 'sort' | 'search'>
 export type CardType = {
   answer: string
   question: string
+  questionImg?: string
   cardsPack_id: string
   grade: number
   shots: number
