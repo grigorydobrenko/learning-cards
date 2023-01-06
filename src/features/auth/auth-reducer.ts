@@ -64,7 +64,7 @@ export const loginTC =
 
 export const updateUserDataTC =
   (data: { name?: string; avatar?: string }): AppThunkType =>
-  (dispatch, getState) => {
+  async (dispatch, getState) => {
     dispatch(setAppStatusAC('loading'))
     const state = getState()
     const user = state.app.userData
@@ -78,18 +78,17 @@ export const updateUserDataTC =
       ...data,
     }
 
-    authAPI
-      .updateUserData(dataToUpdate)
-      .then(res => {
-        dispatch(setUserDataAC(res.data.updatedUser))
-        dispatch(setAppStatusAC('succeeded'))
-      })
-      .catch(e => {
-        const err = e as Error | AxiosError<{ error: string }>
+    try {
+      let res = await authAPI.updateUserData(dataToUpdate)
 
-        errorUtils(err, dispatch)
-        dispatch(setAppStatusAC('failed'))
-      })
+      dispatch(setUserDataAC(res.data.updatedUser))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
   }
 
 export const logoutTC = (): AppThunkType => dispatch => {

@@ -45,7 +45,7 @@ export const Header = () => {
               <NavLink className={style.profileLink} to={PATH.PROFILE}>
                 {user?.name || 'user name'}
               </NavLink>
-              <Avatar alt="user photo" src={userPhoto} />
+              <Avatar alt="user photo" src={user?.avatar || userPhoto} />
             </Box>
           ) : (
             <NavLink className={style.headerButton} to={PATH.LOGIN}>
