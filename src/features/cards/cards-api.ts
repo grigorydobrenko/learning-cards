@@ -23,23 +23,25 @@ export const cardsApi = {
     })
   },
 
-  addNewCard(id: string, question?: string, answer?: string) {
+  addNewCard(id: string, question?: string, answer?: string, questionImg?: string) {
     const data = {
       card: {
         cardsPack_id: id,
         question,
         answer,
+        questionImg,
       },
     }
 
     return instance.post<'', '', AddCardPayload>('/cards/card', data)
   },
 
-  editCard(id: string, question?: string, answer?: string) {
+  editCard(id: string, question?: string, answer?: string, questionImg?: string) {
     const data = {
       card: {
         _id: id,
         question,
+        questionImg,
         answer,
       },
     }
@@ -74,6 +76,7 @@ type Paylod = {
   cardsPack_id: string
   question?: string
   answer?: string
+  questionImg?: string
 }
 
 type AddPaylod = Omit<Paylod, '_id'>

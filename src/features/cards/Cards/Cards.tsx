@@ -20,6 +20,7 @@ export const Cards = () => {
   const packName = useAppSelector(cardsSelector.packName)
   const _id = useAppSelector(state => state.app.userData?._id)
   const packUserId = useAppSelector(cardsSelector.packUserId)
+  const packLength = useAppSelector(cardsSelector.cardsTotalCount)
 
   const isMyPack = _id === packUserId
 
@@ -27,9 +28,9 @@ export const Cards = () => {
 
   const { pack_id } = useParams()
 
-  const addCardHandler = (question: string, answer: string) => {
+  const addCardHandler = (question: string, answer: string, img?: string) => {
     if (pack_id) {
-      dispatch(addNewCardTC(pack_id, question, answer))
+      dispatch(addNewCardTC(pack_id, question, answer, img))
     }
   }
 
@@ -67,7 +68,9 @@ export const Cards = () => {
             gutterBottom
           >
             {packName}
-            {isMyPack && <MyPackMenu pack_id={pack_id} packName={packName} />}
+            {isMyPack && (
+              <MyPackMenu pack_id={pack_id} packName={packName} packLength={packLength} />
+            )}
           </Typography>
 
           {isMyPack ? (

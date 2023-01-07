@@ -18,3 +18,12 @@
 .black {
   color: #000000;
 }
+
+.imageContainer {
+  margin: 15px 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}

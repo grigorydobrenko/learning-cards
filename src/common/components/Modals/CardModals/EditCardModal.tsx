@@ -1,11 +1,13 @@
-import React, { ReactNode, useEffect } from 'react'
+import React, { ChangeEvent, ReactNode, useEffect, useState } from 'react'
 
-import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Select } from '@mui/material'
+import { Box, Button, IconButton, Paper } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import { useFormik } from 'formik'
 
+import { setAppErrorAC } from '../../../../app/app-reducer'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
-import { useAppSelector } from '../../../hooks/customHooks'
+import { useAppDispatch, useAppSelector } from '../../../hooks/customHooks'
+import { convertFileToBase64 } from '../../../utils/baseTo64Converter'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
 
@@ -16,7 +18,7 @@ type FormikErrorType = {
 type EditCardPropsType = {
   cardId: string
   innerButton: ReactNode
-  editCardHandler: (id: string, question: string, answer: string) => void
+  editCardHandler: (id: string, question: string, answer: string, questionImg?: string) => void
 }
 export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCardPropsType) => {
   const card = useAppSelector(state => state.cards.cards.filter(c => c._id === cardId)[0])
@@ -37,10 +39,14 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
     initialValues: {
       question: card.question,
       answer: card.answer,
-      format: '',
     },
     onSubmit: values => {
-      editCardHandler(card._id, values.question, values.answer)
+      if (updatedImg) {
+        editCardHandler(card._id, values.question, values.answer, updatedImg)
+      } else {
+        editCardHandler(card._id, values.question, values.answer)
+      }
+
       setOpen(false)
       formik.resetForm()
     },
@@ -59,6 +65,34 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
     formik.initialValues.answer = card.answer
   }, [card.question, card.answer])
 
+  //operate with image
+
+  const [updatedImg, setUpdatedImg] = useState('')
+  const [isUpdated, setIsUpdated] = useState(false)
+
+  const dispatch = useAppDispatch()
+
+  const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    let callBack = (file64: string) => {
+      console.log('file64: ', file64)
+      setUpdatedImg(file64)
+      setIsUpdated(true)
+    }
+
+    if (e.target.files && e.target.files.length) {
+      const file = e.target.files[0]
+
+      console.log('file: ', file)
+
+      if (file.size < 100000) {
+        convertFileToBase64(file, callBack)
+        dispatch(setAppErrorAC(null))
+      } else {
+        dispatch(setAppErrorAC('Файл слишком большого размера'))
+      }
+    }
+  }
+
   return (
     <BasicModal
       open={open}
@@ -74,25 +108,48 @@ export const EditCardModal = ({ cardId, innerButton, editCardHandler }: EditCard
       </div>
       <div className={style.contentWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
-          <FormControl variant="outlined">
-            <InputLabel id="input-label">Choose a question format</InputLabel>
-            <Select
-              labelId="input-label"
-              {...formik.getFieldProps('format')}
+          {card.questionImg ? (
+            <>
+              <div className={style.selectImageHeader}>
+                <div className={style.selectImageTitle}>Question</div>
+                <label>
+                  <input
+                    name={'questionImg'}
+                    type="file"
+                    onChange={uploadHandler}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                  />
+                  <Button
+                    sx={{
+                      fontFamily: 'Montserrat',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      fontStyle: 'normal',
+                      lineHeight: '20px',
+                      color: '#366eff',
+                      textDecorationLine: 'underline',
+                    }}
+                    component="span"
+                  >
+                    Change cover
+                  </Button>
+                </label>
+              </div>
+
+              <Paper variant="outlined" className={style.imageContainer}>
+                <img src={isUpdated ? updatedImg : card.questionImg} className={style.image} />
+              </Paper>
+            </>
+          ) : (
+            <TextField
+              variant="standard"
+              label="Question"
+              {...formik.getFieldProps('question')}
               onBlur={formik.handleBlur}
-              label="Choose a question format"
-            >
-              <MenuItem value={'Text'}>Text</MenuItem>
-              <MenuItem value={'Image'}>Image</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            variant="standard"
-            label="Question"
-            {...formik.getFieldProps('question')}
-            onBlur={formik.handleBlur}
-          />
-          {formik.errors.question && <div style={{ color: 'red' }}>{formik.errors.question}</div>}
+            />
+          )}
+
           <TextField
             variant="standard"
             label="Answer"

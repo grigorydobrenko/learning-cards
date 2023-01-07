@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react'
+import React, { ReactNode, useState } from 'react'
 
 import { Box, Button, Checkbox, IconButton } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -26,9 +26,9 @@ export const EditPackModal = ({
   isPrivate,
   innerButton,
   editPackHandler,
-  onClick,
 }: EditPackPropsType) => {
-  const pack = useAppSelector(state => state.packs.cardPacks.filter(pack => pack._id === id)[0])
+  const _pack = useAppSelector(state => state.packs.cardPacks.filter(pack => pack._id === id)[0])
+  const pack = useAppSelector(state => state.cards)
   const [open, setOpen] = useState(false)
   const formik = useFormik({
     validate: values => {
@@ -41,7 +41,7 @@ export const EditPackModal = ({
       return errors
     },
     initialValues: {
-      packName: pack.name,
+      packName: pack.packName,
       privatePack: isPrivate,
     },
     onSubmit: values => {
@@ -55,13 +55,8 @@ export const EditPackModal = ({
 
   const handleClose = () => {
     setOpen(false)
-    onClick && onClick()
     formik.resetForm()
   }
-
-  useEffect(() => {
-    formik.initialValues.packName = pack.name
-  }, [pack.name])
 
   return (
     <BasicModal
@@ -101,7 +96,6 @@ export const EditPackModal = ({
               Cancel
             </Button>
             <Button
-              onClick={onClick ? onClick : () => {}}
               className={style.modalButton}
               type={'submit'}
               variant={'contained'}
