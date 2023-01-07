@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { authActionType, authReducer } from '../features/auth/auth-reducer'
@@ -14,12 +14,16 @@ const rootReducer = combineReducers({
   cards: cardsReducer,
 })
 
-const store = createStore(
-  rootReducer,
-  // restoreStateFromLocalStorage('userId', {}),
-  // loadState('userId'),
-  applyMiddleware(thunk)
-)
+// const store = createStore(
+//   rootReducer,
+//   // restoreStateFromLocalStorage('userId', {}),
+//   // loadState('userId'),
+//   applyMiddleware(thunk)
+// )
+
+// @ts-ignore
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 
 // store.subscribe(() => {
 //   //saveStateToLocalStorage('isMyPack', store.getState().packs.isMyPacks)

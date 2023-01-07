@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { DeleteOutlined, EditOutlined, PlaySquareOutlined, SyncOutlined } from '@ant-design/icons'
-import { Col, ConfigProvider, Empty, Row, Table } from 'antd'
+import { Col, ConfigProvider, Empty, Image, Row, Table } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
 import { v4 as uuid4 } from 'uuid'
 
@@ -9,6 +9,7 @@ import { CardPacksType, deletePackTC, getPacksTC, updatePackTC } from '../packs-
 
 import s from './TableForPacks.module.css'
 
+import defaultAva from 'assets/img/icons/default-cover.jpg'
 import { DeletePackModal } from 'common/components/Modals/PackModals/DeletePackModal'
 import { EditPackModal } from 'common/components/Modals/PackModals/EditPackModal'
 import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
@@ -85,8 +86,15 @@ export const TableForPacks = () => {
       />,
     ]
 
+    let coverImg
+
+    if (pack.deckCover && pack.deckCover.length > 1) {
+      coverImg = pack.deckCover.includes('data:image') ? pack.deckCover : defaultAva
+    }
+
     return {
       key: pack._id,
+      deckCover: coverImg ? coverImg : defaultAva,
       name:
         pack.entityStatus === 'loading' ? (
           <SyncOutlined spin style={{ fontSize: '15px', marginLeft: '5px' }} />
@@ -104,31 +112,45 @@ export const TableForPacks = () => {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      render: (text: any, record: any) => {
+        return (
+          <div className={s.nameContainer}>
+            <div className={s.deckCover}>
+              <Image src={record.deckCover} alt={''} />
+            </div>
+            <div className={s.namePack}>{record.name}</div>
+          </div>
+        )
+      },
+      width: '30%',
     },
     {
       title: 'Cards',
       dataIndex: 'cards',
       key: 'cards',
-
       sorter: (a: any, b: any) => a.cards - b.cards,
+      width: '10%',
+      //alignItems: 'center',
     },
     {
       title: 'Last Updated',
       dataIndex: 'lastUpdated',
       key: 'lastUpdated',
-
+      width: '10%',
       sorter: (a: any, b: any) => a.lastUpdated.localeCompare(b.lastUpdated),
     },
     {
       title: 'Created by',
       dataIndex: 'createdBy',
       key: 'createdBy',
+      width: '20%',
       sorter: (a: any, b: any) => (a.createdBy > b.createdBy ? 1 : -1),
     },
     {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
+      width: '10%',
       render: (actions: any) => actions,
     },
   ]

@@ -12,6 +12,8 @@ export const CardsCountSlider = () => {
 
   const min = useAppSelector(packsSelector.min)
   const max = useAppSelector(packsSelector.max)
+  const minCardsCount = useAppSelector(packsSelector.minCardsCount)
+  const maxCardsCount = useAppSelector(packsSelector.maxCardsCount)
   const status = useAppSelector(appSelector.status)
 
   const [minCards, setMinCards] = useState<number>(min)

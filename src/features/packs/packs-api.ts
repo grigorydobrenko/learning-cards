@@ -18,19 +18,19 @@ export const packsTableAPI = {
     })
   },
 
-  createNewPack({ cardsPack: { name } }: CreatePacksRequestType) {
-    return instance.post<CreatePacksRequestType>('/cards/pack', { cardsPack: { name } })
+  createNewPack({ cardsPack: { name, deckCover } }: CreatePacksRequestType) {
+    return instance.post<CreatePacksRequestType>('/cards/pack', { cardsPack: { name, deckCover } })
   },
 
   deletePack(id: string) {
     return instance.delete<DeletePackRequestType>(`/cards/pack?id=${id}`)
   },
 
-  updatePack({ cardsPack: { _id, name } }: UpdatePackNameType) {
+  updatePack({ cardsPack: { _id, name, deckCover } }: UpdatePackNameType) {
     return instance.put<'', AxiosResponse<PacksResponseType>, UpdatePackNameType>(
       // `/cards/pack?id=${id}&name=${newPackName}`
       '/cards/pack',
-      { cardsPack: { _id, name } }
+      { cardsPack: { _id, name, deckCover } }
     )
   },
 }
@@ -40,6 +40,7 @@ type UpdatePackNameType = {
   cardsPack: {
     _id: string
     name: string
+    deckCover?: string
   }
 }
 type DeletePackRequestType = {

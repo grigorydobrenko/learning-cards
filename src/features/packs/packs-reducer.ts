@@ -16,6 +16,10 @@ const InitialState: InitialStateType = {
   min: 0,
   max: 20,
   user_id: '',
+  maxCardsCount: 0,
+  minCardsCount: 0,
+  deckCover: '',
+  privatePack: false,
 }
 
 export const packsReducer = (
@@ -42,6 +46,10 @@ export const packsReducer = (
       return { ...state, user_id: action.user_id }
     case 'packs/SET-IS-MY-PACKS':
       return { ...state, isMyPacks: action.isMyPacks }
+    case 'packs/SET-PACK-DECK-COVER':
+      return { ...state, deckCover: action.deckCover }
+    case 'packs/SET-PRIVATE-PACK':
+      return { ...state, privatePack: action.privatePack }
 
     default:
       return state
@@ -63,6 +71,10 @@ export const setSearchDataAC = (packName: string) =>
 export const setUserIdAC = (user_id: string) => ({ type: 'packs/SET-USER-ID', user_id } as const)
 export const setIsMyPacksAC = (isMyPacks: string | null) =>
   ({ type: 'packs/SET-IS-MY-PACKS', isMyPacks } as const)
+export const setPackDeckCoverAC = (deckCover: string) =>
+  ({ type: 'packs/SET-PACK-DECK-COVER', deckCover } as const)
+export const setPrivatePackAC = (privatePack: boolean) =>
+  ({ type: 'packs/SET-PRIVATE-PACK', privatePack } as const)
 
 //THUNKS =========================================
 
@@ -93,12 +105,15 @@ export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
 
 export const addNewPackTC =
   (name: string): AppThunkType =>
-  async dispatch => {
+  async (dispatch, getState) => {
     dispatch(setAppStatusAC('loading'))
 
     try {
-      await packsTableAPI.createNewPack({ cardsPack: { name } })
+      const deckCover = getState().packs.deckCover
+
+      await packsTableAPI.createNewPack({ cardsPack: { name, deckCover } })
       await dispatch(getPacksTC())
+      dispatch(setPackDeckCoverAC(''))
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
@@ -109,14 +124,17 @@ export const addNewPackTC =
   }
 
 export const updatePackTC =
-  (_id: string, name: string, isMenuModal: boolean): AppThunkType =>
-  async dispatch => {
+  (_id: string, name: string): AppThunkType =>
+  async (dispatch, getState) => {
     dispatch(setAppStatusAC('loading'))
     dispatch(changePackEntityStatusAC(_id, 'loading'))
 
     try {
-      await packsTableAPI.updatePack({ cardsPack: { _id, name } })
-      !isMenuModal && (await dispatch(getPacksTC()))
+      const deckCover = getState().packs.deckCover
+
+      await packsTableAPI.updatePack({ cardsPack: { _id, name, deckCover } })
+      await dispatch(getPacksTC())
+      dispatch(setPackDeckCoverAC(''))
       dispatch(setAppStatusAC('succeeded'))
       dispatch(changePackEntityStatusAC(_id, 'succeeded'))
     } catch (e) {
@@ -160,11 +178,15 @@ type InitialStateType = {
   min: number
   max: number
   user_id: string
+  maxCardsCount: number
+  minCardsCount: number
+  deckCover: string
+  privatePack: boolean
 }
 export type CardPacksType = {
   cardsCount: number
   created: string
-  deckCover: null | number
+  deckCover: string
   grade: number
   more_id: string
   name: string
@@ -191,6 +213,8 @@ export type packsReducerActionType =
   | setSearchDataACType
   | setUserIdACType
   | setIsMyPacksACType
+  | setPackDeckCoverACType
+  | setPrivatePackACType
 export type setPacksDataACType = ReturnType<typeof setPacksDataAC>
 export type setEntityStatusACType = ReturnType<typeof changePackEntityStatusAC>
 export type setMinCardsCountACType = ReturnType<typeof setMinCardsCountAC>
@@ -198,3 +222,5 @@ export type setMaxCardsCountACType = ReturnType<typeof setMaxCardsCountAC>
 export type setSearchDataACType = ReturnType<typeof setSearchDataAC>
 export type setUserIdACType = ReturnType<typeof setUserIdAC>
 export type setIsMyPacksACType = ReturnType<typeof setIsMyPacksAC>
+export type setPackDeckCoverACType = ReturnType<typeof setPackDeckCoverAC>
+export type setPrivatePackACType = ReturnType<typeof setPrivatePackAC>

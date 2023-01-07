@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useState } from 'react'
 
 import { Box, Button, Checkbox, IconButton } from '@mui/material'
 import FormControlLabel from '@mui/material/FormControlLabel'
@@ -8,6 +8,8 @@ import { useFormik } from 'formik'
 import closeIcon from '../../../../assets/img/icons/close-icon.svg'
 import { BasicModal } from '../BasicModal'
 import style from '../Modals.module.css'
+
+import { InputTypeFile } from './InputTypeFile/InputTypeFile'
 
 type FormikErrorType = {
   packName?: string
@@ -19,7 +21,7 @@ type AddPackModalPT = {
 }
 
 export const AddPackModal = ({ buttonInner, addPackHandler }: AddPackModalPT) => {
-  const [open, setOpen] = React.useState(false)
+  const [open, setOpen] = useState(false)
   const formik = useFormik({
     validate: values => {
       const errors: FormikErrorType = {}
@@ -64,6 +66,7 @@ export const AddPackModal = ({ buttonInner, addPackHandler }: AddPackModalPT) =>
       </div>
       <div className={style.contentWrapper}>
         <form onSubmit={formik.handleSubmit} className={style.form}>
+          <InputTypeFile />
           <TextField
             variant="standard"
             label="Pack name"
