@@ -5,35 +5,48 @@ import { Col, Input, Slider } from 'antd'
 import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
 import { useDebounce } from 'common/hooks/useDebounce'
 import { appSelector, packsSelector } from 'common/selectors'
-import { setMaxCardsCountAC, setMinCardsCountAC } from 'features/packs/packs-reducer'
 
-export const CardsCountSlider = () => {
+export const CardsCountSlider = (props: CardsCountSliderPropsType) => {
   const dispatch = useAppDispatch()
 
   const min = useAppSelector(packsSelector.min)
   const max = useAppSelector(packsSelector.max)
+
   const minCardsCount = useAppSelector(packsSelector.minCardsCount)
-  const maxCardsCount = useAppSelector(packsSelector.maxCardsCount)
+  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount)
+  // const maxCardsCount = useSelector(state => state.packs.maxCardsCount)
   const status = useAppSelector(appSelector.status)
 
-  const [minCards, setMinCards] = useState<number>(min)
-  const [maxCards, setMaxCards] = useState<number>(max)
+  const [minCards, setMinCards] = useState(minCardsCount)
+  const [maxCards, setMaxCards] = useState(maxCardsCount)
 
   const debouncedMinCardsCount = useDebounce(minCards, 1000)
   const debouncedMaxCardsCount = useDebounce(maxCards, 1000)
 
+  const params = props.searchParams
+
   useEffect(() => {
-    dispatch(setMinCardsCountAC(minCards))
+    if (minCards && !props.searchParams.has('min')) {
+      params.append('min', minCards)
+    } else if (minCards && props.searchParams.has('min')) {
+      params.set('min', minCards)
+    }
+    props.setSearchParams(params)
   }, [debouncedMinCardsCount])
 
   useEffect(() => {
-    dispatch(setMaxCardsCountAC(maxCards))
+    if (maxCards && !props.searchParams.has('max')) {
+      params.append('max', maxCards)
+    } else if (maxCards && props.searchParams.has('max')) {
+      params.set('max', maxCards)
+    }
+    props.setSearchParams(params)
   }, [debouncedMaxCardsCount])
 
-  useEffect(() => {
-    setMinCards(min)
-    setMaxCards(max)
-  }, [min, max])
+  // useEffect(() => {
+  //   setMinCards(minCardsCount)
+  //   setMaxCards(maxCardsCount)
+  // }, [maxCardsCount, minCardsCount])
 
   const onChangeCardsCountSlider = ([minCards, maxCards]: Array<number>) => {
     setMinCards(minCards)
@@ -58,4 +71,9 @@ export const CardsCountSlider = () => {
       </Col>
     </>
   )
+}
+
+type CardsCountSliderPropsType = {
+  setSearchParams: (params: any) => void
+  searchParams: any
 }
