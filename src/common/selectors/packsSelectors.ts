@@ -10,3 +10,5 @@ export const packName = (state: AppRootState) => state.packs.packName
 export const user_id = (state: AppRootState) => state.packs.user_id
 export const minCardsCount = (state: AppRootState) => state.packs.minCardsCount
 export const maxCardsCount = (state: AppRootState) => state.packs.maxCardsCount
+export const pageCount = (state: AppRootState) => state.packs.pageCount
+export const cardPacksTotalCount = (state: AppRootState) => state.packs.cardPacksTotalCount
