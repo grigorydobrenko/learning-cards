@@ -5,7 +5,7 @@ import { CardPacksType } from './packs-reducer'
 import { instance } from 'common/instance/instance'
 
 export const packsTableAPI = {
-  getPacks({ packName, pageCount, page, min, max, user_id }: PacksPayloadType) {
+  getPacks({ packName, pageCount, page, min, max, user_id }: Partial<PacksPayloadType>) {
     return instance.get<'', AxiosResponse<PacksResponseType>, PacksPayloadType>('cards/pack', {
       params: {
         packName,
@@ -65,9 +65,9 @@ export type PacksResponseType = {
 
 export type PacksPayloadType = {
   packName: string | null
-  min: number | null
-  max: number | null
-  pageCount: number | null
-  page: number
+  min: string | null
+  max: string | null
+  pageCount: string | null
+  page: string
   user_id: string
 }
