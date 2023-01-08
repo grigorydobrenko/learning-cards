@@ -2,38 +2,37 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import { Input } from 'antd'
 
-import { setSearchDataAC } from '../../packs-reducer'
-
-import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
+import { useAppSelector } from 'common/hooks/customHooks'
 import { useDebounce } from 'common/hooks/useDebounce'
-import { appSelector, packsSelector } from 'common/selectors'
+import { appSelector } from 'common/selectors'
 
-export const SearchComponent = () => {
-  const dispatch = useAppDispatch()
-  const packName = useAppSelector(packsSelector.packName)
+export const SearchComponent = (props: SearchComponentPropsType) => {
   const status = useAppSelector(appSelector.status)
 
-  const [searchValue, setSearchValue] = useState<string>(packName)
+  const packsQuery = props.searchParams.get('packName') || ''
+  const [searchValue, setSearchValue] = useState<string>(packsQuery)
 
   const debouncedSearchValue = useDebounce(searchValue, 700)
   const onSearchHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value)
-    console.log(e.target.value)
   }
 
   useEffect(() => {
-    if (searchValue) {
-      dispatch(setSearchDataAC(searchValue))
-    } else {
-      dispatch(setSearchDataAC(''))
-    }
-  }, [debouncedSearchValue])
+    if (packsQuery === '') setSearchValue('')
+  }, [packsQuery])
+
+  const params = props.searchParams
 
   useEffect(() => {
-    if (packName === '') {
-      setSearchValue('')
+    if (searchValue && !props.searchParams.has('packName')) {
+      params.append('packName', searchValue)
+    } else if (searchValue && props.searchParams.has('packName')) {
+      params.set('packName', searchValue)
+    } else {
+      params.delete('packName')
     }
-  }, [packName])
+    props.setSearchParams(params)
+  }, [debouncedSearchValue])
 
   return (
     <>
@@ -48,4 +47,9 @@ export const SearchComponent = () => {
       />
     </>
   )
+}
+
+type SearchComponentPropsType = {
+  setSearchParams: (params: any) => void
+  searchParams: any
 }
