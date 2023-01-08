@@ -22,7 +22,6 @@ export const CreateNewPassword = () => {
       confirmPassword: '',
     },
     onSubmit: values => {
-      console.log(token)
       if (!token) {
         token = ''
       }
