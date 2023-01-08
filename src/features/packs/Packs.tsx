@@ -3,6 +3,7 @@ import React, { useEffect } from 'react'
 import { Button } from '@mui/material'
 import { Col, Divider, Row } from 'antd'
 import Title from 'antd/lib/typography/Title'
+import { useSearchParams } from 'react-router-dom'
 
 import { Navbar } from './Navbar/Navbar'
 import { addNewPackTC, getPacksTC } from './packs-reducer'
@@ -16,26 +17,30 @@ import { appSelector, packsSelector } from 'common/selectors'
 export const Packs = () => {
   const dispatch = useAppDispatch()
   const status = useAppSelector(appSelector.status)
-  const min = useAppSelector(packsSelector.min)
-  const max = useAppSelector(packsSelector.max)
-  const packName = useAppSelector(packsSelector.packName)
-  const user_id = useAppSelector(packsSelector.user_id)
+  // const min = useAppSelector(packsSelector.min)
+  // const max = useAppSelector(packsSelector.max)
+  // const packName = useAppSelector(packsSelector.packName)
+  // const user_id = useAppSelector(packsSelector.user_id)
   const isMyPacks = useAppSelector(packsSelector.isMyPacks)
 
   const addNewPackHandler = (name: string) => {
     dispatch(addNewPackTC(name))
   }
 
-  useEffect(() => {
-    // let localStorageValue = restoreStateFromLocalStorage<string>('userId', '')
-    // let localStorageValue = loadState('userId')
-    //
-    // if (localStorageValue) {
-    //   dispatch(setUserIdAC(localStorageValue))
-    // }
+  const [searchParams, setSearchParams] = useSearchParams()
 
-    dispatch(getPacksTC())
-  }, [min, max, packName, user_id])
+  //const packsQuery = searchParams.get('packName') || ''
+
+  // const minCardsQuery = searchParams.get('min') || ''
+  // const maxCardsQuery = searchParams.get('max') || ''
+
+  const params = Object.fromEntries(searchParams)
+
+  const { pageCount, page, packName, min, max, user_id } = params
+
+  useEffect(() => {
+    dispatch(getPacksTC({ pageCount, page, packName, min, max, user_id }))
+  }, [searchParams])
 
   return (
     <div className={styles.mainContainer}>
@@ -53,11 +58,11 @@ export const Packs = () => {
           />
         </div>
       </div>
-      <Navbar />
+      <Navbar searchParams={searchParams} setSearchParams={setSearchParams} />
       <div>
         <Row>
           <Col xs={24}>
-            <TableForPacks />
+            <TableForPacks searchParams={searchParams} setSearchParams={setSearchParams} />
           </Col>
         </Row>
       </div>
