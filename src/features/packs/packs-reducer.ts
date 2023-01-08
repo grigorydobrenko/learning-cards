@@ -9,17 +9,18 @@ import { errorUtils } from 'common/utils/error-utils'
 const InitialState: InitialStateType = {
   cardPacks: [],
   page: 1,
-  pageCount: 50,
+  pageCount: 5,
   sortPacks: '0updated',
   packName: '',
   isMyPacks: null,
   min: 0,
-  max: 20,
+  max: 0,
   user_id: '',
   maxCardsCount: 0,
   minCardsCount: 0,
   deckCover: '',
   privatePack: false,
+  cardPacksTotalCount: 0,
 }
 
 export const packsReducer = (
@@ -50,6 +51,8 @@ export const packsReducer = (
       return { ...state, deckCover: action.deckCover }
     case 'packs/SET-PRIVATE-PACK':
       return { ...state, privatePack: action.privatePack }
+    case 'packs/SET-PAGE-PAGE-COUNT':
+      return { ...state, page: action.page, pageCount: action.pageCount }
 
     default:
       return state
@@ -75,33 +78,37 @@ export const setPackDeckCoverAC = (deckCover: string) =>
   ({ type: 'packs/SET-PACK-DECK-COVER', deckCover } as const)
 export const setPrivatePackAC = (privatePack: boolean) =>
   ({ type: 'packs/SET-PRIVATE-PACK', privatePack } as const)
+export const setPagePageCountAC = (page: number, pageCount: number) =>
+  ({ type: 'packs/SET-PAGE-PAGE-COUNT', page, pageCount } as const)
 
 //THUNKS =========================================
 
-export const getPacksTC = (): AppThunkType => async (dispatch, getState) => {
-  let { pageCount, page, packName, min, max, user_id } = getState().packs
+export const getPacksTC =
+  ({ pageCount, page, packName, min, max, user_id }: Partial<QueryParamsType>): AppThunkType =>
+  async (dispatch, getState) => {
+    // let { pageCount, page, packName, min, max, user_id } = getState().packs
 
-  dispatch(setAppStatusAC('loading'))
-  try {
-    const response = await packsTableAPI.getPacks({
-      packName,
-      pageCount,
-      page,
-      min,
-      max,
-      user_id,
-    })
+    dispatch(setAppStatusAC('loading'))
+    try {
+      const response = await packsTableAPI.getPacks({
+        packName,
+        pageCount,
+        page,
+        min,
+        max,
+        user_id,
+      })
 
-    dispatch(setPacksDataAC(response.data))
+      dispatch(setPacksDataAC(response.data))
 
-    dispatch(setAppStatusAC('succeeded'))
-  } catch (e) {
-    const err = e as Error | AxiosError<{ error: string }>
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
 
-    errorUtils(err, dispatch)
-    dispatch(setAppStatusAC('failed'))
+      errorUtils(err, dispatch)
+      dispatch(setAppStatusAC('failed'))
+    }
   }
-}
 
 export const addNewPackTC =
   (name: string): AppThunkType =>
@@ -112,7 +119,7 @@ export const addNewPackTC =
       const deckCover = getState().packs.deckCover
 
       await packsTableAPI.createNewPack({ cardsPack: { name, deckCover } })
-      await dispatch(getPacksTC())
+      await dispatch(getPacksTC({}))
       dispatch(setPackDeckCoverAC(''))
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
@@ -133,7 +140,7 @@ export const updatePackTC =
       const deckCover = getState().packs.deckCover
 
       await packsTableAPI.updatePack({ cardsPack: { _id, name, deckCover } })
-      await dispatch(getPacksTC())
+      await dispatch(getPacksTC({}))
       dispatch(setPackDeckCoverAC(''))
       dispatch(setAppStatusAC('succeeded'))
       dispatch(changePackEntityStatusAC(_id, 'succeeded'))
@@ -154,7 +161,7 @@ export const deletePackTC =
 
     try {
       await packsTableAPI.deletePack(id)
-      await dispatch(getPacksTC())
+      await dispatch(getPacksTC({}))
       dispatch(setAppStatusAC('succeeded'))
       dispatch(changePackEntityStatusAC(id, 'succeeded'))
     } catch (e) {
@@ -182,6 +189,7 @@ type InitialStateType = {
   minCardsCount: number
   deckCover: string
   privatePack: boolean
+  cardPacksTotalCount: number
 }
 export type CardPacksType = {
   cardsCount: number
@@ -203,6 +211,15 @@ export type CardPacksType = {
   entityStatus: EntityStatusType
 }
 
+type QueryParamsType = {
+  pageCount: string
+  page: string
+  packName: string
+  min: string
+  max: string
+  user_id: string
+}
+
 type EntityStatusType = 'loading' | 'succeeded' | 'idle' | 'failed'
 
 export type packsReducerActionType =
@@ -215,6 +232,7 @@ export type packsReducerActionType =
   | setIsMyPacksACType
   | setPackDeckCoverACType
   | setPrivatePackACType
+  | setPagePageCountACType
 export type setPacksDataACType = ReturnType<typeof setPacksDataAC>
 export type setEntityStatusACType = ReturnType<typeof changePackEntityStatusAC>
 export type setMinCardsCountACType = ReturnType<typeof setMinCardsCountAC>
@@ -224,3 +242,4 @@ export type setUserIdACType = ReturnType<typeof setUserIdAC>
 export type setIsMyPacksACType = ReturnType<typeof setIsMyPacksAC>
 export type setPackDeckCoverACType = ReturnType<typeof setPackDeckCoverAC>
 export type setPrivatePackACType = ReturnType<typeof setPrivatePackAC>
+export type setPagePageCountACType = ReturnType<typeof setPagePageCountAC>
