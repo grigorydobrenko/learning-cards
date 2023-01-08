@@ -15,11 +15,12 @@ import { EditPackModal } from 'common/components/Modals/PackModals/EditPackModal
 import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
 import { appSelector, packsSelector } from 'common/selectors'
 
-export const TableForPacks = () => {
+export const TableForPacks = (props: TableForPacksPropsType) => {
   const dispatch = useAppDispatch()
   const userData = useAppSelector(appSelector.user)
   const status = useAppSelector(appSelector.status)
-  const packName = useAppSelector(packsSelector.packName)
+  const pageCount = useAppSelector(packsSelector.pageCount)
+  const cardPacksTotalCount = useAppSelector(packsSelector.cardPacksTotalCount)
 
   const navigate = useNavigate()
 
@@ -154,13 +155,32 @@ export const TableForPacks = () => {
     },
   ]
 
+  const pagination = {
+    defaultPageSize: pageCount,
+    showSizeChanger: true,
+    pageSizeOptions: [5, 10, 15, 20],
+    total: cardPacksTotalCount,
+    onChange: (page: number, pageSize: number) => {
+      const params = props.searchParams
+
+      if (!props.searchParams.has('page') && !props.searchParams.has('pageCount')) {
+        params.append('page', page)
+        params.append('pageCount', pageSize)
+      } else {
+        params.set('page', page)
+        params.set('pageCount', pageSize)
+      }
+      props.setSearchParams(params)
+    },
+  }
+
   return (
     <div className={s.mainContainer}>
       <Row>
         <Col xs={24} span={12}>
           <ConfigProvider
             renderEmpty={cardPacks =>
-              cardPacks && !packName ? (
+              !cardPacks ? (
                 cardPacks
               ) : (
                 <Empty
@@ -175,15 +195,16 @@ export const TableForPacks = () => {
               dataSource={cardPacks}
               tableLayout={'fixed'}
               columns={columns}
-              pagination={{
-                defaultPageSize: 5,
-                showSizeChanger: true,
-                pageSizeOptions: [5, 10, 15, 20],
-              }}
+              pagination={pagination}
             />
           </ConfigProvider>
         </Col>
       </Row>
     </div>
   )
+}
+
+type TableForPacksPropsType = {
+  setSearchParams: (params: any) => void
+  searchParams: any
 }
