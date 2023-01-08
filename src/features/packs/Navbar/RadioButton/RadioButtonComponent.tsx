@@ -1,50 +1,41 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 import { Button, Radio } from 'antd'
 
-import { clearLocalStorage } from '../../../../common/localStorage/clearLocalStorage'
-import { saveStateToLocalStorage } from '../../../../common/localStorage/saveStateToLocalStorage'
-import { setIsMyPacksAC, setUserIdAC } from '../../packs-reducer'
-
 import s from './RadioButton.module.css'
 
-import { useAppDispatch, useAppSelector } from 'common/hooks/customHooks'
-import { appSelector, packsSelector } from 'common/selectors'
+import { useAppSelector } from 'common/hooks/customHooks'
+import { appSelector } from 'common/selectors'
 
-export const RadioButtonComponent = () => {
-  const dispatch = useAppDispatch()
-
+export const RadioButtonComponent = (props: RadioButtonPropsType) => {
   const userData = useAppSelector(appSelector.user)
-  const isMyPacks = useAppSelector(packsSelector.isMyPacks)
   const status = useAppSelector(appSelector.status)
 
-  const [choosePacks, setChoosePacks] = useState<string | null>(isMyPacks)
-
+  const params = props.searchParams
   const myPacksHandler = () => {
-    if (choosePacks !== 'my' && userData) {
-      dispatch(setUserIdAC(userData._id))
-      setChoosePacks('all')
-      saveStateToLocalStorage('userId', userData._id)
-      dispatch(setIsMyPacksAC('my'))
-    }
+    if (userData) params.append('user_id', userData._id)
+    props.setSearchParams(params)
   }
   const allPacksHandler = () => {
-    dispatch(setUserIdAC(''))
-    setChoosePacks('all')
-    clearLocalStorage('userId')
-    dispatch(setIsMyPacksAC('all'))
+    if (userData) params.delete('user_id')
+    props.setSearchParams(params)
   }
 
   return (
     <div className={status === 'loading' ? s.disabledButton : ''}>
       <Radio.Group optionType="button">
-        <Button disabled={isMyPacks === 'my'} onClick={myPacksHandler}>
+        <Button disabled={props.searchParams.has('user_id')} onClick={myPacksHandler}>
           My
         </Button>
-        <Button disabled={isMyPacks === 'all'} onClick={allPacksHandler}>
+        <Button disabled={!props.searchParams.has('user_id')} onClick={allPacksHandler}>
           All
         </Button>
       </Radio.Group>
     </div>
   )
+}
+
+type RadioButtonPropsType = {
+  searchParams: any
+  setSearchParams: (params: any) => void
 }
