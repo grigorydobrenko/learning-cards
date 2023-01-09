@@ -28,10 +28,7 @@ export const Navbar = (props: NavbarPropsType) => {
             setSearchParams={props.setSearchParams}
           />
         </Col>
-        <CardsCountSlider
-          searchParams={props.searchParams}
-          setSearchParams={props.setSearchParams}
-        />
+        <CardsCountSlider />
         <Col xs={1} md={{ span: 1, offset: 1 }}>
           <ResetSettingsComponent setSearchParams={props.setSearchParams} />
         </Col>

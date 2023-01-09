@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
 import { Col, Input, Slider } from 'antd'
+import { useSearchParams } from 'react-router-dom'
 
 import { useAppSelector } from 'common/hooks/customHooks'
 import { useDebounce } from 'common/hooks/useDebounce'
 import { appSelector, packsSelector } from 'common/selectors'
 
-export const CardsCountSlider = (props: CardsCountSliderPropsType) => {
+export const CardsCountSlider = () => {
   const minCardsCount = useAppSelector(packsSelector.minCardsCount)
   const maxCardsCount = useAppSelector(packsSelector.maxCardsCount)
   const status = useAppSelector(appSelector.status)
@@ -17,37 +18,51 @@ export const CardsCountSlider = (props: CardsCountSliderPropsType) => {
 
   const debouncedMinCardsCount = useDebounce(minCards, 1000)
   const debouncedMaxCardsCount = useDebounce(maxCards, 1000)
-
-  const params = props.searchParams
+  const [searchParams, setSearchParams] = useSearchParams()
 
   useEffect(() => {
     if (touchedSlider) {
-      props.searchParams.has('min') ? params.set('min', minCards) : params.append('min', minCards)
+      if (debouncedMinCardsCount === minCardsCount) {
+        searchParams.delete('min')
+      } else {
+        searchParams.has('min')
+          ? searchParams.set('min', '' + minCards)
+          : searchParams.append('min', '' + minCards)
+      }
 
-      props.setSearchParams(params)
+      setSearchParams(searchParams)
     }
   }, [debouncedMinCardsCount])
   useEffect(() => {
     if (touchedSlider) {
-      props.searchParams.has('max') ? params.set('max', maxCards) : params.append('max', maxCards)
+      if (debouncedMaxCardsCount === maxCardsCount) {
+        searchParams.delete('max')
+      } else {
+        searchParams.has('max')
+          ? searchParams.set('max', '' + maxCards)
+          : searchParams.append('max', '' + maxCards)
+      }
 
-      props.setSearchParams(params)
+      setSearchParams(searchParams)
     }
   }, [debouncedMaxCardsCount])
 
   useEffect(() => {
-    props.searchParams.has('min')
-      ? setMinCards(props.searchParams.get('min'))
+    searchParams.has('min')
+      ? setMinCards(Number(searchParams.get('min')))
       : setMinCards(minCardsCount)
-    props.searchParams.has('max')
-      ? setMaxCards(props.searchParams.get('max'))
+
+    searchParams.has('max')
+      ? setMaxCards(Number(searchParams.get('max')))
       : setMaxCards(maxCardsCount)
-    if (!props.searchParams.has('min') && !props.searchParams.has('max')) {
+
+    if (!searchParams.has('min') && !searchParams.has('max')) {
       setTouchedSlider(false)
     }
-  }, [minCardsCount, maxCardsCount, props.searchParams])
+  }, [minCardsCount, maxCardsCount, searchParams])
 
   const onChangeCardsCountSlider = ([minCards, maxCards]: Array<number>) => {
+    !touchedSlider && setTouchedSlider(true)
     setMinCards(minCards)
     setMaxCards(maxCards)
   }
@@ -63,7 +78,6 @@ export const CardsCountSlider = (props: CardsCountSliderPropsType) => {
           value={[minCards, maxCards]}
           onChange={onChangeCardsCountSlider}
           disabled={status === 'loading'}
-          onAfterChange={() => setTouchedSlider(true)}
           max={maxCardsCount}
           min={minCardsCount}
         />
@@ -73,9 +87,4 @@ export const CardsCountSlider = (props: CardsCountSliderPropsType) => {
       </Col>
     </>
   )
-}
-
-type CardsCountSliderPropsType = {
-  setSearchParams: (params: any) => void
-  searchParams: any
 }
