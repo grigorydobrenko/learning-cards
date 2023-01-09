@@ -20,6 +20,7 @@ export const TableForPacks = (props: TableForPacksPropsType) => {
   const userData = useAppSelector(appSelector.user)
   const status = useAppSelector(appSelector.status)
   const pageCount = useAppSelector(packsSelector.pageCount)
+  const page = useAppSelector(packsSelector.page)
   const cardPacksTotalCount = useAppSelector(packsSelector.cardPacksTotalCount)
 
   const navigate = useNavigate()
@@ -156,8 +157,10 @@ export const TableForPacks = (props: TableForPacksPropsType) => {
   ]
 
   const pagination = {
-    defaultPageSize: pageCount,
+    pageSize: pageCount,
+    current: page,
     showSizeChanger: true,
+    disabled: status === 'loading',
     pageSizeOptions: [5, 10, 15, 20],
     total: cardPacksTotalCount,
     onChange: (page: number, pageSize: number) => {
@@ -166,11 +169,12 @@ export const TableForPacks = (props: TableForPacksPropsType) => {
       if (!props.searchParams.has('page') && !props.searchParams.has('pageCount')) {
         params.append('page', page)
         params.append('pageCount', pageSize)
+        props.setSearchParams(params)
       } else {
         params.set('page', page)
         params.set('pageCount', pageSize)
+        props.setSearchParams(params)
       }
-      props.setSearchParams(params)
     },
   }
 
@@ -185,7 +189,7 @@ export const TableForPacks = (props: TableForPacksPropsType) => {
               ) : (
                 <Empty
                   style={{ color: 'black' }}
-                  description="Колод с таким названием не нашлось :("
+                  description="Packs with these parameters were not found :("
                 />
               )
             }

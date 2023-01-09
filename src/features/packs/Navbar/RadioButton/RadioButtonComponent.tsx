@@ -13,11 +13,18 @@ export const RadioButtonComponent = (props: RadioButtonPropsType) => {
 
   const params = props.searchParams
   const myPacksHandler = () => {
-    if (userData) params.append('user_id', userData._id)
+    props.searchParams.delete('min')
+    props.searchParams.delete('max')
+    if (userData) {
+      params.append('user_id', userData._id)
+    }
     props.setSearchParams(params)
   }
   const allPacksHandler = () => {
-    if (userData) params.delete('user_id')
+    props.searchParams.delete('min')
+    props.searchParams.delete('max')
+    props.searchParams.delete('user_id')
+
     props.setSearchParams(params)
   }
 
