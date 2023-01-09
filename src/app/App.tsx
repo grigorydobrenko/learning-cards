@@ -16,6 +16,7 @@ import { initializeAppTC } from './app-reducer'
 function App() {
   const status = useAppSelector(appSelector.status)
   const isInitialized = useAppSelector(appSelector.isInitialized)
+  const theme = useAppSelector(appSelector.theme)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -26,7 +27,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App" id={theme}>
       {status === 'loading' && (
         <LinearProgress sx={{ position: 'absolute', width: '100%', height: '5px', top: '0' }} />
       )}

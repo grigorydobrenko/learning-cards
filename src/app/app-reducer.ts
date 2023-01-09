@@ -9,6 +9,7 @@ const initState: initStateType = {
   feedBack: null,
   userData: null,
   isInitialized: false,
+  theme: 'dark',
 }
 
 export const appReducer = (state = initState, action: appReducerActionsType): initStateType => {
@@ -28,6 +29,9 @@ export const appReducer = (state = initState, action: appReducerActionsType): in
     case 'APP/SET-APP-INITIALIZED': {
       return { ...state, isInitialized: action.isInitialized }
     }
+    case 'APP/SET-APP-THEME': {
+      return { ...state, theme: action.theme }
+    }
     default:
       return state
   }
@@ -44,6 +48,7 @@ export const setUserDataAC = (userData: UserResponseType) =>
   ({ type: 'APP/SET-USER-DATA', userData } as const)
 export const setAppInitializedAC = (value: boolean) =>
   ({ type: 'APP/SET-APP-INITIALIZED', isInitialized: value } as const)
+export const setAppThemeAC = (theme: ThemeType) => ({ type: 'APP/SET-APP-THEME', theme } as const)
 //  thunks==============================================================
 
 export const initializeAppTC = (): AppThunkType => dispatch => {
@@ -69,7 +74,10 @@ export type initStateType = {
   feedBack: null | string
   userData: null | UserResponseType
   isInitialized: boolean
+  theme: ThemeType
 }
+
+type ThemeType = 'light' | 'dark'
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -79,8 +87,10 @@ export type appReducerActionsType =
   | setUserDataACType
   | setAppInitializedACType
   | setAppFeedbackACType
+  | setAppThemeACType
 export type setAppInitializedACType = ReturnType<typeof setAppInitializedAC>
 export type setAppErrorACType = ReturnType<typeof setAppErrorAC>
 export type setAppFeedbackACType = ReturnType<typeof setAppFeedbackAC>
 export type setAppStatusACType = ReturnType<typeof setAppStatusAC>
 export type setUserDataACType = ReturnType<typeof setUserDataAC>
+export type setAppThemeACType = ReturnType<typeof setAppThemeAC>
